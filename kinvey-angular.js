@@ -112,7 +112,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.6';
+    Kinvey.SDK_VERSION = '1.1.7';
 
     // Properties.
     // -----------
@@ -1139,6 +1139,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
      *             Use in conjunction with `save` or `update`.
      * @property {boolean}  [fallback]     Fallback to the network if the request
      *             failed locally. Use in conjunction with `offline`.
+     * @property {Array}    [fields]       Fields to select.
      * @property {boolean}  [fileTls=true] Use the https protocol to communicate
      *             with GCS.
      * @property {integer}  [fileTtl]      A custom expiration time (in seconds).
@@ -1602,7 +1603,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       }
 
       // Return the device information string.
-      var parts = ['js-angular/1.1.6'];
+      var parts = ['js-angular/1.1.7'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -4218,6 +4219,14 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       options = options || {};
 
       /**
+       * Fields to select.
+       *
+       * @private
+       * @type {Array}
+       */
+      this._fields = options.fields || [];
+
+      /**
        * The MongoDB query.
        *
        * @private
@@ -4703,6 +4712,32 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       // Modifiers.
 
       /**
+       * Sets the fields to select.
+       *
+       * @param {Array} fields Fields to select.
+       * @throws {Kinvey.Error} `fields` must be of type: `Array`.
+       * @returns {Kinvey.Query} The query.
+       */
+      fields: function(fields) {
+        // Cast arguments.
+        fields = fields || [];
+
+        // Validate arguments.
+        if(!isArray(fields)) {
+          throw new Kinvey.Error('fields argument must be of type: Array.');
+        }
+
+        // Set fields on the top-level query.
+        if(null !== this._parent) {
+          this._parent.fields(fields);
+        }
+        else {
+          this._fields = fields;
+        }
+        return this;
+      },
+
+      /**
        * Sets the number of documents to select.
        *
        * @param {number} [limit] Limit.
@@ -4832,6 +4867,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
 
         // Return set of parameters.
         return {
+          fields: this._fields,
           filter: this._filter,
           sort: this._sort,
           skip: this._skip,
@@ -5463,9 +5499,12 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
           log('Using net persistence.');
         }
 
-        // Use net. If `options.refresh`, persist the response locally.
+        // Use net.
         var promise = Kinvey.Persistence.Net.read(request, options);
-        if(request.local.res && options.refresh) {
+
+        // If `options.refresh`, and field selection was *not* used, persist the response locally.
+        var fieldSelection = options.fields || (request.query && !isEmpty(request.query._fields));
+        if(request.local.res && options.refresh && !fieldSelection) {
           return promise.then(function(response) {
             // Debug.
             if(KINVEY_DEBUG) {
@@ -6071,6 +6110,11 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         request.flags = request.flags || {};
         options = options || {};
 
+        // Add support for field selection.
+        if(isArray(options.fields)) {
+          request.flags.fields = options.fields.join(',');
+        }
+
         // Add support for file references.
         if(null != request.collection) {
           if(false !== options.fileTls) {
@@ -6192,6 +6236,9 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         if(request.query) { // Add query fragments.
           var query = request.query.toJSON();
           flags.query = query.filter;
+          if(!isEmpty(query.fields)) {
+            flags.fields = query.fields.join(',');
+          }
           if(null !== query.limit) {
             flags.limit = query.limit;
           }
