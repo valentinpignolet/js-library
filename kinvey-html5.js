@@ -1,12 +1,12 @@
-/**@license MIT-promiscuous-©Ruben Verborgh*/
+/**@license MIT-promiscuous-Â©Ruben Verborgh*/
 !function(n,t){function c(n,t){return(typeof t)[0]==n}function u(o,e){return e=function f(i,h,l,a,p,s){function y(n){return function(t){p&&(p=0,f(c,n,t))}}if(a=f.q,i!=c)return u(function(n,t){a.push({p:this,r:n,j:t,1:i,0:h})});if(l&&c(n,l)|c(t,l))try{p=l.then}catch(j){h=0,l=j}if(c(n,p))try{p.call(l,y(1),h=y(0))}catch(j){h(j)}else for(e=function(t,e){return c(n,t=h?t:e)?u(function(n,c){r(this,n,c,l,t)}):o},s=0;s<a.length;)p=a[s++],c(n,i=p[h])?r(p.p,p.r,p.j,l,i):(h?p.r:p.j)(l)},e.q=[],o.call(o={then:function(n,t){return e(n,t)},"catch":function(n){return e(0,n)}},function(n){e(c,1,n)},function(n){e(c,0,n)}),o}function r(u,r,o,e,f){setTimeout(function(){try{e=f(e),f=e&&c(t,e)|c(n,e)&&e.then,c(n,f)?e==u?o(TypeError()):f.call(e,r,o):r(e)}catch(i){o(i)}})}function o(n){return u(function(t){t(n)})}Promise=u,u.resolve=o,u.reject=function(n){return u(function(t,c){c(n)})},u.all=function(n){return u(function(t,c,u,r){r=[],u=n.length||t(r),n.map(function(n,e){o(n).then(function(n){r[e]=n,--u||t(r)},c)})})}}("f","o");;
-(function(){var l=new function(){function d(a){return a?0:-1}var f=this.priority=function(a,b){for(var c=a.exprs,e=0,f=0,d=c.length;f<d;f++){var g=c[f];if(!~(g=g.e(g.v,b instanceof Date?b.getTime():b,b)))return-1;e+=g}return e},e=this.parse=function(a,b){a||(a={$eq:a});var c=[];if(a.constructor==Object)for(var d in a){var m=k[d]?d:"$trav",j=a[d],g=j;if(h[m]){if(~d.indexOf(".")){g=d.split(".");d=g.shift();for(var n={},l=n,p=0,s=g.length-1;p<s;p++)l=l[g[p]]={};l[g[p]]=j;g=j=n}if(j instanceof Array){g=
-[];for(n=j.length;n--;)g.push(e(j[n]))}else g=e(j,d)}c.push(r(m,d,g))}else c.push(r("$eq",d,a));var q={exprs:c,k:b,test:function(a){return!!~q.priority(a)},priority:function(a){return f(q,a)}};return q},h=this.traversable={$and:!0,$or:!0,$nor:!0,$trav:!0,$not:!0},k=this.testers={$eq:function(a,b){return d(a.test(b))},$ne:function(a,b){return d(!a.test(b))},$lt:function(a,b){return a>b?0:-1},$gt:function(a,b){return a<b?0:-1},$lte:function(a,b){return a>=b?0:-1},$gte:function(a,b){return a<=b?0:-1},
-$exists:function(a,b){return a===(null!=b)?0:-1},$in:function(a,b){if(b instanceof Array)for(var c=b.length;c--;){if(~a.indexOf(b[c]))return c}else return d(~a.indexOf(b));return-1},$not:function(a,b){if(!a.test)throw Error("$not test should include an expression, not a value. Use $ne instead.");return d(!a.test(b))},$type:function(a,b,c){return c?c instanceof a||c.constructor==a?0:-1:-1},$nin:function(a,b){return~k.$in(a,b)?-1:0},$mod:function(a,b){return b%a[0]==a[1]?0:-1},$all:function(a,b){for(var c=
-a.length;c--;)if(-1==b.indexOf(a[c]))return-1;return 0},$size:function(a,b){return b?a==b.length?0:-1:-1},$or:function(a,b){for(var c=a.length,d=c;c--;)if(~f(a[c],b))return c;return 0==d?0:-1},$nor:function(a,b){for(var c=a.length;c--;)if(~f(a[c],b))return-1;return 0},$and:function(a,b){for(var c=a.length;c--;)if(!~f(a[c],b))return-1;return 0},$trav:function(a,b){if(b instanceof Array){for(var c=b.length;c--;){var d=b[c];if(d[a.k]&&~f(a,d[a.k]))return c}return-1}return f(a,b?b[a.k]:void 0)}},m={$eq:function(a){return a instanceof
-RegExp?a:{test:a instanceof Function?a:function(b){return b instanceof Array?~b.indexOf(a):a==b}}},$ne:function(a){return m.$eq(a)}},r=function(a,b,c){c=c instanceof Date?c.getTime():c;return{k:b,v:m[a]?m[a](c):c,e:k[a]}}},h=function(d,f,e){"object"!=typeof f&&(e=f,f=void 0);if(e){if("function"!=typeof e)throw Error("Unknown sift selector "+e);}else e=function(d){return d};var h=e,k=l.parse(d);e=function(d){for(var e=[],a,b,c=0,f=d.length;c<f;c++)a=h(d[c]),~(b=k.priority(a))&&e.push({value:a,priority:b});
-e.sort(function(a,b){return a.priority>b.priority?-1:1});d=Array(e.length);for(c=e.length;c--;)d[c]=e[c].value;return d};e.test=k.test;e.score=k.priority;e.query=d;return f?e(f):e};h.use=function(d){d.operators&&h.useOperators(d.operators)};h.useOperators=function(d){for(var f in d)h.useOperator(f,d[f])};h.useOperator=function(d,f){var e={},e="object"==typeof f?f:{test:f},h="$"+d;l.testers[h]=e.test;if(e.traversable||e.traverse)l.traversable[h]=!0};"undefined"!=typeof module&&"undefined"!=typeof module.exports?
-module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
+(function(){var m=new function(){function g(a){return a?0:-1}var e=this.priority=function(a,b){for(var c=a.exprs,f=0,d=0,e=c.length;d<e;d++){var h=c[d];if(!~(h=h.e(h.v,b instanceof Date?b.getTime():b,b)))return-1;f+=h}return f},d=this.parse=function(a,b){a||(a={$eq:a});var c=[];if(a.constructor==Object)for(var f in a){var g=l[f]?f:"$trav",k=a[f],h=k;if(j[g]){if(~f.indexOf(".")){h=f.split(".");f=h.shift();for(var n={},m=n,p=0,s=h.length-1;p<s;p++)m=m[h[p]]={};m[h[p]]=k;h=k=n}if(k instanceof Array){h=
+[];for(n=k.length;n--;)h.push(d(k[n]))}else h=d(k,f)}c.push(r(g,f,h))}else c.push(r("$eq",f,a));var q={exprs:c,k:b,test:function(a){return!!~q.priority(a)},priority:function(a){return e(q,a)}};return q},j=this.traversable={$and:!0,$or:!0,$nor:!0,$trav:!0,$not:!0},l=this.testers={$eq:function(a,b){return g(a.test(b))},$ne:function(a,b){return g(!a.test(b))},$lt:function(a,b){return a>b?0:-1},$gt:function(a,b){return a<b?0:-1},$lte:function(a,b){return a>=b?0:-1},$gte:function(a,b){return a<=b?0:-1},
+$exists:function(a,b){return a===(null!=b)?0:-1},$in:function(a,b){if(b instanceof Array)for(var c=b.length;c--;){if(~a.indexOf(b[c]))return c}else return g(~a.indexOf(b));return-1},$not:function(a,b){if(!a.test)throw Error("$not test should include an expression, not a value. Use $ne instead.");return g(!a.test(b))},$type:function(a,b,c){return c?c instanceof a||c.constructor==a?0:-1:-1},$nin:function(a,b){return~l.$in(a,b)?-1:0},$mod:function(a,b){return b%a[0]==a[1]?0:-1},$all:function(a,b){for(var c=
+a.length;c--;)if(!~b.indexOf(a[c]))return-1;return 0},$size:function(a,b){return b?a==b.length?0:-1:-1},$or:function(a,b){for(var c=a.length,f=c;c--;)if(~e(a[c],b))return c;return 0==f?0:-1},$nor:function(a,b){for(var c=a.length;c--;)if(~e(a[c],b))return-1;return 0},$and:function(a,b){for(var c=a.length;c--;)if(!~e(a[c],b))return-1;return 0},$trav:function(a,b){if(b instanceof Array){for(var c=b.length;c--;){var f=b[c];if(f[a.k]&&~e(a,f[a.k]))return c}return-1}return e(a,b?b[a.k]:void 0)},$regex:function(a,
+b){return RegExp(a).test(b)?0:-1}},k={$eq:function(a){return a instanceof RegExp?a:{test:a instanceof Function?a:function(b){return b instanceof Array?~b.indexOf(a):a==b}}},$ne:function(a){return k.$eq(a)}},r=function(a,b,c){c=c instanceof Date?c.getTime():c;return{k:b,v:k[a]?k[a](c):c,e:l[a]}}},j=function(g,e,d){"object"!=typeof e&&(d=e,e=void 0);if(d){if("function"!=typeof d)throw Error("Unknown sift selector "+d);}else d=function(d){return d};var j=d,l=m.parse(g);d=function(d){for(var e=[],a,b,
+c,f=0,g=d.length;f<g;f++)b=d[f],a=j(b),~(c=l.priority(a))&&e.push({value:b,priority:c});e.sort(function(a,b){return a.priority>b.priority?-1:1});d=Array(e.length);for(f=e.length;f--;)d[f]=e[f].value;return d};d.test=l.test;d.score=l.priority;d.query=g;return e?d(e):d};j.use=function(g){g.operators&&j.useOperators(g.operators)};j.useOperators=function(g){for(var e in g)j.useOperator(e,g[e])};j.useOperator=function(g,e){var d={},d="object"==typeof e?e:{test:e},j="$"+g;m.testers[j]=d.test;if(d.traversable||
+d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=j:"undefined"!=typeof window&&(window.sift=j)})();
 ;
 /*!
  * Copyright (c) 2014 Kinvey, Inc.
@@ -114,7 +114,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.7';
+    Kinvey.SDK_VERSION = '1.1.8';
 
     // Properties.
     // -----------
@@ -1055,8 +1055,8 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
     // Create helper functions that are used throughout the library. Inspired by
     // [underscore.js](http://underscorejs.org/).
     var isArray = Array.isArray || function(arg) {
-        return '[object Array]' === Object.prototype.toString.call(arg);
-      };
+      return '[object Array]' === Object.prototype.toString.call(arg);
+    };
     var isFunction = function(fn) {
       if('function' !== typeof / . / ) {
         return 'function' === typeof fn;
@@ -1605,7 +1605,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       }
 
       // Return the device information string.
-      var parts = ['js-html5/1.1.7'];
+      var parts = ['js-html5/1.1.8'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -2910,7 +2910,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
        * Uploads a file.
        *
        * @param {*}       file               The file.
-       * @param {Object}  [data]             The files’ metadata.
+       * @param {Object}  [data]             The filesâ€™ metadata.
        * @param {Options} [options]          Options.
        * @param {boolean} [options.public]   Mark the file publicly-readable.
        * @param {boolean} [options.tls=true] Use the https protocol to communicate
@@ -3012,7 +3012,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         var day = match[1].split(/\D/).map(function(segment) {
           return root.parseInt(segment, 10) || 0;
         });
-        day[1] -= 1; // Months range 0–11.
+        day[1] -= 1; // Months range 0â€“11.
         day = new Date(Date.UTC.apply(Date, day));
 
         // Adjust for timezone.
@@ -3400,6 +3400,30 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       },
 
       /**
+       * Signs up a new user through a provider.
+       *
+       * @param {string} provider  Provider.
+       * @param {Object} tokens    Tokens.
+       * @param {Object} [options] Options.
+       * @returns {Promise} The active user.
+       */
+      signupWithProvider: function(provider, tokens, options) {
+        // Debug.
+        if(KINVEY_DEBUG) {
+          log('Signing up a new user with a provider.', arguments);
+        }
+
+        // Parse tokens.
+        var data = {
+          _socialIdentity: {}
+        };
+        data._socialIdentity[provider] = tokens;
+
+        // Forward to `Kinvey.User.signup`.
+        return Kinvey.User.signup(data, options);
+      },
+
+      /**
        * Logs in an existing user.
        * NOTE If `options._provider`, this method should trigger a BL script.
        *
@@ -3472,10 +3496,34 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
       },
 
       /**
+       * Logs in an existing user through a provider.
+       *
+       * @param {string} provider  Provider.
+       * @param {Object} tokens    Tokens.
+       * @param {Object} [options] Options.
+       * @returns {Promise} The active user.
+       */
+      loginWithProvider: function(provider, tokens, options) {
+        // Debug.
+        if(KINVEY_DEBUG) {
+          log('Logging in with a provider.', arguments);
+        }
+
+        // Parse tokens.
+        var data = {
+          _socialIdentity: {}
+        };
+        data._socialIdentity[provider] = tokens;
+
+        // Forward to `Kinvey.User.login`.
+        return Kinvey.User.login(data, options);
+      },
+
+      /**
        * Logs out the active user.
        *
        * @param {Options} [options] Options.
-       * @param {boolean] [options.force=false] Reset the active user even if an
+       * @param {boolean} [options.force=false] Reset the active user even if an
        *          `InvalidCredentials` error is returned.
        * @param {boolean} [options.silent=false] Succeed when there is no active
        *          user.
@@ -3816,7 +3864,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         // Cast arguments.
         options = options || {};
 
-        // Delete the social identities’ access tokens, unless the identity is
+        // Delete the social identitiesâ€™ access tokens, unless the identity is
         // `options._provider`. The tokens will be re-added after updating.
         var tokens = [];
         if(null != data._socialIdentity) {
@@ -3845,7 +3893,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
             res: true
           }
         }, options).then(function(user) {
-          // Re-add the social identities’ access tokens.
+          // Re-add the social identitiesâ€™ access tokens.
           tokens.forEach(function(identity) {
             var provider = identity.provider;
             if(null != user._socialIdentity && null != user._socialIdentity[provider]) {
@@ -5068,7 +5116,8 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
               var promises = (isArrayRelation ? reference : [reference]).map(function(member) {
                 // Do not retrieve if the property is not a reference, or it is
                 // explicitly excluded.
-                if(null == member || 'KinveyRef' !== member._type || -1 !== options.exclude.indexOf(property)) {
+                if(null == member || 'KinveyRef' !== member._type ||
+                  -1 !== options.exclude.indexOf(property)) {
                   return Kinvey.Defer.resolve(member);
                 }
 
@@ -5189,7 +5238,8 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
               var promises = (isArrayRelation ? obj : [obj]).map(function(member) {
                 // Do not save if the property is not a document or a reference
                 // already, or it is explicitly excluded.
-                if(null == member || 'KinveyRef' === member._type || -1 !== options.exclude.indexOf(property)) {
+                if(null == member || 'KinveyRef' === member._type ||
+                  -1 !== options.exclude.indexOf(property)) {
                   return Kinvey.Defer.resolve(member);
                 }
 
@@ -5857,7 +5907,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         // Cast arguments.
         options = options || {};
 
-        // Normalize “collections” of the user namespace.
+        // Normalize â€œcollectionsâ€ of the user namespace.
         var collection = USERS === request.namespace ? USERS : request.collection;
 
         // The create request can be an aggregation, or (batch) save of documents.
@@ -5906,7 +5956,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         // Cast arguments.
         options = options || {};
 
-        // Normalize “collections” of the user namespace.
+        // Normalize â€œcollectionsâ€ of the user namespace.
         var collection = USERS === request.namespace ? USERS : request.collection;
 
         // The read request can be a count, me, query, or simple get. Neither
@@ -5941,7 +5991,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         }
         return promise.then(function(response) {
           // Force refresh is maxAge of response data was exceeded.
-          var status = maxAge.status(response);
+          var status = maxAge.status(response, options.maxAge);
           if(false === status && Kinvey.Sync.isOnline()) {
             options.offline = false; // Force using network.
             return Kinvey.Persistence.read(request, options);
@@ -5988,7 +6038,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         // Cast arguments.
         options = options || {};
 
-        // Normalize “collections” of the user namespace.
+        // Normalize â€œcollectionsâ€ of the user namespace.
         var collection = USERS === request.namespace ? USERS : request.collection;
 
         // Add maxAge metadata.
@@ -6030,7 +6080,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
         // Cast arguments.
         options = options || {};
 
-        // Normalize “collections” of the user namespace.
+        // Normalize â€œcollectionsâ€ of the user namespace.
         var collection = USERS === request.namespace ? USERS : request.collection;
 
         // The delete request can be a clean or destroy of documents. Both change
@@ -6405,7 +6455,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
             }
             else if(Kinvey.Error.INVALID_CREDENTIALS === error.name) {
               // Add a descriptive message to `InvalidCredentials` error so the user
-              // knows what’s going on.
+              // knows whatâ€™s going on.
               error.debug += ' It is possible the tokens used to execute the ' +
                 'request are expired. In that case, please run ' +
                 '`Kinvey.User.logout({ force: true })`, and then log back in ' +
@@ -6954,7 +7004,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
           // Prepare the response.
           promise = Kinvey.User.login(options.user).then(function() {
             // The user is now logged in. Re-start the synchronization operation.
-            delete options.user; // We don’t need this anymore.
+            delete options.user; // We donâ€™t need this anymore.
             return Kinvey.Sync.execute(options);
           });
 
@@ -7162,11 +7212,12 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
 
       /**
        * The database size (in bytes).
+       * Use 1000 instead of 1024 due to Apple Safari limits.
        *
        * @default
        * @type {integer}
        */
-      size: 5 * 1024 * 1024,
+      size: 5 * 1000 * 1000,
 
       /**
        * Opens a database.
@@ -7730,7 +7781,7 @@ module.exports=h:"undefined"!=typeof window&&(window.sift=h)})();
 
       /**
        * Obtains a transaction handle to the provided collection.
-       * NOTE IndexedDB automatically commits transactions that haven’t been used
+       * NOTE IndexedDB automatically commits transactions that havenâ€™t been used
        * in an event loop tick. Therefore, deferreds cannot be used. See
        * https://github.com/promises-aplus/promises-spec/issues/45.
        *
