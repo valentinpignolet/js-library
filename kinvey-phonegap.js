@@ -9,7 +9,7 @@ c,f=0,g=d.length;f<g;f++)b=d[f],a=j(b),~(c=l.priority(a))&&e.push({value:b,prior
 d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=j:"undefined"!=typeof window&&(window.sift=j)})();
 ;
 /*!
- * Copyright (c) 2014 Kinvey, Inc.
+ * Copyright (c) 2015 Kinvey, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.9';
+    Kinvey.SDK_VERSION = '1.1.10';
 
     // Properties.
     // -----------
@@ -1605,7 +1605,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-phonegap/1.1.9'];
+      var parts = ['js-phonegap/1.1.10'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -8065,6 +8065,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           id: 'register-device',
           data: {
             platform: root.device.platform.toLowerCase(),
+            framework: 'phonegap',
             deviceId: deviceId,
             userId: null != activeUser ? null : options.userId
           },
@@ -8123,6 +8124,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           id: 'unregister-device',
           data: {
             platform: root.device.platform.toLowerCase(),
+            framework: 'phonegap',
             deviceId: deviceId,
             userId: null != activeUser ? null : options.userId
           },
