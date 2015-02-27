@@ -114,7 +114,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.10';
+    Kinvey.SDK_VERSION = '1.1.11';
 
     // Properties.
     // -----------
@@ -1605,7 +1605,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-phonegap/1.1.10'];
+      var parts = ['js-phonegap/1.1.11'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }

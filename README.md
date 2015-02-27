@@ -72,7 +72,7 @@ Kinvey.ping().then(function(response) {
 You are now ready to start building awesome apps! We recommend diving into the [User guide](http://devcenter.kinvey.com/guides/users) or [Data store guide](http://devcenter.kinvey.com/guides/datastore) to learn more about our service, or explore the [sample apps](http://devcenter.kinvey.com/samples) to go straight to working projects.
 
 ## License
-    Copyright 2014 Kinvey, Inc.
+    Copyright 2015 Kinvey, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
