@@ -107,11 +107,13 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @constant
      * @type {string}
      * @default
+     * @deprecated Kinvey.API_ENDPOINT
      */
-    Kinvey.API_ENDPOINT = 'https://baas.kinvey.com';
+    Kinvey.APIHostName = 'https://baas.kinvey.com';
+    Kinvey.API_ENDPOINT = undefined;
 
     /**
-     * The Kinvey API version used when communicating with `Kinvey.API_ENDPOINT`.
+     * The Kinvey API version used when communicating with `Kinvey.APIHostName`.
      *
      * @constant
      * @type {string}
@@ -126,7 +128,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.11';
+    Kinvey.SDK_VERSION = '1.1.12';
 
     // Properties.
     // -----------
@@ -307,6 +309,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * Initializes the library for use with Kinvey services.
      *
      * @param {Options}  options Options.
+     * @param {string}  [options.apiHostName]  API Host Name.
      * @param {string}   options.appKey        App Key.
      * @param {string}  [options.appSecret]    App Secret.
      * @param {string}  [options.masterSecret] Master Secret. **Never use the
@@ -334,6 +337,10 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
 
       // The active user is not ready yet.
       activeUserReady = false;
+
+      // Set the API endpoint
+      var apiHostName = options.apiHostName || Kinvey.API_ENDPOINT;
+      Kinvey.APIHostName = apiHostName || Kinvey.APIHostName;
 
       // Save credentials.
       Kinvey.appKey = options.appKey;
@@ -387,6 +394,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       // Return the response.
       return wrapCallbacks(promise, options);
     };
+
 
     // Error-handling.
     // ---------------
@@ -1000,6 +1008,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
         debug: dict.debug || error.debug || ''
       };
     };
+
 
     // Utils.
     // ------
@@ -1617,7 +1626,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.1.11'];
+      var parts = ['js-titanium/1.1.12'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -2154,6 +2163,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       );
       return agg;
     };
+
 
     // Custom Endpoints.
     // -----------------
@@ -6342,14 +6352,14 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
         options.trace = options.trace || (KINVEY_DEBUG && false !== options.trace);
 
         // Build, escape, and join URL segments.
-        // Format: <API_ENDPOINT>/<namespace>[/<Kinvey.appKey>][/<collection>][/<id>]
+        // Format: <APIHostName>/<namespace>[/<Kinvey.appKey>][/<collection>][/<id>]
         var segments = [request.namespace, Kinvey.appKey, request.collection, request.id];
         segments = segments.filter(function(value) {
           // Exclude empty optional segment. Note the required namespace cannot be
           // empty at this point (enforced above).
           return null != value;
         }).map(Kinvey.Persistence.Net.encode);
-        var url = [Kinvey.API_ENDPOINT].concat(segments).join('/') + '/';
+        var url = [Kinvey.APIHostName].concat(segments).join('/') + '/';
 
         // Build query string.
         var flags = request.flags || {};
@@ -6578,6 +6588,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
        */
       use: use(['base64', 'encode', 'request'])
     };
+
 
     // Synchronization.
     // ----------------

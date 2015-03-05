@@ -93,11 +93,13 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @constant
      * @type {string}
      * @default
+     * @deprecated Kinvey.API_ENDPOINT
      */
-    Kinvey.API_ENDPOINT = 'https://baas.kinvey.com';
+    Kinvey.APIHostName = 'https://baas.kinvey.com';
+    Kinvey.API_ENDPOINT = undefined;
 
     /**
-     * The Kinvey API version used when communicating with `Kinvey.API_ENDPOINT`.
+     * The Kinvey API version used when communicating with `Kinvey.APIHostName`.
      *
      * @constant
      * @type {string}
@@ -112,7 +114,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.11';
+    Kinvey.SDK_VERSION = '1.1.12';
 
     // Properties.
     // -----------
@@ -293,6 +295,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * Initializes the library for use with Kinvey services.
      *
      * @param {Options}  options Options.
+     * @param {string}  [options.apiHostName]  API Host Name.
      * @param {string}   options.appKey        App Key.
      * @param {string}  [options.appSecret]    App Secret.
      * @param {string}  [options.masterSecret] Master Secret. **Never use the
@@ -320,6 +323,10 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
       // The active user is not ready yet.
       activeUserReady = false;
+
+      // Set the API endpoint
+      var apiHostName = options.apiHostName || Kinvey.API_ENDPOINT;
+      Kinvey.APIHostName = apiHostName || Kinvey.APIHostName;
 
       // Save credentials.
       Kinvey.appKey = options.appKey;
@@ -373,6 +380,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       // Return the response.
       return wrapCallbacks(promise, options);
     };
+
 
     // Error-handling.
     // ---------------
@@ -986,6 +994,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         debug: dict.debug || error.debug || ''
       };
     };
+
 
     // Utils.
     // ------
@@ -1603,7 +1612,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-angular/1.1.11'];
+      var parts = ['js-angular/1.1.12'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -2140,6 +2149,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       );
       return agg;
     };
+
 
     // Custom Endpoints.
     // -----------------
@@ -6328,14 +6338,14 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         options.trace = options.trace || (KINVEY_DEBUG && false !== options.trace);
 
         // Build, escape, and join URL segments.
-        // Format: <API_ENDPOINT>/<namespace>[/<Kinvey.appKey>][/<collection>][/<id>]
+        // Format: <APIHostName>/<namespace>[/<Kinvey.appKey>][/<collection>][/<id>]
         var segments = [request.namespace, Kinvey.appKey, request.collection, request.id];
         segments = segments.filter(function(value) {
           // Exclude empty optional segment. Note the required namespace cannot be
           // empty at this point (enforced above).
           return null != value;
         }).map(Kinvey.Persistence.Net.encode);
-        var url = [Kinvey.API_ENDPOINT].concat(segments).join('/') + '/';
+        var url = [Kinvey.APIHostName].concat(segments).join('/') + '/';
 
         // Build query string.
         var flags = request.flags || {};
@@ -6564,6 +6574,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        */
       use: use(['base64', 'encode', 'request'])
     };
+
 
     // Synchronization.
     // ----------------
@@ -8707,7 +8718,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
           // Append header for compatibility with Android 2.2, 2.3.3, and 3.2.
           // http://www.kinvey.com/blog/item/179-how-to-build-a-service-that-supports-every-android-browser
-          if(0 === url.indexOf(Kinvey.API_ENDPOINT) && 'GET' === method) {
+          if(0 === url.indexOf(Kinvey.APIHostName) && 'GET' === method) {
             var location = root.location;
             if(null != location && null != location.protocol) {
               headers['X-Kinvey-Origin'] = location.protocol + '//' + location.host;
@@ -8776,6 +8787,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
       // Use Angular adapter.
       Kinvey.Persistence.Net.use(AngularHTTP);
+
 
       return Kinvey;
     }]);
