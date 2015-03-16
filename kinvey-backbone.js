@@ -116,7 +116,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.12';
+    Kinvey.SDK_VERSION = '1.1.13';
 
     // Properties.
     // -----------
@@ -260,6 +260,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @throws {Kinvey.Error} `user` must contain: `_kmd.authtoken`.
      * @returns {?Object} The previous active user, or `null` if there was no
      *            previous active user.
+     * @throws {Kinvey.Error} user argument must contain: _id, _kmd.authtoken.
      */
     Kinvey.setActiveUser = function(user) {
       // Debug.
@@ -297,7 +298,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * Initializes the library for use with Kinvey services.
      *
      * @param {Options}  options Options.
-     * @param {string}  [options.apiHostName]  API Host Name.
+     * @param {string}  [options.apiHostName]  API Host Name. Must use the `https` protocol
      * @param {string}   options.appKey        App Key.
      * @param {string}  [options.appSecret]    App Secret.
      * @param {string}  [options.masterSecret] Master Secret. **Never use the
@@ -306,6 +307,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @param {Object}  [options.sync]         Synchronization options.
      * @throws {Kinvey.Error} `options` must contain: `appSecret` or
      *                          `masterSecret`.
+     * @throws {Kinvey.Error} Kinvey requires https as the protocol when setting Kinvey.APIHostName
      * @returns {Promise} The active user.
      */
     Kinvey.init = function(options) {
@@ -329,6 +331,14 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       // Set the API endpoint
       var apiHostName = options.apiHostName || Kinvey.API_ENDPOINT;
       Kinvey.APIHostName = apiHostName || Kinvey.APIHostName;
+
+      // Check if Kinvey.APIHostName uses https protocol
+      if(Kinvey.APIHostName.indexOf('https://') !== 0) {
+        throw new Kinvey.Error('Kinvey requires https as the protocol when setting' +
+          ' Kinvey.APIHostName, instead found the protocol ' +
+          Kinvey.APIHostName.substring(0, Kinvey.APIHostName.indexOf(':/')) +
+          ' in Kinvey.APIHostName: ' + Kinvey.APIHostName);
+      }
 
       // Save credentials.
       Kinvey.appKey = options.appKey;
@@ -1497,9 +1507,19 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        */
       Session: function() {
         // Validate preconditions.
+        var error;
         var user = Kinvey.getActiveUser();
+
         if(null === user) {
-          var error = clientError(Kinvey.Error.NO_ACTIVE_USER);
+          error = clientError(Kinvey.Error.NO_ACTIVE_USER);
+          return Kinvey.Defer.reject(error);
+        }
+
+        // Check if user has property _kmd
+        if(user._kmd === null || user._kmd === undefined) {
+          error = new Kinvey.Error('The active user does not have _kmd defined as a property.' +
+            'It is required to authenticate the user. User _id: ' +
+            user._id);
           return Kinvey.Defer.reject(error);
         }
 
@@ -1520,6 +1540,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         return promise;
       }
     };
+
 
     /* globals angular: true, Backbone: true, Ember: true, forge: true, jQuery: true */
     /* globals ko: true, Titanium: true */
@@ -1614,7 +1635,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-backbone/1.1.12'];
+      var parts = ['js-backbone/1.1.13'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -2364,6 +2385,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The (new) document.
        */
       update: function(collection, document, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Updating a document.', arguments);
@@ -2371,7 +2394,9 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
         // Validate arguments.
         if(null == document._id) {
-          throw new Kinvey.Error('document argument must contain: _id');
+          error = new Kinvey.Error('document argument must contain: _id');
+          throw error;
+          // return Kinvey.Defer.reject(error);
         }
 
         // Cast arguments.
@@ -2608,6 +2633,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         return wrapCallbacks(promise, options);
       }
     };
+
 
     /* jshint sub: true */
 
@@ -3226,9 +3252,24 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           var activeUser = Kinvey.getActiveUser();
           user._socialIdentity = user._socialIdentity || {};
           user._socialIdentity[provider] = tokens;
-          if(null !== activeUser && activeUser._id === user._id) {
-            options._provider = provider; // Force tokens to be updated.
-            return Kinvey.User.update(user, options);
+
+          if(null !== activeUser) {
+            // Check activeUser for property _id. Thrown error will reject promise.
+            if(activeUser._id == null) {
+              error = new Kinvey.Error('Active user does not have _id property defined.');
+              throw error;
+            }
+
+            // Check user for property _id. Thrown error will reject promise.
+            if(user._id == null) {
+              error = new Kinvey.Error('User does not have _id property defined.');
+              throw error;
+            }
+
+            if(activeUser._id === user._id) {
+              options._provider = provider; // Force tokens to be updated.
+              return Kinvey.User.update(user, options);
+            }
           }
 
           // Attempt logging in with the tokens.
@@ -3375,6 +3416,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         return Kinvey.Social.connect(user, 'twitter', options);
       }
     };
+
 
     // Users.
     // ------
@@ -3571,9 +3613,20 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             }
             return Kinvey.Defer.reject(error);
           }).then(function() {
+            var error;
+
             // Reset the active user, and return the previous active user. Make
             // sure to delete the authtoken.
             var previous = Kinvey.setActiveUser(null);
+
+            // Check if previous has property _kmd. Thrown error will cause promise to be
+            // rejected
+            if(previous._kmd == null) {
+              error = new Kinvey.Error('The previous active user does not have _kmd defined' +
+                'as a property.');
+              throw error;
+            }
+
             if(null !== previous) {
               delete previous._kmd.authtoken;
             }
@@ -3861,6 +3914,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The user.
        */
       update: function(data, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Updating a user.', arguments);
@@ -3917,14 +3972,30 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
           // If we just updated the active user, refresh it.
           var activeUser = Kinvey.getActiveUser();
-          if(null !== activeUser && activeUser._id === user._id) {
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('Updating the active user because the updated user was the active user.');
+
+          if(null !== activeUser) {
+            // Check activeUser for property _id. Thrown error will reject promise.
+            if(activeUser._id == null) {
+              error = new Kinvey.Error('Active user does not have _id property defined.');
+              throw error;
             }
 
-            Kinvey.setActiveUser(user);
+            // Check user for property _id. Thrown error will reject promise.
+            if(user._id == null) {
+              error = new Kinvey.Error('User does not have _id property defined.');
+              throw error;
+            }
+
+            if(activeUser._id === user._id) {
+              // Debug.
+              if(KINVEY_DEBUG) {
+                log('Updating the active user because the updated user was the active user.');
+              }
+
+              Kinvey.setActiveUser(user);
+            }
           }
+
           return user;
         });
 
@@ -4064,6 +4135,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The response.
        */
       destroy: function(id, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Deleting a user.', arguments);
@@ -4086,14 +4159,24 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         }, options).then(function(response) {
           // If we just deleted the active user, unset it here.
           var activeUser = Kinvey.getActiveUser();
-          if(null !== activeUser && activeUser._id === id) {
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('Deleting the active user because the deleted user was the active user.');
+
+          if(null !== activeUser) {
+            // Check activeUser for property _id. Thrown error will reject promise.
+            if(activeUser._id == null) {
+              error = new Kinvey.Error('Active user does not have _id property defined.');
+              throw error;
             }
 
-            Kinvey.setActiveUser(null);
+            if(activeUser._id === id) {
+              // Debug.
+              if(KINVEY_DEBUG) {
+                log('Deleting the active user because the deleted user was the active user.');
+              }
+
+              Kinvey.setActiveUser(null);
+            }
           }
+
           return response;
         }, function(error) {
           // If `options.silent`, treat `USER_NOT_FOUND` as success.
@@ -4255,6 +4338,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         return wrapCallbacks(promise, options);
       }
     };
+
 
     // Querying.
     // ---------
@@ -5147,6 +5231,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
         //Recursively process relationships
         var resolveRelationships = function(entity, relationMapping) {
+          var error;
+
           if(relationMapping.keys) {
             var relationshipPromises = [];
 
@@ -5160,6 +5246,13 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
                   // explicitly excluded.
                   if(null == member || 'KinveyRef' !== member._type) {
                     return Kinvey.Defer.resolve(member);
+                  }
+
+                  // Check member for property _id
+                  if(member._id == null) {
+                    error = new Kinvey.Error('Member does not have _id property defined. ' +
+                      'It is required to resolve the relationship.');
+                    return Kinvey.Defer.reject(error);
                   }
 
                   // Forward to the `Kinvey.User` or `Kinvey.DataStore` namespace.
@@ -5401,6 +5494,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
     };
 
+
     // Persistence.
     // ------------
 
@@ -5473,6 +5567,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @param {Array|Object} data List of objects.
        * @param {integer} [maxAge] Maximum age (optional).
        * @returns {boolean|Object} Status, or object if refresh is needed.
+       * @throws {Kinvey.Error} The item does not have _kmd defined as a property.
+       *                        It is required to get the maxAge status.
        */
       status: function(data, maxAge) {
         var needsRefresh = false;
@@ -5482,6 +5578,14 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         var now = new Date().getTime();
         for(var i = 0; i < length; i += 1) {
           var item = response[i];
+
+          // Check if item has property _kmd
+          if(item._kmd == null) {
+            var error = new Kinvey.Error('The item does not have _kmd defined as a property.' +
+              'It is required to get the maxAge status.');
+            throw error;
+          }
+
           if(null != item && null != item._kmd && null != item._kmd.lastRefreshedAt) {
             var itemMaxAge = (maxAge || item._kmd.maxAge) * 1000; // Milliseconds.
             var lastRefreshedAt = fromISO(item._kmd.lastRefreshedAt).getTime();
@@ -5790,6 +5894,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @property {boolean}      [local.res]  The response is persistable locally.
      */
 
+
     // Database.
     // ---------
 
@@ -6014,6 +6119,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The response.
        */
       read: function(request, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Initiating a read request.', arguments);
@@ -6035,6 +6142,13 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           // If there is an active user, attempt to retrieve its details.
           var user = Kinvey.getActiveUser();
           if(null !== user) {
+            // Check user for property _id
+            if(user._id == null) {
+              error = new Kinvey.Error('Active user does not have the _id property defined. ' +
+                'Unable to retrieve information about the user.');
+              return Kinvey.Defer.reject(error);
+            }
+
             return Database.get(collection, user._id, options).then(null, function(error) {
               // If `ENTITY_NOT_FOUND`, return all we know about the active user.
               if(error.name === Kinvey.Error.ENTITY_NOT_FOUND) {
@@ -6043,7 +6157,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
               return Kinvey.Defer.reject(error);
             });
           }
-          var error = clientError(Kinvey.Error.NO_ACTIVE_USER);
+
+          error = clientError(Kinvey.Error.NO_ACTIVE_USER);
           return Kinvey.Defer.reject(error);
         }
 
@@ -6175,6 +6290,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         });
       }
     };
+
 
     // Network persistence.
     // --------------------
@@ -6457,6 +6573,29 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
               log('Obtained the request ID.', response.headers['X-Kinvey-Request-Id']);
             }
 
+            // Check response to GET request that we receive a
+            // single entity if one is expected or an array of entities
+            // if they are expected. Thrown error will reject the promise.
+            if(request.method === 'GET' &&
+              request.collection != null &&
+              request.namespace === 'appdata') {
+              var expectSingleEntity = request.id != null ? true : false;
+              var error;
+
+              if(isArray(response) && expectSingleEntity) {
+                error = new Kinvey.Error('Expected a single entity as a response to ' +
+                  request.method + ' ' + url + '. Received an array ' +
+                  'of entities instead.');
+                throw error;
+              }
+              else if(!isArray(response) && !expectSingleEntity) {
+                error = new Kinvey.Error('Expected an array of entities as a response to ' +
+                  request.method + ' ' + url + '. Received a single ' +
+                  'entity instead.');
+                throw error;
+              }
+            }
+
             return options.trace && isObject(response) ? response.result : response;
           }, function(response) {
             // Parse the response.
@@ -6676,6 +6815,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The promise.
        */
       notify: function(collection, documents, options) {
+        var error;
+
         // Update the metadata for the provided collection in a single transaction.
         return Database.findAndModify(Sync.system, collection, function(metadata) {
           // Cast arguments.
@@ -6688,9 +6829,17 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
 
           // Add each document to the metadata ( id => timestamp ).
           documents.forEach(function(document) {
+            // Check document for property _id. Thrown error will reject promise.
+            if(document._id == null) {
+              error = new Kinvey.Error('Document does not have _id property defined. ' +
+                'It is required to do proper synchronization.');
+              throw error;
+            }
+
             if(!metadata.documents.hasOwnProperty(document._id)) {
               metadata.size += 1;
             }
+
             var timestamp = null != document._kmd ? document._kmd.lmt : null;
             metadata.documents[document._id] = timestamp || null;
           });
@@ -6713,6 +6862,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The response.
        */
       _collection: function(collection, documents, options) {
+        var error;
+
         // Prepare the response.
         var result = {
           collection: collection,
@@ -6742,9 +6893,23 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             net: {}
           };
           responses[0].forEach(function(document) {
+            // Check document for property _id. Thrown error will reject promise.
+            if(document._id == null) {
+              error = new Kinvey.Error('Document does not have _id property defined. ' +
+                'It is required to do proper synchronization.');
+              throw error;
+            }
+
             response.local[document._id] = document;
           });
           responses[1].forEach(function(document) {
+            // Check document for property _id. Thrown error will reject promise.
+            if(document._id == null) {
+              error = new Kinvey.Error('Document does not have _id property defined. ' +
+                'It is required to do proper synchronization.');
+              throw error;
+            }
+
             response.net[document._id] = document;
           });
           return response;
@@ -6871,6 +7036,41 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @returns {Promise} The response.
        */
       _document: function(collection, metadata, local, net, options) {
+        var error;
+
+        // Check if metadata is provided
+        if(metadata == null) {
+          error = new Kinvey.Error('Missing required metadata for the document in collection ' +
+            collection + '. This is required to properly sync.');
+          return Kinvey.Defer.reject(error);
+        }
+
+        // Check if metadata has id property.
+        if(metadata.id == null) {
+          error = new Kinvey.Error('Metadata does not have id defined. This is ' +
+            'required to properly sync the document in collection ' +
+            collection + '.');
+          return Kinvey.Defer.reject(error);
+        }
+
+        if(net != null) {
+          // Check if net has property _kmd
+          if(net._kmd == null) {
+            error = new Kinvey.Error('The server entity does not have _kmd defined as a property. ' +
+              'This is required to properly sync server entity _id ' +
+              net._id + ' in collection ' + collection + '.');
+            return Kinvey.Defer.reject(error);
+          }
+
+          // Check if net has property _kmd.lmt.
+          if(net._kmd.lmt == null) {
+            error = new Kinvey.Error('The server entity does not have _kmd.lmt defined as a ' +
+              'property. This is required to properly sync servery entity ' +
+              '_id ' + net._id + ' in collection ' + collection + '.');
+            return Kinvey.Defer.reject(error);
+          }
+        }
+
         // Resolve if the remote copy does not exist or if both timestamps match.
         // Reject otherwise.
         if(null === net || (null != net._kmd && metadata.timestamp === net._kmd.lmt)) {
@@ -7233,6 +7433,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
     };
 
+
     // Use `promiscuous` as `Kinvey.Defer` adapter.
     if('undefined' !== typeof root.Promise) {
       Kinvey.Defer.use({
@@ -7472,6 +7673,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @augments {Database.clean}
        */
       clean: function(collection, query, options) {
+        var error;
+
         // Deleting should not take the query sort, limit, and skip into account.
         if(null != query) { // Reset.
           query.sort(null).limit(null).skip(0);
@@ -7490,6 +7693,13 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           // Build the query.
           var infix = [];
           var parameters = documents.map(function(document) {
+            // Check document for property _id. Thrown error will reject promise.
+            if(document._id == null) {
+              error = new Kinvey.Error('Document does not have _id property defined. ' +
+                'Unable to clean database.');
+              throw error;
+            }
+
             infix.push('?'); // Add placeholder.
             return document._id;
           });
@@ -7782,6 +7992,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       });
     }
 
+
     /* jshint evil: true */
 
     // `Database` adapter for [IndexedDB](http://www.w3.org/TR/IndexedDB/).
@@ -8027,6 +8238,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @augments {Database.clean}
        */
       clean: function(collection, query, options) {
+        var error;
+
         // Deleting should not take the query sort, limit, and skip into account.
         if(null != query) { // Reset.
           query.sort(null).limit(null).skip(0);
@@ -8051,6 +8264,13 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             // `success` event, bind to the `complete` event.
             var request = store.transaction;
             documents.forEach(function(document) {
+              // Check document for property _id. Thrown error will reject promise.
+              if(document._id == null) {
+                error = new Kinvey.Error('Document does not have _id property defined. ' +
+                  'Unable to clean database.');
+                throw error;
+              }
+
               store['delete'](document._id);
             });
             request.oncomplete = function() {
@@ -8413,6 +8633,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         });
       });
     }
+
 
     // `Social` adapter for performing the OAuth flow.
     var SocialAdapter = {
@@ -9619,6 +9840,27 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
                 });
               }
               response = buffer;
+            }
+
+            // Check `Content-Type` header for application/json
+            if(response != null && !(response instanceof Blob)) {
+              var responseContentType = request.getResponseHeader('Content-Type') || undefined;
+              var error;
+
+              if(responseContentType == null) {
+                error = new Kinvey.Error('Content-Type header missing in response. Please add ' +
+                  'Content-Type header to response with value ' +
+                  'application/json.');
+              }
+              else if(responseContentType.indexOf('application/json') === -1) {
+                error = new Kinvey.Error('Response Content-Type header is set to ' +
+                  responseContentType + '. Expected it to be set ' +
+                  'to application/json.');
+              }
+
+              if(error) {
+                return deferred.reject(error);
+              }
             }
 
             // Return the response.
