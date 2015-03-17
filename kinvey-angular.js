@@ -114,7 +114,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.1.13';
+    Kinvey.SDK_VERSION = '1.1.14';
 
     // Properties.
     // -----------
@@ -1633,7 +1633,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-angular/1.1.13'];
+      var parts = ['js-angular/1.1.14'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -8965,7 +8965,8 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             method: method,
             timeout: options.timeout,
             url: url
-          }).then(function(response, status, headers) {
+          }).then(function(response) {
+            var _response = response;
             // Debug.
             if(KINVEY_DEBUG) {
               log('The network request completed.', response);
@@ -8995,7 +8996,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             // Check `Content-Type` header for application/json. Thrown error will
             // cause promise to be rejected.
             if(response != null && !(response instanceof Blob)) {
-              var responseContentType = headers('Content-Type') || undefined;
+              var responseContentType = _response.headers('Content-Type') || undefined;
               var error;
 
               if(responseContentType == null) {
