@@ -116,7 +116,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.2.0';
+    Kinvey.SDK_VERSION = '1.2.1';
 
     // Properties.
     // -----------
@@ -1668,7 +1668,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-html5/1.2.0'];
+      var parts = ['js-html5/1.2.1'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -9115,7 +9115,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           }
 
           // Check `Content-Type` header for application/json
-          if(responseData != null && !(responseData instanceof Blob)) {
+          if(!options.file && responseData != null && 204 !== request.status) {
             var responseContentType = request.getResponseHeader('Content-Type');
             var error;
 

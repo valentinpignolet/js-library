@@ -128,7 +128,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.2.0';
+    Kinvey.SDK_VERSION = '1.2.1';
 
     // Properties.
     // -----------
@@ -1680,7 +1680,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.2.0'];
+      var parts = ['js-titanium/1.2.1'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -11058,7 +11058,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
             }
 
             // Check `Content-Type` header for application/json
-            if(response != null && !(response instanceof Titanium.Blob)) {
+            if(!options.file && response != null && 204 !== this.status) {
               var responseContentType = this.getResponseHeader('Content-Type');
               var error;
 

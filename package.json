@@ -1,6 +1,6 @@
 {
   "name"         : "kinvey-js-library",
-  "version"      : "1.2.0",
+  "version"      : "1.2.1",
   "description"  : "Kinvey JavaScript Library for AngularJS, Backbone.js, HTML5, PhoneGap, and Titanium.",
   "homepage"     : "http://www.kinvey.com",
   "bugs"         : { "url": "http://support.kinvey.com" },
