@@ -18,7 +18,7 @@ c,f=0,g=d.length;f<g;f++)b=d[f],a=j(b),~(c=l.priority(a))&&e.push({value:b,prior
 d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=j:"undefined"!=typeof window&&(window.sift=j)})();
 ;
 var exports=exports||this;exports.OAuth=function(a){function b(a){var e,b=arguments,c=b.callee,f=(b.length,this);if(!(this instanceof c))return new c(a);for(e in a)a.hasOwnProperty(e)&&(f[e]=a[e]);return f}function c(){}function d(a){var d,f,g,h,i,j,k,b=arguments,c=b.callee,l=/^([^:\/?#]+?:\/\/)*([^\/:?#]*)?(:[^\/?#]*)*([^?#]*)(\?[^#]*)?(#(.*))*/,m=this;return this instanceof c?(m.scheme="",m.host="",m.port="",m.path="",m.query=new e,m.anchor="",null!==a&&(d=a.match(l),f=d[1],g=d[2],h=d[3],i=d[4],j=d[5],k=d[6],f=void 0!==f?f.replace("://","").toLowerCase():"http",h=h?h.replace(":",""):"https"===f?"443":"80",f="http"==f&&"443"===h?"https":f,j=j?j.replace("?",""):"",k=k?k.replace("#",""):"",("https"===f&&"443"!==h||"http"===f&&"80"!==h)&&(g=g+":"+h),m.scheme=f,m.host=g,m.port=h,m.path=i||"/",m.query.setQueryParams(j),m.anchor=k||""),void 0):new c(a)}function e(a){var e,b=arguments,c=b.callee,f=(b.length,this);if(g.urlDecode,!(this instanceof c))return new c(a);if(void 0!=a)for(e in a)a.hasOwnProperty(e)&&(f[e]=a[e]);return f}function g(a){return this instanceof g?this.init(a):new g(a)}function h(a){var c,d,b=[];for(c in a)a[c]&&void 0!==a[c]&&""!==a[c]&&("realm"===c?d=c+'="'+a[c]+'"':b.push(c+'="'+g.urlEncode(a[c]+"")+'"'));return b.sort(),d&&b.unshift(d),b.join(", ")}function i(a,b,c,d){var f,e=[],h=g.urlEncode;for(f in c)void 0!==c[f]&&""!==c[f]&&e.push([g.urlEncode(f),g.urlEncode(c[f]+"")]);for(f in d)void 0!==d[f]&&""!==d[f]&&(c[f]||e.push([h(f),h(d[f]+"")]));return e=e.sort(function(a,b){return a[0]<b[0]?-1:a[0]>b[0]?1:a[1]<b[1]?-1:a[1]>b[1]?1:0}).map(function(a){return a.join("=")}),[a,h(b),h(e.join("&"))].join("&")}function j(){return parseInt(+new Date/1e3,10)}function k(a){function b(){return Math.floor(Math.random()*h.length)}a=a||64;var g,c=a/8,d="",e=c/4,f=c%4,h=["20","21","22","23","24","25","26","27","28","29","2A","2B","2C","2D","2E","2F","30","31","32","33","34","35","36","37","38","39","3A","3B","3C","3D","3E","3F","40","41","42","43","44","45","46","47","48","49","4A","4B","4C","4D","4E","4F","50","51","52","53","54","55","56","57","58","59","5A","5B","5C","5D","5E","5F","60","61","62","63","64","65","66","67","68","69","6A","6B","6C","6D","6E","6F","70","71","72","73","74","75","76","77","78","79","7A","7B","7C","7D","7E"];for(g=0;e>g;g++)d+=h[b()]+h[b()]+h[b()]+h[b()];for(g=0;f>g;g++)d+=h[b()];return d}function l(){var b;if("undefined"!=typeof a.Titanium&&"undefined"!=typeof a.Titanium.Network.createHTTPClient)b=a.Titanium.Network.createHTTPClient();else if("undefined"!=typeof require)try{b=new require("xhr").XMLHttpRequest()}catch(c){if("undefined"==typeof a.XMLHttpRequest)throw"No valid request transport found.";b=new a.XMLHttpRequest}else{if("undefined"==typeof a.XMLHttpRequest)throw"No valid request transport found.";b=new a.XMLHttpRequest}return b}function m(a){var b=new Array(++a);return b.join(0).split("")}function n(a){var c,d,b=[];for(d=0;d<a.length;d++)c=a.charCodeAt(d),128>c?b.push(c):2048>c?b.push(192+(c>>6),128+(63&c)):65536>c?b.push(224+(c>>12),128+(63&c>>6),128+(63&c)):2097152>c&&b.push(240+(c>>18),128+(63&c>>12),128+(63&c>>6),128+(63&c));return b}function o(a){var c,b=[];for(c=0;c<32*a.length;c+=8)b.push(255&a[c>>>5]>>>24-c%32);return b}function p(a){var d,b=[],c=a.length;for(d=0;c>d;d++)b.push((a[d]>>>4).toString(16)),b.push((15&a[d]).toString(16));return b.join("")}function q(a){var d,b="",c=a.length;for(d=0;c>d;d++)b+=String.fromCharCode(a[d]);return b}function r(a,b){return a<<b|a>>>32-b}function s(a){if(void 0!==a){var c,d,b=a;return b.constructor===String&&(b=n(b)),c=this instanceof s?this:new s(a),d=c.hash(b),p(d)}return this instanceof s?this:new s}function t(a,b,c,d){var h,i,j,k,e=n(b),f=n(c),g=e.length;for(g>a.blocksize&&(e=a.hash(e),g=e.length),e=e.concat(m(a.blocksize-g)),i=e.slice(0),j=e.slice(0),k=0;k<a.blocksize;k++)i[k]^=92,j[k]^=54;return h=a.hash(i.concat(a.hash(j.concat(f)))),d?p(h):q(h)}c.prototype={join:function(a){return a=a||"",this.values().join(a)},keys:function(){var a,b=[],c=this;for(a in c)c.hasOwnProperty(a)&&b.push(a);return b},values:function(){var a,b=[],c=this;for(a in c)c.hasOwnProperty(a)&&b.push(c[a]);return b},shift:function(){throw"not implimented"},unshift:function(){throw"not implimented"},push:function(){throw"not implimented"},pop:function(){throw"not implimented"},sort:function(){throw"not implimented"},ksort:function(a){var d,e,f,b=this,c=b.keys();for(void 0==a?c.sort():c.sort(a),d=0;d<c.length;d++)f=c[d],e=b[f],delete b[f],b[f]=e;return b},toObject:function(){var b,a={},c=this;for(b in c)c.hasOwnProperty(b)&&(a[b]=c[b]);return a}},b.prototype=new c,d.prototype={scheme:"",host:"",port:"",path:"",query:"",anchor:"",toString:function(){var a=this,b=a.query+"";return a.scheme+"://"+a.host+a.path+(""!=b?"?"+b:"")+(""!==a.anchor?"#"+a.anchor:"")}},e.prototype=new b,e.prototype.toString=function(){var a,b=this,c=[],d="",e="",f=g.urlEncode;b.ksort();for(a in b)b.hasOwnProperty(a)&&void 0!=a&&void 0!=b[a]&&(e=f(a)+"="+f(b[a]),c.push(e));return c.length>0&&(d=c.join("&")),d},e.prototype.setQueryParams=function(a){var d,e,f,i,b=arguments,c=b.length,h=this,j=g.urlDecode;if(1==c){if("object"==typeof a)for(d in a)a.hasOwnProperty(d)&&(h[d]=j(a[d]));else if("string"==typeof a)for(e=a.split("&"),d=0,f=e.length;f>d;d++)i=e[d].split("="),""!=i[0]&&(h[i[0]]=j(i[1]))}else for(d=0;c>d;d+=2)h[b[d]]=j(b[d+1])};var f="1.0";return g.prototype={realm:"",requestTokenUrl:"",authorizationUrl:"",accessTokenUrl:"",init:function(a){var b="",c={enablePrivilege:a.enablePrivilege||!1,proxyUrl:a.proxyUrl,callbackUrl:a.callbackUrl||"oob",consumerKey:a.consumerKey,consumerSecret:a.consumerSecret,accessTokenKey:a.accessTokenKey||b,accessTokenSecret:a.accessTokenSecret||b,verifier:b,signatureMethod:a.signatureMethod||"HMAC-SHA1"};return this.realm=a.realm||b,this.requestTokenUrl=a.requestTokenUrl||b,this.authorizationUrl=a.authorizationUrl||b,this.accessTokenUrl=a.accessTokenUrl||b,this.getAccessToken=function(){return[c.accessTokenKey,c.accessTokenSecret]},this.getAccessTokenKey=function(){return c.accessTokenKey},this.getAccessTokenSecret=function(){return c.accessTokenSecret},this.setAccessToken=function(a,b){b&&(a=[a,b]),c.accessTokenKey=a[0],c.accessTokenSecret=a[1]},this.getVerifier=function(){return c.verifier},this.setVerifier=function(a){c.verifier=a},this.setCallbackUrl=function(a){c.callbackUrl=a},this.request=function(a){var b,e,m,n,o,p,q,r,s,t,u,v,x,z,A,B,w=[],y={};b=a.method||"GET",e=d(a.url),m=a.data||{},n=a.headers||{},o=a.success||function(){},p=a.failure||function(){},A=function(){var a=!1;for(var b in m)(m[b]instanceof File||"undefined"!=typeof m[b].fileName)&&(a=!0);return a}(),x=a.appendQueryString?a.appendQueryString:!1,c.enablePrivilege&&netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead UniversalBrowserWrite"),q=l(),q.onreadystatechange=function(){if(4===q.readyState){var e,a=/^(.*?):\s*(.*?)\r?$/gm,b=n,c={},d="";if(q.getAllResponseHeaders)for(d=q.getAllResponseHeaders();e=a.exec(d);)c[e[1]]=e[2];else if(q.getResponseHeaders){d=q.getResponseHeaders();for(var f=0,g=d.length;g>f;++f)c[d[f][0]]=d[f][1]}var h=!1;"Content-Type"in c&&"text/xml"==c["Content-Type"]&&(h=!0);var i={text:q.responseText,xml:h?q.responseXML:"",requestHeaders:b,responseHeaders:c};q.status>=200&&q.status<=226||304==q.status||0===q.status?o(i):q.status>=400&&0!==q.status&&p(i)}},s={oauth_callback:c.callbackUrl,oauth_consumer_key:c.consumerKey,oauth_token:c.accessTokenKey,oauth_signature_method:c.signatureMethod,oauth_timestamp:j(),oauth_nonce:k(),oauth_verifier:c.verifier,oauth_version:f},t=c.signatureMethod,z=e.query.toObject();for(r in z)y[r]=z[r];if(!("Content-Type"in n&&"application/x-www-form-urlencoded"!=n["Content-Type"]||A))for(r in m)y[r]=m[r];if(B=e.scheme+"://"+e.host+e.path,u=i(b,B,s,y),v=g.signatureMethod[t](c.consumerSecret,c.accessTokenSecret,u),s.oauth_signature=v,this.realm&&(s.realm=this.realm),c.proxyUrl&&(e=d(c.proxyUrl+e.path)),x||"GET"==b)e.query.setQueryParams(m),w=null;else if(A){if(A){w=new FormData;for(r in m)w.append(r,m[r])}}else if("string"==typeof m)w=m,"Content-Type"in n||(n["Content-Type"]="text/plain");else{for(r in m)w.push(g.urlEncode(r)+"="+g.urlEncode(m[r]+""));w=w.sort().join("&"),"Content-Type"in n||(n["Content-Type"]="application/x-www-form-urlencoded")}q.open(b,e+"",!0),q.setRequestHeader("Authorization","OAuth "+h(s)),q.setRequestHeader("X-Requested-With","XMLHttpRequest");for(r in n)q.setRequestHeader(r,n[r]);q.send(w)},this},get:function(a,b,c){this.request({url:a,success:b,failure:c})},post:function(a,b,c,d){this.request({method:"POST",url:a,data:b,success:c,failure:d})},getJSON:function(a,b,c){this.get(a,function(a){b(JSON.parse(a.text))},c)},postJSON:function(a,b,c,d){this.request({method:"POST",url:a,data:JSON.stringify(b),success:function(a){c(JSON.parse(a.text))},failure:d,headers:{"Content-Type":"application/json"}})},parseTokenRequest:function(a,b){switch(b){case"text/xml":var c=a.xml.getElementsByTagName("token"),d=a.xml.getElementsByTagName("secret");i[g.urlDecode(c[0])]=g.urlDecode(d[0]);break;default:for(var e=0,f=a.text.split("&"),h=f.length,i={};h>e;++e){var j=f[e].split("=");i[g.urlDecode(j[0])]=g.urlDecode(j[1])}}return i},fetchRequestToken:function(a,b){var c=this;c.setAccessToken("","");var d=c.authorizationUrl;this.get(this.requestTokenUrl,function(b){var e=c.parseTokenRequest(b,b.responseHeaders["Content-Type"]||void 0);c.setAccessToken([e.oauth_token,e.oauth_token_secret]),a(d+"?"+b.text)},b)},fetchAccessToken:function(a,b){var c=this;this.get(this.accessTokenUrl,function(b){var d=c.parseTokenRequest(b,b.responseHeaders["Content-Type"]||void 0);c.setAccessToken([d.oauth_token,d.oauth_token_secret]),c.setVerifier(""),a(b)},b)}},g.signatureMethod={"HMAC-SHA1":function(b,c,d){var e,f,h=g.urlEncode;return b=h(b),c=h(c||""),e=b+"&"+c,f=t(s.prototype,e,d),a.btoa(f)}},g.urlEncode=function(a){function b(a){var b=a.toString(16).toUpperCase();return b.length<2&&(b=0+b),"%"+b}if(!a)return"";a+="";var e,g,c=/[ \t\r\n!*"'();:@&=+$,\/?%#\[\]<>{}|`^\\\u0080-\uffff]/,d=a.length,f=a.split("");for(e=0;d>e;e++)(g=f[e].match(c))&&(g=g[0].charCodeAt(0),128>g?f[e]=b(g):2048>g?f[e]=b(192+(g>>6))+b(128+(63&g)):65536>g?f[e]=b(224+(g>>12))+b(128+(63&g>>6))+b(128+(63&g)):2097152>g&&(f[e]=b(240+(g>>18))+b(128+(63&g>>12))+b(128+(63&g>>6))+b(128+(63&g))));return f.join("")},g.urlDecode=function(a){return a?a.replace(/%[a-fA-F0-9]{2}/gi,function(a){return String.fromCharCode(parseInt(a.replace("%",""),16))}):""},s.prototype=new s,s.prototype.blocksize=64,s.prototype.hash=function(a){function A(a,b,c,d){switch(a){case 0:return b&c|~b&d;case 1:case 3:return b^c^d;case 2:return b&c|b&d|c&d}return-1}var d,e,f,g,h,i,j,k,l,p,q,s,t,u,v,w,x,y,z,b=[1732584193,4023233417,2562383102,271733878,3285377520],c=[1518500249,1859775393,2400959708,3395469782];for(a.constructor===String&&(a=n(a.encodeUTF8())),f=a.length,g=Math.ceil((f+9)/this.blocksize)*this.blocksize-(f+9),e=Math.floor(f/4294967296),d=Math.floor(f%4294967296),h=[255&8*e>>24,255&8*e>>16,255&8*e>>8,255&8*e,255&8*d>>24,255&8*d>>16,255&8*d>>8,255&8*d],a=a.concat([128],m(g),h),i=Math.ceil(a.length/this.blocksize),j=0;i>j;j++){for(k=a.slice(j*this.blocksize,(j+1)*this.blocksize),l=k.length,p=[],q=0;l>q;q++)p[q>>>2]|=k[q]<<24-8*(q-4*(q>>2));for(s=b[0],t=b[1],u=b[2],v=b[3],w=b[4],x=0;80>x;x++)x>=16&&(p[x]=r(p[x-3]^p[x-8]^p[x-14]^p[x-16],1)),y=Math.floor(x/20),z=r(s,5)+A(y,t,u,v)+w+c[y]+p[x],w=v,v=u,u=r(t,30),t=s,s=z;b[0]+=s,b[1]+=t,b[2]+=u,b[3]+=v,b[4]+=w}return o(b)},g}(exports);var exports=exports||this;!function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a.btoa=a.btoa||function(a){for(var e,f,c=0,d=a.length,g="";d>c;c+=3)e=[a.charCodeAt(c),a.charCodeAt(c+1),a.charCodeAt(c+2)],f=[e[0]>>2,(3&e[0])<<4|e[1]>>4,(15&e[1])<<2|e[2]>>6,63&e[2]],isNaN(e[1])&&(f[2]=64),isNaN(e[2])&&(f[3]=64),g+=b.charAt(f[0])+b.charAt(f[1])+b.charAt(f[2])+b.charAt(f[3]);return g}}(exports);;
-var exports=exports||this;exports.Google=function(){function e(){var e=this,t=this.oauthClient,o=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,o.leftNavButton=c,r.show(),i.add(r),o.add(i),o.open({modal:!0}),o.add(n),c.addEventListener("click",function(){o.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(){n.goBack()}),n.addEventListener("beforeload",function(){s||o.add(i),r.show()}),n.addEventListener("load",function(n){if(-1!==n.url.indexOf("https://accounts.google.com/o/oauth2/approval")){o.remove(i),r.hide(),o.leftNavButton!==a&&(o.leftNavButton=a),s||o.close();var u=n.source.evalJS("document.getElementsByTagName('title')[0].innerText").split("=")[1];t.post("https://accounts.google.com/o/oauth2/token",{grant_type:"authorization_code",client_id:e.consumerKey,client_secret:e.consumerSecret,code:u,redirect_uri:e.callbackUrl},function(n){var i=JSON.parse(n.text);t.setAccessToken([i.access_token]),e.accessTokenKey=i.access_token,e.refreshTokenKey=i.refresh_token,e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:i.expires_in}),e.authorized=!0,s&&o.close()})}else o.remove(i),r.hide(),o.leftNavButton!==c&&(o.leftNavButton=c)})}var t=function(){},s="android"===Ti.Platform.osname,o={OAuth:exports.OAuth},n=function(e){var s;return s=this instanceof n?this:new t,e||(e={}),s.windowTitle=e.windowTitle||"Google Authorization",s.windowClose=e.windowClose||"Close",s.windowBack=e.windowBack||"Back",s.consumerKey=e.consumerKey,s.consumerSecret=e.consumerSecret,s.accessTokenKey=e.accessTokenKey,s.refreshTokenKey=e.refreshTokenKey,s.scope=e.scope,s.authorized=!1,s.listeners={},s.accessTokenKey&&s.refreshTokenKey&&(s.authorized=!0),s.callbackUrl=e.callbackUrl||"urn:ietf:wg:oauth:2.0:oob",e.requestTokenUrl=e.requestTokenUrl||"https://accounts.google.com/o/oauth2/auth",s.oauthClient=o.OAuth(e),s};return t.prototype=n.prototype,n.prototype.authorize=function(){var t=this;this.authorized?this.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:this.consumerKey,client_secret:this.consumerSecret,refresh_token:this.refreshTokenKey},function(e){var s=JSON.parse(e.text);t.oauthClient.setAccessToken([s.access_token]),t.accessTokenKey=s.access_token,t.refreshTokenKey=s.refresh_token,t.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.oauthClient.getAccessTokenKey(),refreshTokenKey:t.refreshTokenKey,expiresIn:s.expires_in})},function(){t.oauthClient.setAccessToken([null]),t.accessTokenKey=null,t.refreshTokenKey=null,t.fireEvent("login",{success:!1,error:!0})}):(e.call(this),this.oauthClient.setAccessToken("",""),t.webView.url=this.oauthClient.requestTokenUrl+"?client_id="+this.consumerKey+"&redirect_uri="+this.callbackUrl+"&scope="+this.scope+"&response_type=code")},n.prototype.request=function(e,t,s,o,n){var i=this,r=this.oauthClient,c=e;s.Authorization="OAuth "+r.getAccessTokenKey(),r.request({method:o,url:c,data:t,headers:s,success:function(e){n.call(i,{success:!0,error:!1,result:e})},failure:function(e){n.call(i,{success:!1,error:"Request failed",result:e})}})},n.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.refreshTokenKey=null,this.authorized=!1,e()},n.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},n.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},n.prototype.refreshAccessToken=function(){var e=this;e.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:e.consumerKey,client_secret:e.consumerSecret,refresh_token:e.refreshTokenKey},function(t){var s=JSON.parse(t.text);e.oauthClient.setAccessToken([s.access_token]),e.accessTokenKey=s.access_token,e.refreshTokenKey=s.refresh_token,e.fireEvent("refresh",{success:!0,error:!1,accessTokenKey:e.oauthClient.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:s.expires_in})},function(){e.fireEvent("refresh",{success:!1,error:!0})})},n}(this);var exports=exports||this;exports.Linkedin=function(){function e(){var e=this,t=this.oauthClient,o=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,o.leftNavButton=c,r.show(),i.add(r),o.add(i),o.open({modal:!0}),o.add(n),c.addEventListener("click",function(){o.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(){n.goBack()}),n.addEventListener("beforeload",function(){s||o.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))o.remove(i),r.hide(),o.leftNavButton!==a&&(o.leftNavButton=a);else{o.leftNavButton!==c&&(o.leftNavButton=c);var u=n.source.evalJS("document.getElementsByClassName('access-code')[0].innerText");u?(s||o.close(),t.accessTokenUrl="https://api.linkedin.com/uas/oauth/accessToken?oauth_verifier="+u,t.fetchAccessToken(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,s&&o.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(o.remove(i),r.hide())}})}var t=function(){},s="android"===Ti.Platform.osname,o={OAuth:exports.OAuth},n=function(e){var s;return s=this instanceof n?this:new t,e||(e={}),s.windowTitle=e.windowTitle||"Linkedin Authorization",s.windowClose=e.windowClose||"Close",s.windowBack=e.windowBack||"Back",s.consumerKey=e.consumerKey,s.consumerSecret=e.consumerSecret,s.authorizeUrl="https://www.linkedin.com/uas/oauth/authorize",s.accessTokenKey=e.accessTokenKey,s.accessTokenSecret=e.accessTokenSecret,s.scope=e.scope,s.authorized=!1,s.listeners={},s.accessTokenKey&&(s.authorized=!0),s.callbackUrl=e.callbackUrl||"oob",e.requestTokenUrl=e.requestTokenUrl||"https://api.linkedin.com/uas/oauth/requestToken",s.oauthClient=o.OAuth(e),s};return t.prototype=n.prototype,n.prototype.authorize=function(){var t=this;this.authorized?setTimeout(function(){t.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.accessTokenKey,accessTokenSecret:t.accessTokenSecret})},1):(e.call(this),this.oauthClient.fetchRequestToken(function(e){var s=t.authorizeUrl+e;t.webView.url=s},function(e){t.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:e})}))},n.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.linkedin.com/"+e,t.access_token=this.accessTokenKey,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},n.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},n.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},n.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},n}(this);var exports=exports||this;exports.Twitter=function(){function e(){var e=this,t=this.oauthClient,o=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,o.leftNavButton=c,r.show(),i.add(r),o.add(i),o.open({modal:!0}),o.add(n),c.addEventListener("click",function(){o.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(){n.goBack()}),n.addEventListener("beforeload",function(){s||o.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))o.remove(i),r.hide(),o.leftNavButton!==a&&(o.leftNavButton=a);else{o.leftNavButton!==c&&(o.leftNavButton=c);var u=n.source.evalJS("document.getElementById('oauth_pin').getElementsByTagName('code')[0].innerText");u?(s||o.close(),t.accessTokenUrl="https://api.twitter.com/oauth/access_token?oauth_verifier="+u,t.fetchAccessToken(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,s&&o.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(o.remove(i),r.hide())}})}var t=function(){},s="android"===Ti.Platform.osname,o={OAuth:exports.OAuth},n=function(e){var s;return s=this instanceof n?this:new t,e||(e={}),s.windowTitle=e.windowTitle||"Twitter Authorization",s.windowClose=e.windowClose||"Close",s.windowBack=e.windowBack||"Back",s.consumerKey=e.consumerKey,s.consumerSecret=e.consumerSecret,s.authorizeUrl="https://api.twitter.com/oauth/authorize",s.accessTokenKey=e.accessTokenKey,s.accessTokenSecret=e.accessTokenSecret,s.authorized=!1,s.listeners={},s.accessTokenKey&&s.accessTokenSecret&&(s.authorized=!0),e.requestTokenUrl=e.requestTokenUrl||"https://api.twitter.com/oauth/request_token",s.oauthClient=o.OAuth(e),s};return t.prototype=n.prototype,n.prototype.authorize=function(){var t=this;this.authorized?setTimeout(function(){t.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.accessTokenKey,accessTokenSecret:t.accessTokenSecret})},1):(e.call(this),this.oauthClient.fetchRequestToken(function(e){var s=t.authorizeUrl+e;t.webView.url=s},function(e){t.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:e})}))},n.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.twitter.com/"+e,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},n.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},n.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},n.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},n}(this);;
+var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1!==n.url.indexOf("https://accounts.google.com/o/oauth2/approval")){s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a),o||s.close();var u=n.source.evalJS("document.getElementsByTagName('title')[0].innerText").split("=")[1];t.post("https://accounts.google.com/o/oauth2/token",{grant_type:"authorization_code",client_id:e.consumerKey,client_secret:e.consumerSecret,code:u,redirect_uri:e.callbackUrl},function(n){var i=JSON.parse(n.text);t.setAccessToken([i.access_token]),e.accessTokenKey=i.access_token,e.refreshTokenKey=i.refresh_token,e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:i.expires_in}),e.authorized=!0,o&&s.close()})}else s.remove(i),r.hide(),s.leftNavButton!==c&&(s.leftNavButton=c)})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Google Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.accessTokenKey=e.accessTokenKey,t.refreshTokenKey=e.refreshTokenKey,t.scope=e.scope,t.authorized=!1,t.listeners={},t.accessTokenKey&&t.refreshTokenKey&&(t.authorized=!0),t.callbackUrl=e.callbackUrl||"urn:ietf:wg:oauth:2.0:oob",e.requestTokenUrl=e.requestTokenUrl||"https://accounts.google.com/o/oauth2/auth",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?this.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:this.consumerKey,client_secret:this.consumerSecret,refresh_token:this.refreshTokenKey},function(t){var s=JSON.parse(t.text);e.oauthClient.setAccessToken([s.access_token]),e.accessTokenKey=s.access_token,e.refreshTokenKey=s.refresh_token,e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.oauthClient.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:s.expires_in})},function(t){e.oauthClient.setAccessToken([null]),e.accessTokenKey=null,e.refreshTokenKey=null,e.fireEvent("login",{success:!1,error:!0})}):(t.call(this),this.oauthClient.setAccessToken("",""),e.webView.url=this.oauthClient.requestTokenUrl+"?client_id="+this.consumerKey+"&redirect_uri="+this.callbackUrl+"&scope="+this.scope+"&response_type=code")},i.prototype.request=function(e,t,s,o,n){var i=this,r=this.oauthClient,c=e;s.Authorization="OAuth "+r.getAccessTokenKey(),r.request({method:o,url:c,data:t,headers:s,success:function(e){n.call(i,{success:!0,error:!1,result:e})},failure:function(e){n.call(i,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.refreshTokenKey=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i.prototype.refreshAccessToken=function(){var e=this;e.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:e.consumerKey,client_secret:e.consumerSecret,refresh_token:e.refreshTokenKey},function(t){var s=JSON.parse(t.text);e.oauthClient.setAccessToken([s.access_token]),e.accessTokenKey=s.access_token,e.refreshTokenKey=s.refresh_token,e.fireEvent("refresh",{success:!0,error:!1,accessTokenKey:e.oauthClient.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:s.expires_in})},function(t){e.fireEvent("refresh",{success:!1,error:!0})})},i}(this);var exports=exports||this;exports.Linkedin=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a);else{s.leftNavButton!==c&&(s.leftNavButton=c);var u=n.source.evalJS("document.getElementsByClassName('access-code')[0].innerText");u?(o||s.close(),t.accessTokenUrl="https://api.linkedin.com/uas/oauth/accessToken?oauth_verifier="+u,t.fetchAccessToken(function(n){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,o&&s.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(s.remove(i),r.hide())}})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Linkedin Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.authorizeUrl="https://www.linkedin.com/uas/oauth/authorize",t.accessTokenKey=e.accessTokenKey,t.accessTokenSecret=e.accessTokenSecret,t.scope=e.scope,t.authorized=!1,t.listeners={},t.accessTokenKey&&(t.authorized=!0),t.callbackUrl=e.callbackUrl||"oob",e.requestTokenUrl=e.requestTokenUrl||"https://api.linkedin.com/uas/oauth/requestToken",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?setTimeout(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.accessTokenKey,accessTokenSecret:e.accessTokenSecret})},1):(t.call(this),this.oauthClient.fetchRequestToken(function(t){var s=e.authorizeUrl+t;e.webView.url=s},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})}))},i.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.linkedin.com/"+e,t.access_token=this.accessTokenKey,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i}(this);var exports=exports||this;exports.Twitter=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a);else{s.leftNavButton!==c&&(s.leftNavButton=c);var u=n.source.evalJS("document.getElementById('oauth_pin').getElementsByTagName('code')[0].innerText");u?(o||s.close(),t.accessTokenUrl="https://api.twitter.com/oauth/access_token?oauth_verifier="+u,t.fetchAccessToken(function(n){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,o&&s.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(s.remove(i),r.hide())}})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Twitter Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.authorizeUrl="https://api.twitter.com/oauth/authorize",t.accessTokenKey=e.accessTokenKey,t.accessTokenSecret=e.accessTokenSecret,t.authorized=!1,t.listeners={},t.accessTokenKey&&t.accessTokenSecret&&(t.authorized=!0),e.requestTokenUrl=e.requestTokenUrl||"https://api.twitter.com/oauth/request_token",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?setTimeout(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.accessTokenKey,accessTokenSecret:e.accessTokenSecret})},1):(t.call(this),this.oauthClient.fetchRequestToken(function(t){var s=e.authorizeUrl+t;e.webView.url=s},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})}))},i.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.twitter.com/"+e,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i}(this);;
 }.call(this));;
 /*!
  * Copyright (c) 2015 Kinvey, Inc.
@@ -113,6 +113,15 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
     Kinvey.API_ENDPOINT = undefined;
 
     /**
+     * The Auth server.
+     *
+     * @constant
+     * @type {String}
+     * @default https://auth.kinvey.com
+     */
+    Kinvey.MICHostName = 'https://auth.kinvey.com';
+
+    /**
      * The Kinvey API version used when communicating with `Kinvey.APIHostName`.
      *
      * @constant
@@ -128,7 +137,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.2.1';
+    Kinvey.SDK_VERSION = '1.3.0';
 
     // Properties.
     // -----------
@@ -314,6 +323,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @param {string}  [options.clientAppVersion]   Client App Version.
      * @param {Object}  [options.customRequestProperties] Customer request properties.
      * @param {string}  [options.apiHostName]  API Host Name. Must use the `https` protocol
+     * @param {string}  [options.micHostName]  MIC Host Name. Must use the `https` protocol
      * @param {string}   options.appKey        App Key.
      * @param {string}  [options.appSecret]    App Secret.
      * @param {string}  [options.masterSecret] Master Secret. **Never use the
@@ -323,6 +333,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      * @throws {Kinvey.Error} `options` must contain: `appSecret` or
      *                          `masterSecret`.
      * @throws {Kinvey.Error} Kinvey requires https as the protocol when setting Kinvey.APIHostName
+     * @throws {Kinvey.Error} Kinvey requires https as the protocol when setting Kinvey.MICHostName
      * @returns {Promise} The active user.
      */
     Kinvey.init = function(options) {
@@ -343,7 +354,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       // The active user is not ready yet.
       activeUserReady = false;
 
-      // Set the API endpoint
+      // Set the API host name
       var apiHostName = options.apiHostName || Kinvey.API_ENDPOINT;
       Kinvey.APIHostName = apiHostName || Kinvey.APIHostName;
 
@@ -353,6 +364,17 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
           ' Kinvey.APIHostName, instead found the protocol ' +
           Kinvey.APIHostName.substring(0, Kinvey.APIHostName.indexOf(':/')) +
           ' in Kinvey.APIHostName: ' + Kinvey.APIHostName);
+      }
+
+      // Set the MIC host name
+      Kinvey.MICHostName = options.micHostName || Kinvey.MICHostName;
+
+      // Check if Kinvey.MICHostName uses https protocol
+      if(Kinvey.MICHostName.indexOf('https://') !== 0) {
+        throw new Kinvey.Error('Kinvey requires https as the protocol when setting' +
+          ' Kinvey.MICHostName, instead found the protocol ' +
+          Kinvey.MICHostName.substring(0, Kinvey.MICHostName.indexOf(':/')) +
+          ' in Kinvey.MICHostName: ' + Kinvey.MICHostName);
       }
 
       // Set the Client App Version
@@ -870,6 +892,13 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
      */
     Kinvey.Error.SYNC_ERROR = 'SyncError';
 
+    /**
+     * @memberof Kinvey.Error
+     * @constant
+     * @default
+     */
+    Kinvey.Error.MIC_ERROR = 'MIC_ERROR';
+
     // All client-side errors are fully declared below.
     var ClientError = {};
 
@@ -1002,6 +1031,19 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
     ClientError[Kinvey.Error.SYNC_ERROR] = {
       name: Kinvey.Error.SYNC_ERROR,
       description: 'The synchronization operation cannot be completed.',
+      debug: ''
+    };
+
+    /**
+     * MIC error.
+     *
+     * @constant
+     * @type {Object}
+     * @default
+     */
+    ClientError[Kinvey.Error.MIC_ERROR] = {
+      name: Kinvey.Error.MIC_ERROR,
+      description: 'Unable to authorize using Mobile Identity Connect.',
       debug: ''
     };
 
@@ -1680,7 +1722,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.2.1'];
+      var parts = ['js-titanium/1.3.0'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -3518,12 +3560,6 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
               throw error;
             }
 
-            // Check user for property _id. Thrown error will reject promise.
-            if(user._id == null) {
-              error = new Kinvey.Error('User does not have _id property defined.');
-              throw error;
-            }
-
             if(activeUser._id === user._id) {
               options._provider = provider; // Force tokens to be updated.
               return Kinvey.User.update(user, options);
@@ -3870,6 +3906,9 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
               return null;
             }
             return Kinvey.Defer.reject(error);
+          }).then(function() {
+            // Disconnect MIC
+            return MIC.disconnect();
           }).then(function() {
             var error;
 
@@ -4596,6 +4635,834 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
         return wrapCallbacks(promise, options);
       }
     };
+
+
+    // Mobile Identity Connect
+    // ----
+
+    var MIC = {
+      /**
+       * Auth Path
+       *
+       * @constant
+       * @default '/oauth/auth'
+       */
+      AUTH_PATH: '/oauth/auth',
+
+      /**
+       * Token Path
+       *
+       * @constant
+       * @default '/oauth/token'
+       */
+      TOKEN_PATH: '/oauth/token',
+
+      /**
+       * Auth Provider
+       *
+       * @constant
+       * @default 'kinveyAuth'
+       */
+      AUTH_PROVIDER: 'kinveyAuth',
+
+      /**
+       * Token Storage Key
+       *
+       * @constant
+       * @default 'micToken'
+       */
+      TOKEN_STORAGE_KEY: 'micToken',
+
+      /**
+       * Auth Timeout
+       *
+       * @constant
+       * @default 5 minutes
+       */
+      AUTH_TIMEOUT: (1000 * 60 * 5),
+
+      AuthorizationGrant: {
+        AuthorizationCodeLoginPage: 'AuthorizationCodeLoginPage',
+        AuthorizationCodeAPI: 'AuthorizationCodeAPI'
+      },
+
+      /**
+       * Login with MIC.
+       *
+       * @param  {string}   authorizationGrant        Authorization Grant.
+       * @param  {string}   redirectUri               Redirect Uri.
+       * @param  {Object}   [options]                 Options.
+       * @params {string}   [options.username]        Username for the user to be authorized.
+       * @params {string}   [options.password]        Password for the user to be authorized.
+       * @param  {boolean}  [options.create=true]     Create a new user if no user exists.
+       * @param  {number}   [options.timeout=300000]  How long to wait for a successful authorization. Defaults to 5 minutes.
+       * @return {Promise}                            Authorized user.
+       */
+      login: function(authorizationGrant, redirectUri, options) {
+        var error;
+        var promise;
+        var clientId = Kinvey.appKey;
+        var activeUser = Kinvey.getActiveUser();
+
+        // Set defaults for options
+        options = options || {};
+        options.timeout = options.timeout || MIC.AUTH_TIMEOUT;
+        options.attemptMICRefresh = false;
+
+        if(null != activeUser) {
+          // Reject with error because of active user
+          error = clientError(Kinvey.Error.MIC_ERROR, {
+            debug: 'An active user is already logged in.'
+          });
+          return Kinvey.Defer.reject(error);
+        }
+        else if(null == redirectUri) {
+          error = new Kinvey.Error('A redirect uri must be provided to login with MIC.');
+          return Kinvey.Defer.reject(error);
+        }
+        // Step 1: Check authorization grant type
+        else if(MIC.AuthorizationGrant.AuthorizationCodeLoginPage === authorizationGrant) {
+          // Step 2: Request a code
+          promise = MIC.requestCodeWithPopup(clientId, redirectUri, options);
+        }
+        else if(MIC.AuthorizationGrant.AuthorizationCodeAPI === authorizationGrant) {
+          if(null == options.username) {
+            error = new Kinvey.Error('A username must be provided to login with MIC using the ' +
+              MIC.AuthorizationGrant.AuthorizationCodeAPI + ' grant.');
+            return Kinvey.Defer.reject(error);
+          }
+
+          if(null == options.password) {
+            error = new Kinvey.Error('A password must be provided to login with MIC using the ' +
+              MIC.AuthorizationGrant.AuthorizationCodeAPI + ' grant.');
+            return Kinvey.Defer.reject(error);
+          }
+
+          // Step 2a: Request a temp login uri
+          promise = MIC.requestUrl(clientId, redirectUri, options).then(function(url) {
+            // Step 2b: Request a code
+            // options.url = url + '?client_id=' + encodeURIComponent(clientId) + '&redirect_uri=' + encodeURIComponent(redirectUri) +
+            //   '&response_type=code&username=' + encodeURIComponent(options.username) +
+            //   '&password=' + encodeURIComponent(options.password);
+            return MIC.requestCodeWithUrl(url, clientId, redirectUri, options);
+          });
+        }
+        else {
+          // Reject with error because of invalid authorization grant
+          error = clientError(Kinvey.Error.MIC_ERROR, {
+            debug: 'The authorization grant ' + authorizationGrant + ' is unrecognized. Please provide one of the ' +
+              'following authorization grants: ' + MIC.AuthorizationGrant.AuthorizationCodeLoginPage + ', ' +
+              MIC.AuthorizationGrant.AuthorizationCodeAPI + '.'
+          });
+          return Kinvey.Defer.reject(error);
+        }
+
+        return promise.then(function(code) {
+          // Step 3: Request a token
+          return MIC.requestToken(clientId, redirectUri, code, options);
+        }).then(function(token) {
+          // Step 4: Connect the token with the user. Create a new user by default if one does not exist.
+          options.create = false === options.create ? false : true;
+          return MIC.connect(activeUser, token.access_token, options).then(function(user) {
+            // Step 5: Save the token
+            return Storage.save(MIC.TOKEN_STORAGE_KEY, {
+              refresh_token: token.refresh_token,
+              redirect_uri: redirectUri
+            }).then(function() {
+              return user;
+            });
+          });
+        });
+      },
+
+      /**
+       * Refresh a MIC token.
+       *
+       * @param  {Object}   [options]   Options.
+       * @return {Promise}              Authorized user.
+       */
+      refresh: function(options) {
+        var error;
+        var clientId = Kinvey.appKey;
+        var activeUser = Kinvey.getActiveUser();
+        var redirectUri;
+
+        // Set defaults for options
+        options = options || {};
+        options.attemptMICRefresh = false;
+
+        // Step 1: Retrieve the saved token
+        return Storage.get(MIC.TOKEN_STORAGE_KEY).then(function(token) {
+          if(null != token) {
+            // Step 2: Refresh the token
+            redirectUri = token.redirect_uri;
+            return MIC.refreshToken(clientId, redirectUri, token.refresh_token, options);
+          }
+
+          // Throw error to reject promise for missing token.
+          error = clientError(Kinvey.Error.MIC_ERROR, {
+            debug: 'Unable to refresh because there is not a valid refresh token available.'
+          });
+          throw error;
+        }).then(function(token) {
+          // Step 3: Connect the token with the user
+          return MIC.connect(activeUser, token.access_token, options).then(function(user) {
+            // Step 4: Save the token
+            return Storage.save(MIC.TOKEN_STORAGE_KEY, {
+              refresh_token: token.refresh_token,
+              redirect_uri: redirectUri
+            }).then(function() {
+              return user;
+            });
+          });
+        }, function(err) {
+          return Storage.destroy(MIC.TOKEN_STORAGE_KEY).then(function() {
+            throw err;
+          });
+        });
+      },
+
+      /**
+       * Send a request to get a temp login url.
+       *
+       * @param  {string} clientId     Client Id.
+       * @param  {string} redirectUri  Redirect Uri.
+       * @param  {Object} options      Options.
+       * @return {Promise}             Temp Login Uri.
+       */
+      requestUrl: function(clientId, redirectUri, options) {
+        // Create a request
+        var request = {
+          method: 'POST',
+          url: Kinvey.MICHostName + MIC.AUTH_PATH,
+          data: {
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            response_type: 'code'
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Kinvey-API-Version': Kinvey.API_VERSION,
+            'X-Kinvey-Device-Information': deviceInformation()
+          }
+        };
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          request.headers['X-Kinvey-Trace-Request'] = 'true';
+          request.headers['X-Kinvey-Force-Debug-Log-Credentials'] = 'true';
+        }
+
+        // Send request
+        return Kinvey.Persistence.Net.request(
+          request.method,
+          request.url,
+          MIC.encodeFormData(request.data),
+          request.headers,
+          options
+        ).then(function(response) {
+          try {
+            response = JSON.parse(response);
+          }
+          catch(e) {}
+
+          return response.temp_login_uri;
+        });
+      },
+
+      /**
+       * Request a code by opening a popup up to a url.
+       *
+       * @param  {string} clientId    Client Id.
+       * @param  {string} redirectUri Redirect Uri.
+       * @param  {Object} options     Options.
+       * @return {Promise}            Code.
+       */
+      requestCodeWithPopup: function(clientId, redirectUri, options) {
+        var error;
+        var deferred = Kinvey.Defer.deferred();
+        var url = Kinvey.MICHostName + MIC.AUTH_PATH + '?client_id=' + encodeURIComponent(clientId) +
+          '&redirect_uri=' + encodeURIComponent(redirectUri) + '&response_type=code';
+        var deferredResolved = false;
+        var popup;
+        var tiWebView;
+        var tiCloseButton;
+        options = options || {};
+        options.url = options.url || url;
+
+        // Load handler: Used when running Cordova or Titanium
+        var loadHandler = function(event) {
+          // Check if url is location of redirect uri
+          var redirected = false;
+          try {
+            redirected = 0 === event.url.indexOf(redirectUri);
+          }
+          catch(e) {}
+
+          // Continue if the popup was redirected.
+          if(redirected) {
+            // Extract the code
+            var queryString = '?' + event.url.split('?')[1];
+            var params = MIC.parse(queryString);
+            deferred.resolve(params.code);
+            deferredResolved = true;
+
+            // Animation popup open prevents closing sometimes so
+            // wait just a moment to close
+            setTimeout(function() {
+              // Close the popup
+              popup.close();
+            }, 200);
+          }
+        };
+
+        // Close handler: Used when running Cordova or Titanium
+        var closeHandler = function() {
+          if(!deferredResolved) {
+            // Return the response.
+            error = clientError(Kinvey.Error.MIC_ERROR, {
+              debug: 'The popup was closed without authorizing the user.'
+            });
+            deferred.reject(error);
+          }
+
+          // Remove event listeners
+          if(MIC.isPhoneGap()) {
+            popup.removeEventListener('loadstart', loadHandler);
+            popup.removeEventListener('exit', closeHandler);
+          }
+          else if(MIC.isTitanium()) {
+            tiWebView.removeEventListener('load', loadHandler);
+            tiWebView.removeEventListener('error', loadHandler);
+            popup.removeEventListener('close', closeHandler);
+
+            if(OS_IOS) {
+              tiCloseButton.removeEventListener('click', clickHandler);
+            }
+            else if(OS_ANDROID) {
+              popup.close();
+              popup.removeEventListener('androidback', closeHandler);
+            }
+          }
+        };
+
+        // Click handler: Used when running Titanium
+        var clickHandler = function() {
+          popup.close();
+        };
+
+        if(MIC.isPhoneGap()) {
+          // Open the popup
+          popup = root.open(options.url, '_blank', 'location=yes');
+
+          if(null == popup) {
+            // Return the response.
+            error = clientError(Kinvey.Error.MIC_ERROR, {
+              debug: 'The popup was blocked.'
+            });
+            deferred.reject(error);
+          }
+          else {
+            popup.addEventListener('loadstart', loadHandler);
+            popup.addEventListener('exit', closeHandler);
+          }
+        }
+        else if(MIC.isTitanium()) {
+          // Create a web view
+          tiWebView = Titanium.UI.createWebView({
+            width: '100%',
+            height: '100%',
+            url: options.url
+          });
+
+          // Create a popup window
+          popup = Titanium.UI.createWindow({
+            backgroundColor: 'white',
+            barColor: '#000',
+            title: 'Kinvey - MIC',
+            modal: true
+          });
+
+          // Add the web view to the popup window
+          popup.add(tiWebView);
+
+          if(OS_IOS) {
+            // Create a window
+            var win = Titanium.UI.createWindow({
+              backgroundColor: 'white',
+              barColor: '#e3e3e3',
+              title: 'Kinvey - MIC'
+            });
+
+            // Add the web view to the window
+            win.add(tiWebView);
+
+            // Create close button
+            tiCloseButton = Titanium.UI.createButton({
+              title: 'Close',
+              style: Titanium.UI.iPhone.SystemButtonStyle.DONE
+            });
+            win.setLeftNavButton(tiCloseButton);
+
+            // Listen for click event on close button
+            tiCloseButton.addEventListener('click', clickHandler);
+
+            // Create a navigation window
+            popup = Titanium.UI.iOS.createNavigationWindow({
+              backgroundColor: 'white',
+              window: win,
+              modal: true
+            });
+          }
+          else if(OS_ANDROID) {
+            popup.addEventListener('androidback', closeHandler);
+          }
+
+          // Open the web view UI
+          popup.open();
+
+          // Add event listener
+          tiWebView.addEventListener('load', loadHandler);
+          tiWebView.addEventListener('error', loadHandler);
+          popup.addEventListener('close', closeHandler);
+        }
+        else {
+          // Open the popup
+          popup = root.open(options.url, '_blank', 'toolbar=no,location=no');
+
+          // Popup management.
+          var elapsed = 0; // Time elapsed since opening the popup.
+          var interval = 100; // ms.
+          var timer = root.setInterval(function() {
+            // The popup was blocked.
+            if(null == popup) {
+              root.clearTimeout(timer); // Stop listening.
+
+              // Return the response.
+              error = clientError(Kinvey.Error.MIC_ERROR, {
+                debug: 'The popup was blocked.'
+              });
+              deferred.reject(error);
+            }
+
+            // The popup closed unexpectedly.
+            else if(popup.closed) {
+              root.clearTimeout(timer); // Stop listening.
+
+              // Return the response.
+              error = clientError(Kinvey.Error.MIC_ERROR, {
+                debug: 'The popup was closed without authorizing the user.'
+              });
+              deferred.reject(error);
+            }
+            // The user waited too long to reply to the authorization request.
+            else if(options.timeout && elapsed > options.timeout) {
+              root.clearTimeout(timer); // Stop listening.
+              popup.close();
+
+              // Return the response.
+              error = clientError(Kinvey.Error.MIC_ERROR, {
+                debug: 'The authorization request timed out.'
+              });
+              deferred.reject(error);
+            }
+
+            // The popup is still active, check its location.
+            else {
+              // Firefox will throw an exception when `popup.location.host` has
+              // a different origin.
+              var redirected = false;
+              try {
+                redirected = 0 === popup.location.href.indexOf(redirectUri);
+              }
+              catch(e) {}
+
+              // Continue if the popup was redirected.
+              if(redirected) {
+                root.clearTimeout(timer);
+
+                // Extract the code
+                var params = MIC.parse(popup.location.search);
+                deferred.resolve(params.code);
+                deferredResolved = true;
+
+                // Close the popup
+                popup.close();
+              }
+            }
+
+            // Update elapsed time.
+            elapsed += interval;
+          }, interval);
+        }
+
+        // Return the promise.
+        return deferred.promise;
+      },
+
+      /**
+       * Request a code by sending a POST request to the url.
+       *
+       * @param  {String} url         Url.
+       * @param  {string} clientId    Client Id.
+       * @param  {string} redirectUri Redirect Uri.
+       * @param  {Object} options     Options.
+       * @return {Promise}            Code.
+       */
+      requestCodeWithUrl: function(url, clientId, redirectUri, options) {
+        // Create a request
+        var request = {
+          method: 'POST',
+          url: url,
+          data: {
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            response_type: 'code',
+            username: options.username,
+            password: options.password
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+          }
+        };
+
+        // Send request
+        return Kinvey.Persistence.Net.request(
+          request.method,
+          request.url,
+          MIC.encodeFormData(request.data),
+          request.headers,
+          options
+        ).then(function(code) {
+          try {
+            code = JSON.parse(code);
+          }
+          catch(e) {}
+
+          return code;
+        }, function(error) {
+          error = clientError(Kinvey.Error.MIC_ERROR, {
+            debug: 'Unable to authorize user with username ' + options.username + ' and ' +
+              'password ' + options.password + '.'
+          });
+          throw error;
+        });
+      },
+
+      /**
+       * Request a token from MIC using the provided code.
+       *
+       * @param  {string} clientId    Client Id.
+       * @param  {string} redirectUri Redirect Uri.
+       * @param  {string} code        MIC Code.
+       * @param  {Object} options     Options.
+       * @return {Promise}            Token.
+       */
+      requestToken: function(clientId, redirectUri, code, options) {
+        // Create a request
+        var request = {
+          auth: Auth.App,
+          method: 'POST',
+          url: Kinvey.MICHostName + MIC.TOKEN_PATH,
+          data: {
+            grant_type: 'authorization_code',
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            code: code
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Kinvey-API-Version': Kinvey.API_VERSION,
+            'X-Kinvey-Device-Information': deviceInformation()
+          }
+        };
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          request.headers['X-Kinvey-Trace-Request'] = 'true';
+          request.headers['X-Kinvey-Force-Debug-Log-Credentials'] = 'true';
+        }
+
+        return request.auth().then(function(auth) {
+          if(null !== auth) {
+            // Format credentials.
+            var credentials = auth.credentials;
+            if(null != auth.username) {
+              credentials = Kinvey.Persistence.Net.base64(auth.username + ':' + auth.password);
+            }
+
+            // Append header.
+            request.headers.Authorization = auth.scheme + ' ' + credentials;
+          }
+
+          // Send request
+          return Kinvey.Persistence.Net.request(
+            request.method,
+            request.url,
+            MIC.encodeFormData(request.data),
+            request.headers,
+            options
+          );
+        }).then(function(token) {
+          try {
+            token = JSON.parse(token);
+          }
+          catch(e) {}
+
+          return token;
+        });
+      },
+
+      /**
+       * Refresh a token with the provided refresh token.
+       *
+       * @param  {string} clientId     Client Id.
+       * @param  {string} redirectUri  Redirect Uri.
+       * @param  {string} refreshToken Refresh Token.
+       * @param  {Object} options      Options.
+       * @return {Promise}             User.
+       */
+      refreshToken: function(clientId, redirectUri, refreshToken, options) {
+        // Create a request
+        var request = {
+          auth: Auth.App,
+          method: 'POST',
+          url: Kinvey.MICHostName + MIC.TOKEN_PATH,
+          data: {
+            grant_type: 'refresh_token',
+            client_id: clientId,
+            redirect_uri: redirectUri,
+            refresh_token: refreshToken
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json',
+            'X-Kinvey-API-Version': Kinvey.API_VERSION,
+            'X-Kinvey-Device-Information': deviceInformation()
+          }
+        };
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          request.headers['X-Kinvey-Trace-Request'] = 'true';
+          request.headers['X-Kinvey-Force-Debug-Log-Credentials'] = 'true';
+        }
+
+        return request.auth().then(function(auth) {
+          if(null !== auth) {
+            // Format credentials.
+            var credentials = auth.credentials;
+            if(null != auth.username) {
+              credentials = Kinvey.Persistence.Net.base64(auth.username + ':' + auth.password);
+            }
+
+            // Append header.
+            request.headers.Authorization = auth.scheme + ' ' + credentials;
+          }
+
+          // Send request
+          return Kinvey.Persistence.Net.request(
+            request.method,
+            request.url,
+            MIC.encodeFormData(request.data),
+            request.headers,
+            options
+          );
+        }).then(function(token) {
+          try {
+            token = JSON.parse(token);
+          }
+          catch(e) {}
+
+          return token;
+        });
+      },
+
+      /**
+       * Links a MIC token to the provided (if any) Kinvey user.
+       *
+       * @param {Object} [user] The associated user.
+       * @param {Options} [options] Options.
+       * @param {boolean} [options.create=true] Create a new user if no user with
+       *          the provided social identity exists.
+       * @returns {Promise} The user.
+       */
+      connect: function(user, accessToken, options) {
+        // Default user.
+        user = user || {};
+
+        // Set active user to null
+        Kinvey.setActiveUser(null);
+
+        // Attempt logging in with the tokens.
+        user._socialIdentity = {};
+        user._socialIdentity[MIC.AUTH_PROVIDER] = {
+          access_token: accessToken
+        };
+        return Kinvey.User.login(user, null, options).then(null, function(error) {
+          // If `options.create`, attempt to signup as a new user if no user with
+          // the identity exists.
+          if(options.create && Kinvey.Error.USER_NOT_FOUND === error.name) {
+            return Kinvey.User.signup(user, options).then(function(user) {
+              return MIC.connect(user, accessToken, options);
+            });
+          }
+
+          return Kinvey.Defer.reject(error);
+        });
+      },
+
+      /**
+       * Removes a MIC token from the provided Kinvey user.
+       *
+       * @param {Object} [user] The user.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The user.
+       */
+      disconnect: function() {
+        // Destroy the token
+        return Storage.destroy(MIC.TOKEN_STORAGE_KEY);
+      },
+
+      /**
+       * Parse a query string and return an object.
+       *
+       * @example foo=bar&baz=qux -> { foo: "bar", baz: "qux" }
+       * @param {string} string The query string.
+       * @returns {Object} The query string params.
+       */
+      parse: function(str) {
+        if(typeof str !== 'string') {
+          return {};
+        }
+
+        str = str.trim().replace(/^(\?|#)/, '');
+
+        if(!str) {
+          return {};
+        }
+
+        var index = str.indexOf('#/');
+        if(index === str.length - 2) {
+          str = str.substring(0, index);
+        }
+
+        return str.trim().split('&').reduce(function(ret, param) {
+          var parts = param.replace(/\+/g, ' ').split('=');
+          var key = parts[0];
+          var val = parts[1];
+
+          key = decodeURIComponent(key);
+          // missing `=` should be `null`:
+          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+          val = val === undefined ? null : decodeURIComponent(val);
+
+          if(!ret.hasOwnProperty(key)) {
+            ret[key] = val;
+          }
+          else if(Array.isArray(ret[key])) {
+            ret[key].push(val);
+          }
+          else {
+            ret[key] = [ret[key], val];
+          }
+
+          return ret;
+        }, {});
+      },
+
+      /**
+       * Encodes the data as form data.
+       *
+       * @param  {object} data Data to encode.
+       * @return {string} Encoded data string.
+       */
+      encodeFormData: function(data) {
+        var str = [];
+        for(var p in data) {
+          if(data.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
+          }
+        }
+        return str.join('&');
+      },
+
+      /**
+       * Return true or false if using Cordova/PhoneGap framework.
+       *
+       * @return {Boolean} Cordova/PhoneGap Framework
+       */
+      isPhoneGap: function() {
+        return('undefined' !== typeof root.cordova && 'undefined' !== typeof root.device);
+      },
+
+      /**
+       * Return true or false if using Titanium framework.
+       *
+       * @return {Boolean} Titanium Framework
+       */
+      isTitanium: function() {
+        return('undefined' !== typeof Titanium);
+      }
+    };
+
+    /**
+     * @memberof! <global>
+     * @namespace Kinvey.User.MIC
+     */
+    Kinvey.User = Kinvey.User || {};
+    Kinvey.User.MIC = /** @lends Kinvey.User.MIC */ {
+
+      /**
+       * Authorize a user with Mobile Identity Connect (MIC) using a login page.
+       *
+       * @param  {String}   redirectUri               Where to redirect to after a succesful login. This should be the same value as setup
+       *                                              in the Kinvey Console for your applicaiton.
+       * @param  {Object}   [options]                 Options.
+       * @param  {Boolean}  [options.create=true]     Create a new user if no user exists.
+       * @param  {Number}   [options.timeout=300000]  How long to wait for a successful authorization. Defaults to 5 minutes.
+       * @return {Promise}                            Authorized user.
+       */
+      loginWithAuthorizationCodeLoginPage: function(redirectUri, options) {
+        return MIC.login(MIC.AuthorizationGrant.AuthorizationCodeLoginPage, redirectUri, options);
+      },
+
+      /**
+       * Authorize a user with Mobile Identity Connect (MIC) using a provided username and password.
+       *
+       * @param  {String}   username                Username for the user to be authorized.
+       * @param  {String}   password                Password for the user to be authorized.
+       * @param  {String}   redirectUri             Where to redirect to after a succesful login. This should be the same value as setup
+       *                                            in the Kinvey Console for your applicaiton.
+       * @param  {Object}   [options]               Options.
+       * @param  {Boolean}  [options.create=true]   Create a new user if no user exists.
+       * @return {Promise}                          Authorized user.
+       */
+      loginWithAuthorizationCodeAPI: function(username, password, redirectUri, options) {
+        options = options || {};
+        options.username = username;
+        options.password = password;
+        return MIC.login(MIC.AuthorizationGrant.AuthorizationCodeAPI, redirectUri, options);
+      },
+
+      /**
+       * Logout the active user.
+       *
+       * @param {Options} [options] Options.
+       * @param {boolean} [options.force=false] Reset the active user even if an
+       *          `InvalidCredentials` error is returned.
+       * @param {boolean} [options.silent=false] Succeed when there is no active
+       *          user.
+       * @returns {Promise} The previous active user.
+       */
+      logout: function(options) {
+        return Kinvey.User.logout(options);
+      }
+    };
+
 
 
     // Querying.
@@ -6712,6 +7579,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
 
         // Cast arguments.
         options.trace = options.trace || (KINVEY_DEBUG && false !== options.trace);
+        options.attemptMICRefresh = false === options.attemptMICRefresh ? false : true;
 
         // Build, escape, and join URL segments.
         // Format: <APIHostName>/<namespace>[/<Kinvey.appKey>][/<collection>][/<id>]
@@ -6851,6 +7719,10 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
 
         // Invoke the network layer.
         return promise.then(function() {
+          // Store the original request
+          options._originalRequest = request;
+
+          // Send the request
           var response = Kinvey.Persistence.Net.request(
             request.method,
             url,
@@ -6955,12 +7827,25 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
               }
             }
             else if(Kinvey.Error.INVALID_CREDENTIALS === error.name) {
+              var activeUser = Kinvey.getActiveUser();
+
               // Add a descriptive message to `InvalidCredentials` error so the user
               // knows what’s going on.
-              error.debug += ' It is possible the tokens used to execute the ' +
-                'request are expired. In that case, please run ' +
-                '`Kinvey.User.logout({ force: true })`, and then log back in ' +
-                ' using`Kinvey.User.login(username, password)` to solve this issue.';
+              if(activeUser != null && activeUser._socialIdentity != null && activeUser._socialIdentity[MIC.AUTH_PROVIDER] != null) {
+                error.debug += ' It is possible the tokens used to execute the ' +
+                  'request are expired. In that case, please execute ' +
+                  '`Kinvey.User.logout({ force: true })`, and then log back in ' +
+                  'using `Kinvey.User.MIC.loginWithAuthorizationCodeLoginPage(redirectUri)` or ' +
+                  '`Kinvey.User.MIC.loginWithAuthorizationCodeAPI(username, password, redirectUri)` ' +
+                  'to solve this issue.';
+              }
+              else {
+                error.debug += ' It is possible the tokens used to execute the ' +
+                  'request are expired. In that case, please execute ' +
+                  '`Kinvey.User.logout({ force: true })`, and then log back in ' +
+                  'using `Kinvey.User.login(username, password)` ' +
+                  'to solve this issue.';
+              }
             }
             return Kinvey.Defer.reject(error);
           });
@@ -10982,6 +11867,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
         // Cast arguments.
         headers = headers || {};
         options = options || {};
+        options.attemptMICRefresh = false === options.attemptMICRefresh ? false : true;
 
         // Prepare the response.
         var deferred = Kinvey.Defer.deferred();
@@ -11040,7 +11926,7 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
 
           // Success implicates 2xx (Successful), or 304 (Not Modified).
           var status = 'timeout' === e.type ? 0 : this.status;
-          if(2 === parseInt(status / 100, 10) || 304 === status) {
+          if(2 === parseInt(status / 100, 10) || 304 === this.status) {
             var response;
 
             // Mobile web response.
@@ -11082,7 +11968,26 @@ var exports=exports||this;exports.Google=function(){function e(){var e=this,t=th
             deferred.resolve(response || null);
           }
           else { // Failure.
-            deferred.reject(this.responseText || e.type || null);
+            var promise;
+            var originalRequest = options._originalRequest;
+
+            if(401 === this.status && options.attemptMICRefresh) {
+              promise = MIC.refresh(options);
+            }
+            else {
+              promise = Kinvey.Defer.reject();
+            }
+
+            return promise.then(function() {
+              // Don't refresh MIC again
+              options.attemptMICRefresh = false;
+              // Resend original request
+              return Kinvey.Persistence.Net._request(originalRequest, options);
+            }).then(function(response) {
+              deferred.resolve(response);
+            }, function() {
+              deferred.reject(this.responseText || e.type || null);
+            });
           }
         };
 
