@@ -137,7 +137,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.0';
+    Kinvey.SDK_VERSION = '1.3.1';
 
     // Properties.
     // -----------
@@ -330,13 +330,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      *          Master Secret in client-side code.**
      * @param {boolean} [options.refresh=true] Refresh the active user (if any).
      * @param {Object}  [options.sync]         Synchronization options.
-     * @throws {Kinvey.Error} `options` must contain: `appSecret` or
-     *                          `masterSecret`.
-     * @throws {Kinvey.Error} Kinvey requires https as the protocol when setting Kinvey.APIHostName
-     * @throws {Kinvey.Error} Kinvey requires https as the protocol when setting Kinvey.MICHostName
      * @returns {Promise} The active user.
      */
     Kinvey.init = function(options) {
+      var error;
+
       // Debug.
       if(KINVEY_DEBUG) {
         log('Initializing the copy of the library.', arguments);
@@ -345,10 +343,12 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       // Validate arguments.
       options = options || {};
       if(null == options.appKey) {
-        throw new Kinvey.Error('options argument must contain: appKey.');
+        error = new Kinvey.Error('options argument must contain: appKey.');
+        return wrapCallbacks(Kinvey.Defer.reject(error), options);
       }
       if(null == options.appSecret && null == options.masterSecret) {
-        throw new Kinvey.Error('options argument must contain: appSecret and/or masterSecret.');
+        error = new Kinvey.Error('options argument must contain: appSecret and/or masterSecret.');
+        return wrapCallbacks(Kinvey.Defer.reject(error), options);
       }
 
       // The active user is not ready yet.
@@ -360,10 +360,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
       // Check if Kinvey.APIHostName uses https protocol
       if(Kinvey.APIHostName.indexOf('https://') !== 0) {
-        throw new Kinvey.Error('Kinvey requires https as the protocol when setting' +
+        error = new Kinvey.Error('Kinvey requires https as the protocol when setting' +
           ' Kinvey.APIHostName, instead found the protocol ' +
           Kinvey.APIHostName.substring(0, Kinvey.APIHostName.indexOf(':/')) +
           ' in Kinvey.APIHostName: ' + Kinvey.APIHostName);
+        return wrapCallbacks(Kinvey.Defer.reject(error), options);
       }
 
       // Set the MIC host name
@@ -371,10 +372,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
       // Check if Kinvey.MICHostName uses https protocol
       if(Kinvey.MICHostName.indexOf('https://') !== 0) {
-        throw new Kinvey.Error('Kinvey requires https as the protocol when setting' +
+        error = new Kinvey.Error('Kinvey requires https as the protocol when setting' +
           ' Kinvey.MICHostName, instead found the protocol ' +
           Kinvey.MICHostName.substring(0, Kinvey.MICHostName.indexOf(':/')) +
           ' in Kinvey.MICHostName: ' + Kinvey.MICHostName);
+        return wrapCallbacks(Kinvey.Defer.reject(error), options);
       }
 
       // Set the Client App Version
@@ -1237,6 +1239,53 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       return count;
     };
 
+    /**
+     * Parse a query string and return an object.
+     *
+     * @example foo=bar&baz=qux -> { foo: "bar", baz: "qux" }
+     * @param {string} string The query string.
+     * @returns {Object} The query string params.
+     */
+    var parseQueryString = function(str) {
+      if(typeof str !== 'string') {
+        return {};
+      }
+
+      str = str.trim().replace(/^(\?|#)/, '');
+
+      if(!str) {
+        return {};
+      }
+
+      var index = str.indexOf('#/');
+      if(index === str.length - 2) {
+        str = str.substring(0, index);
+      }
+
+      return str.trim().split('&').reduce(function(ret, param) {
+        var parts = param.replace(/\+/g, ' ').split('=');
+        var key = parts[0];
+        var val = parts[1];
+
+        key = decodeURIComponent(key);
+        // missing `=` should be `null`:
+        // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+        val = val === undefined ? null : decodeURIComponent(val);
+
+        if(!ret.hasOwnProperty(key)) {
+          ret[key] = val;
+        }
+        else if(Array.isArray(ret[key])) {
+          ret[key].push(val);
+        }
+        else {
+          ret[key] = [ret[key], val];
+        }
+
+        return ret;
+      }, {});
+    };
+
     // Define the request Option type for documentation purposes.
 
     /**
@@ -1377,9 +1426,12 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @returns {Promise} The promise.
        */
       all: function(promises) {
+        var error;
+
         // Validate arguments.
         if(!isArray(promises)) {
-          throw new Kinvey.Error('promises argument must be of type: Array.');
+          error = new Kinvey.Error('promises argument must be of type: Array.');
+          return Kinvey.Defer.reject(error);
         }
 
         // If there are no promises, resolve immediately.
@@ -1463,6 +1515,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      * @property {function} then The accessor to the current state or eventual
      *             fulfillment value or rejection reason.
      */
+
 
     // Authentication.
     // ---------------
@@ -1722,7 +1775,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.3.0'];
+      var parts = ['js-titanium/1.3.1'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -2538,10 +2591,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {string} collection Collection.
        * @param {Kinvey.Query} [query] The query.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `query` must be of type: `Kinvey.Query`.
        * @returns {Promise} A list of documents.
        */
       find: function(collection, query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Retrieving documents by query.', arguments);
@@ -2549,7 +2603,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null != query && !(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -2681,7 +2736,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {string} collection Collection.
        * @param {Object} document Document.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `document` must contain: `_id`.
        * @returns {Promise} The (new) document.
        */
       update: function(collection, document, options) {
@@ -2695,8 +2749,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         // Validate arguments.
         if(null == document._id) {
           error = new Kinvey.Error('document argument must contain: _id');
-          throw error;
-          // return Kinvey.Defer.reject(error);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -2738,6 +2791,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @returns {Promise} The response.
        */
       clean: function(collection, query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Deleting documents by query.', arguments);
@@ -2747,7 +2802,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         options = options || {};
         query = query || new Kinvey.Query();
         if(!(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Prepare the response.
@@ -2838,10 +2894,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {string} collection The collection.
        * @param {Kinvey.Query} [query] The query.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `query` must be of type: `Kinvey.Query`.
        * @returns {Promise} The response.
        */
       count: function(collection, query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Counting the number of documents.', arguments);
@@ -2849,7 +2906,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null != query && !(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -2888,10 +2946,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {string} collection The collection.
        * @param {Kinvey.Aggregation} aggregation The aggregation.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `aggregation` must be of type `Kinvey.Group`.
        * @returns {Promise} The response.
        */
       group: function(collection, aggregation, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Grouping documents', arguments);
@@ -2899,7 +2958,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(!(aggregation instanceof Kinvey.Group)) {
-          throw new Kinvey.Error('aggregation argument must be of type: Kinvey.Group.');
+          error = new Kinvey.Error('aggregation argument must be of type: Kinvey.Group.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -3140,10 +3200,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {boolean} [options.tls=true] Use the https protocol to communicate
        *          with GCS.
        * @param {integer} [options.ttl] A custom expiration time.
-       * @throws {Kinvey.Error} `query` must be of type: `Kinvey.Query`.
        * @returns {Promise} A list of files.
        */
       find: function(query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Retrieving files by query.', arguments);
@@ -3151,7 +3212,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null != query && !(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -3329,6 +3391,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         return wrapCallbacks(promise, options);
       }
     };
+
 
     // Metadata.
     // ---------
@@ -3521,10 +3584,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {Options} [options] Options.
        * @param {boolean} [options.create=true] Create a new user if no user with
        *          the provided social identity exists.
-       * @throws {Kinvey.Error} `provider` is not supported.
        * @returns {Promise} The user.
        */
       connect: function(user, provider, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Linking a social identity to a Kinvey user.', arguments);
@@ -3534,12 +3598,13 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         options = options || {};
         options.create = 'undefined' !== typeof options.create ? options.create : true;
         if(!Kinvey.Social.isSupported(provider)) {
-          throw new Kinvey.Error('provider argument is not supported.');
+          error = new Kinvey.Error('provider argument is not supported.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Remove callbacks from `options` to avoid multiple calls.
         var success = options.success;
-        var error = options.error;
+        error = options.error;
         delete options.success;
         delete options.error;
 
@@ -3605,10 +3670,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {Object} [user] The user.
        * @param {string} provider The provider.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `provider` is not supported.
        * @returns {Promise} The user.
        */
       disconnect: function(user, provider, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Unlinking a social identity from a Kinvey user.', arguments);
@@ -3616,7 +3682,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Cast and validate arguments.
         if(!Kinvey.Social.isSupported(provider)) {
-          throw new Kinvey.Error('provider argument is not supported.');
+          error = new Kinvey.Error('provider argument is not supported.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Update the user data.
@@ -3781,6 +3848,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @returns {Promise} The active user.
        */
       login: function(usernameOrData, password, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Logging in an existing user.', arguments);
@@ -3801,12 +3870,13 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         // Validate arguments.
         if(null == usernameOrData.username && null == usernameOrData.password &&
           null == usernameOrData._socialIdentity) {
-          throw new Kinvey.Error('Argument must contain: username and password, or _socialIdentity.');
+          error = new Kinvey.Error('Argument must contain: username and password, or _socialIdentity.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Validate preconditions.
         if(null !== Kinvey.getActiveUser()) {
-          var error = clientError(Kinvey.Error.ALREADY_LOGGED_IN);
+          error = clientError(Kinvey.Error.ALREADY_LOGGED_IN);
           return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
@@ -4207,7 +4277,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {Options} [options] Options.
        * @param {string} [options._provider] Do not strip the `access_token` for
        *          this provider. Should only be used internally.
-       * @throws {Kinvey.Error} `data` must contain: `_id`.
        * @returns {Promise} The user.
        */
       update: function(data, options) {
@@ -4220,7 +4289,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null == data._id) {
-          throw new Kinvey.Error('data argument must contain: _id');
+          error = new Kinvey.Error('data argument must contain: _id');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -4316,10 +4386,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {Options} [options] Options.
        * @param {boolean} [discover=false] Use
        *          [User Discovery](http://devcenter.kinvey.com/guides/users#lookup).
-       * @throws {Kinvey.Error} `query` must be of type: `Kinvey.Query`.
        * @returns {Promise} A list of users.
        */
       find: function(query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Retrieving users by query.', arguments);
@@ -4327,7 +4398,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null != query && !(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -4543,10 +4615,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        *
        * @param {Kinvey.Query} [query] The query.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `query` must be of type: `Kinvey.Query`.
        * @returns {Promise} The response.
        */
       count: function(query, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Counting the number of users.', arguments);
@@ -4554,7 +4627,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(null != query && !(query instanceof Kinvey.Query)) {
-          throw new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          error = new Kinvey.Error('query argument must be of type: Kinvey.Query.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -4591,10 +4665,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        *
        * @param {Kinvey.Aggregation} aggregation The aggregation.
        * @param {Options} [options] Options.
-       * @throws {Kinvey.Error} `aggregation` must be of type `Kinvey.Group`.
        * @returns {Promise} The response.
        */
       group: function(aggregation, options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Grouping users.', arguments);
@@ -4602,7 +4677,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         // Validate arguments.
         if(!(aggregation instanceof Kinvey.Group)) {
-          throw new Kinvey.Error('aggregation argument must be of type: Kinvey.Group.');
+          error = new Kinvey.Error('aggregation argument must be of type: Kinvey.Group.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -4699,10 +4775,10 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @return {Promise}                            Authorized user.
        */
       login: function(authorizationGrant, redirectUri, options) {
-        var error;
-        var promise;
         var clientId = Kinvey.appKey;
         var activeUser = Kinvey.getActiveUser();
+        var error;
+        var promise;
 
         // Set defaults for options
         options = options || {};
@@ -4711,31 +4787,39 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
         if(null != activeUser) {
           // Reject with error because of active user
-          error = clientError(Kinvey.Error.MIC_ERROR, {
-            debug: 'An active user is already logged in.'
-          });
-          return Kinvey.Defer.reject(error);
+          error = clientError(Kinvey.Error.ALREADY_LOGGED_IN);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
         else if(null == redirectUri) {
           error = new Kinvey.Error('A redirect uri must be provided to login with MIC.');
-          return Kinvey.Defer.reject(error);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
         // Step 1: Check authorization grant type
         else if(MIC.AuthorizationGrant.AuthorizationCodeLoginPage === authorizationGrant) {
+          if(this.isNode()) {
+            error = new Kinvey.Error(MIC.AuthorizationGrant.AuthorizationCodeLoginPage + ' grant is not supported.');
+            return wrapCallbacks(Kinvey.Defer.reject(error), options);
+          }
+
           // Step 2: Request a code
           promise = MIC.requestCodeWithPopup(clientId, redirectUri, options);
         }
         else if(MIC.AuthorizationGrant.AuthorizationCodeAPI === authorizationGrant) {
+          if(this.isHTML5() || this.isAngular() || this.isBackbone() || this.isPhoneGap() || this.isTitanium()) {
+            error = new Kinvey.Error(MIC.AuthorizationGrant.AuthorizationCodeAPI + ' grant is not supported.');
+            return wrapCallbacks(Kinvey.Defer.reject(error), options);
+          }
+
           if(null == options.username) {
             error = new Kinvey.Error('A username must be provided to login with MIC using the ' +
               MIC.AuthorizationGrant.AuthorizationCodeAPI + ' grant.');
-            return Kinvey.Defer.reject(error);
+            return wrapCallbacks(Kinvey.Defer.reject(error), options);
           }
 
           if(null == options.password) {
             error = new Kinvey.Error('A password must be provided to login with MIC using the ' +
               MIC.AuthorizationGrant.AuthorizationCodeAPI + ' grant.');
-            return Kinvey.Defer.reject(error);
+            return wrapCallbacks(Kinvey.Defer.reject(error), options);
           }
 
           // Step 2a: Request a temp login uri
@@ -4754,10 +4838,10 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
               'following authorization grants: ' + MIC.AuthorizationGrant.AuthorizationCodeLoginPage + ', ' +
               MIC.AuthorizationGrant.AuthorizationCodeAPI + '.'
           });
-          return Kinvey.Defer.reject(error);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
-        return promise.then(function(code) {
+        promise = promise.then(function(code) {
           // Step 3: Request a token
           return MIC.requestToken(clientId, redirectUri, code, options);
         }).then(function(token) {
@@ -4773,6 +4857,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             });
           });
         });
+
+        return wrapCallbacks(promise, options);
       },
 
       /**
@@ -4786,13 +4872,14 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         var clientId = Kinvey.appKey;
         var activeUser = Kinvey.getActiveUser();
         var redirectUri;
+        var promise;
 
         // Set defaults for options
         options = options || {};
         options.attemptMICRefresh = false;
 
         // Step 1: Retrieve the saved token
-        return Storage.get(MIC.TOKEN_STORAGE_KEY).then(function(token) {
+        promise = Storage.get(MIC.TOKEN_STORAGE_KEY).then(function(token) {
           if(null != token) {
             // Step 2: Refresh the token
             redirectUri = token.redirect_uri;
@@ -4820,6 +4907,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             throw err;
           });
         });
+
+        return wrapCallbacks(promise, options);
       },
 
       /**
@@ -4904,7 +4993,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           if(redirected) {
             // Extract the code
             var queryString = '?' + event.url.split('?')[1];
-            var params = MIC.parse(queryString);
+            var params = parseQueryString(queryString);
             deferred.resolve(params.code);
             deferredResolved = true;
 
@@ -5083,7 +5172,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
                 root.clearTimeout(timer);
 
                 // Extract the code
-                var params = MIC.parse(popup.location.search);
+                var params = parseQueryString(popup.location.search);
                 deferred.resolve(params.code);
                 deferredResolved = true;
 
@@ -5135,13 +5224,13 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           MIC.encodeFormData(request.data),
           request.headers,
           options
-        ).then(function(code) {
+        ).then(function(response) {
           try {
-            code = JSON.parse(code);
+            response = JSON.parse(response);
           }
           catch(e) {}
 
-          return code;
+          return response.code;
         }, function(error) {
           error = clientError(Kinvey.Error.MIC_ERROR, {
             debug: 'Unable to authorize user with username ' + options.username + ' and ' +
@@ -5328,53 +5417,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       },
 
       /**
-       * Parse a query string and return an object.
-       *
-       * @example foo=bar&baz=qux -> { foo: "bar", baz: "qux" }
-       * @param {string} string The query string.
-       * @returns {Object} The query string params.
-       */
-      parse: function(str) {
-        if(typeof str !== 'string') {
-          return {};
-        }
-
-        str = str.trim().replace(/^(\?|#)/, '');
-
-        if(!str) {
-          return {};
-        }
-
-        var index = str.indexOf('#/');
-        if(index === str.length - 2) {
-          str = str.substring(0, index);
-        }
-
-        return str.trim().split('&').reduce(function(ret, param) {
-          var parts = param.replace(/\+/g, ' ').split('=');
-          var key = parts[0];
-          var val = parts[1];
-
-          key = decodeURIComponent(key);
-          // missing `=` should be `null`:
-          // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-          val = val === undefined ? null : decodeURIComponent(val);
-
-          if(!ret.hasOwnProperty(key)) {
-            ret[key] = val;
-          }
-          else if(Array.isArray(ret[key])) {
-            ret[key].push(val);
-          }
-          else {
-            ret[key] = [ret[key], val];
-          }
-
-          return ret;
-        }, {});
-      },
-
-      /**
        * Encodes the data as form data.
        *
        * @param  {object} data Data to encode.
@@ -5388,6 +5430,33 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           }
         }
         return str.join('&');
+      },
+
+      /**
+       * Return true or false if using HTML5.
+       *
+       * @return {Boolean} HTML5
+       */
+      isHTML5: function() {
+        return !(this.isTitanium() || this.isNode());
+      },
+
+      /**
+       * Return true or false if using Angular framework.
+       *
+       * @return {Boolean} Angular Framework
+       */
+      isAngular: function() {
+        return('undefined' !== typeof root.angular);
+      },
+
+      /**
+       * Return true or false if using Backbone framework.
+       *
+       * @return {Boolean} Backbone Framework
+       */
+      isBackbone: function() {
+        return('undefined' !== typeof root.Backbone);
       },
 
       /**
@@ -5406,6 +5475,15 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        */
       isTitanium: function() {
         return('undefined' !== typeof Titanium);
+      },
+
+      /**
+       * Return true or false if using NodeJS.
+       *
+       * @return {Boolean} NodeJS
+       */
+      isNode: function() {
+        return('undefined' !== typeof module && module.exports);
       }
     };
 
@@ -7549,32 +7627,33 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {Request} request The request.
        * @param {string} request.method The request method.
        * @param {Options} options Options.
-       * @throws {Kinvey.Error} * `request` must contain: `method`.
-       *                         * `request` must contain: `namespace`.
-       *                         * `request` must contain: `auth`.
        * @returns {Promise}
        */
       _request: function(request, options) {
+        var error;
+
         // Validate arguments.
         if(null == request.method) {
-          throw new Kinvey.Error('request argument must contain: method.');
+          error = new Kinvey.Error('request argument must contain: method.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
         if(null == request.namespace) {
-          throw new Kinvey.Error('request argument must contain: namespace.');
+          error = new Kinvey.Error('request argument must contain: namespace.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
         if(null == request.auth) {
-          throw new Kinvey.Error('request argument must contain: auth.');
+          error = new Kinvey.Error('request argument must contain: auth.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Validate preconditions.
-        var error;
         if(null == Kinvey.appKey && Auth.None !== request.auth) {
           error = clientError(Kinvey.Error.MISSING_APP_CREDENTIALS);
-          return Kinvey.Defer.reject(error);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
         if(null == Kinvey.masterSecret && options.skipBL) {
           error = clientError(Kinvey.Error.MISSING_MASTER_CREDENTIALS);
-          return Kinvey.Defer.reject(error);
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Cast arguments.
@@ -7690,8 +7769,9 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         var customRequestPropertiesHeader = JSON.stringify(options.customRequestProperties);
         var customRequestPropertiesByteCount = getByteCount(customRequestPropertiesHeader);
         if(customRequestPropertiesByteCount >= CRP_MAX_BYTES) {
-          throw new Kinvey.Error('Custom request properties is ' + customRequestPropertiesByteCount +
+          error = new Kinvey.Error('Custom request properties is ' + customRequestPropertiesByteCount +
             '. It must be less then ' + CRP_MAX_BYTES + ' bytes.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
         }
 
         // Set the custom request properties header.
@@ -10887,7 +10967,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {?string} id The document id (if any).
        * @param {?Object} document The document (if any).
        * @param {Object} options Options.
-       * @throws {Kinvey.Error} `id` must not be null.
        * @returns {Promise} The response.
        */
       var backboneToKinveyCRUD = function(method, collection, id, data, options) {
@@ -10931,10 +11010,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @param {string} method The CRUD method.
        * @param {Object} model The model to be saved, or the collection to be read.
        * @param {Object} options Callbacks, and request options.
-       * @throws {Kinvey.Error} `model` or `options` must contain: url.
        * @returns {Promise} The response.
        */
       Kinvey.Backbone.Sync = function(method, model, options) {
+        var error;
+
         // Cast and validate arguments.
         options.query = options.query || model.query; // Attach a (optional) query.
         options.subject = model; // Used by the persistence layer.
@@ -10957,7 +11037,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         var data = options.attrs || model.toJSON(options);
         var url = options.url || _.result(model, 'url');
         if(null == url) {
-          throw new Kinvey.Error('model or options argument must contain: url.');
+          error = new Kinvey.Error('model or options argument must contain: url.');
+          return kinveyToBackbonePromise(Kinvey.Defer.reject(error), options);
         }
 
         // Strip the leading slash (if any).
@@ -10983,6 +11064,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         var promise = backboneToKinveyCRUD(method, collection, id, data, options);
         return kinveyToBackbonePromise(promise, options);
       };
+
 
       // Export.
 
@@ -11191,6 +11273,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @throws {Kinvey.Error} `options` must contain: `appId`.
        */
       facebook: function(options) {
+        var error;
+
         // Debug.
         if(KINVEY_DEBUG) {
           log('Initiating the Facebook OAuth2.0 flow.', arguments);
@@ -11199,7 +11283,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         // Validate arguments.
         options = options || {};
         if(null == options.appId) {
-          throw new Kinvey.Error('options argument must contain: appId.');
+          error = new Kinvey.Error('options argument must contain: appId.');
+          return Kinvey.Defer.reject(error);
         }
 
         // Prepare the response.
@@ -11293,6 +11378,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
     // Apply the adapter.
     Social.use(TiSocialAdapter);
+
 
     // `Storage` adapter for Titanium.
 
@@ -11926,6 +12012,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
 
           // Success implicates 2xx (Successful), or 304 (Not Modified).
           var status = 'timeout' === e.type ? 0 : this.status;
+
           if(2 === parseInt(status / 100, 10) || 304 === this.status) {
             var response;
 
