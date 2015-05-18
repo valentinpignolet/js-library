@@ -123,7 +123,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.2';
+    Kinvey.SDK_VERSION = '1.3.3';
 
     // Properties.
     // -----------
@@ -383,11 +383,15 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       // Set the encryption key.
       Kinvey.encryptionKey = null != options.encryptionKey ? options.encryptionKey : null;
 
-      // Initialize the synchronization namespace and restore the active user.
-      var promise = Kinvey.Sync.init(options.sync).then(function() {
-        log('Kinvey initialized, running version: js-angular/1.3.2');
+      // Upgrade the database
+      var promise = Database.upgrade().then(function() {
+        // Initialize the synchronization namespace and restore the active user.
+        return Kinvey.Sync.init(options.sync);
+      }).then(function() {
+        log('Kinvey initialized, running version: js-angular/1.3.3');
         return restoreActiveUser(options);
       });
+
       return wrapCallbacks(promise, options);
     };
 
@@ -1762,7 +1766,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-angular/1.3.2'];
+      var parts = ['js-angular/1.3.3'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -7096,6 +7100,62 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @namespace Database
      */
     var Database = /** @lends Database */ {
+
+      // Current version of database
+      version: 1,
+
+      // Name of database version table
+      versionTable: 'KinveyDatabaseVersion',
+
+      /**
+       * Called internally by the library to upgrade any changes
+       * made to the database schema on library updates.
+       *
+       * @return {Promise} Upgrade has completed
+       */
+      upgrade: function() {
+        // Read the existing version of the database
+        return Database.find(Database.versionTable).then(null, function() {
+          return [undefined];
+        }).then(function(versions) {
+          var doc = versions[0] || {};
+          return Database.onUpgrade(doc.version, Database.version).then(function() {
+            return doc;
+          });
+        }).then(function(doc) {
+          // Update the version doc
+          doc.version = Database.version;
+
+          // Save the version doc
+          return Database.save(Database.versionTable, doc);
+        }).then(function() {
+          return;
+        });
+      },
+
+      /**
+       * Upgrades the database schema from the current version to the new
+       * version.
+       *
+       * @param  {Number}  currentVersion Current version of the database
+       * @param  {Number}  newVersion New version to upgrade database to
+       * @return {Promise} Upgrade has compelted
+       */
+      onUpgrade: function(currentVersion, newVersion) {
+        var deferred = Kinvey.Defer.deferred();
+        var upgradeVersion = currentVersion == null ? 1 : currentVersion + 1;
+
+        // Upgrade
+        if(upgradeVersion <= newVersion) {
+          // Add upgrades here...
+
+          return Database.onUpgrade(upgradeVersion, newVersion);
+        }
+
+        deferred.resolve();
+        return deferred.promise;
+      },
+
       /**
        * Saves multiple (new) documents.
        *
@@ -7238,6 +7298,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         'get', 'group', 'save', 'update'
       ])
     };
+
 
     // Local persistence.
     // ------------------
@@ -7771,7 +7832,6 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         // Debug.
         if(KINVEY_DEBUG) {
           headers['X-Kinvey-Trace-Request'] = 'true';
-          headers['X-Kinvey-Force-Debug-Log-Credentials'] = 'true';
         }
 
         // Authorization.
@@ -8152,7 +8212,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         return Sync._read(collection, documents, options).then(function(response) {
           // Step 2: categorize the documents in the collection.
           var promises = identifiers.map(function(id) {
-            var document = documents[id];
+            var document = documents[id] || {};
             var metadata = {
               id: id,
               timestamp: document.timestamp,
@@ -8229,11 +8289,11 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
           var requestOptions = options || {};
 
           // Set options.clientAppVersion based on the metadata for the document
-          requestOptions.clientAppVersion = metadata.clientAppVersion != null ? metadata.clientAppVersion : null;
+          requestOptions.clientAppVersion = metadata != null && metadata.clientAppVersion != null ? metadata.clientAppVersion : null;
 
           // Set options.customRequestProperties based on the metadata
           // for the document
-          requestOptions.customRequestProperties = metadata.customRequestProperties != null ?
+          requestOptions.customRequestProperties = metadata != null && metadata.customRequestProperties != null ?
             metadata.customRequestProperties : null;
 
           // Build the request.
@@ -8388,24 +8448,6 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
             'required to properly sync the document in collection ' +
             collection + '.');
           return Kinvey.Defer.reject(error);
-        }
-
-        if(net != null) {
-          // Check if net has property _kmd
-          if(net._kmd == null) {
-            error = new Kinvey.Error('The server entity does not have _kmd defined as a property. ' +
-              'This is required to properly sync server entity _id ' +
-              net._id + ' in collection ' + collection + '.');
-            return Kinvey.Defer.reject(error);
-          }
-
-          // Check if net has property _kmd.lmt.
-          if(net._kmd.lmt == null) {
-            error = new Kinvey.Error('The server entity does not have _kmd.lmt defined as a ' +
-              'property. This is required to properly sync servery entity ' +
-              '_id ' + net._id + ' in collection ' + collection + '.');
-            return Kinvey.Defer.reject(error);
-          }
         }
 
         // Resolve if the remote copy does not exist or if both timestamps match.
@@ -10394,7 +10436,14 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
               // Resend original request
               return Kinvey.Persistence.Net._request(originalRequest, options);
             }, function() {
-              return Kinvey.Defer.reject(response.data || null);
+              var error = response.data || null;
+
+              if(Array.isArray(error)) {
+                error = new Kinvey.Error('Received an array as a response with a status code of ' + response.status + '. A JSON ' +
+                  'object is expected as a response to requests that result in an error status code.');
+              }
+
+              return Kinvey.Defer.reject(error);
             });
           });
         }

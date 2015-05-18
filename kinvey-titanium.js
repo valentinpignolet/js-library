@@ -137,7 +137,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.2';
+    Kinvey.SDK_VERSION = '1.3.3';
 
     // Properties.
     // -----------
@@ -397,11 +397,15 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       // Set the encryption key.
       Kinvey.encryptionKey = null != options.encryptionKey ? options.encryptionKey : null;
 
-      // Initialize the synchronization namespace and restore the active user.
-      var promise = Kinvey.Sync.init(options.sync).then(function() {
-        log('Kinvey initialized, running version: js-titanium/1.3.2');
+      // Upgrade the database
+      var promise = Database.upgrade().then(function() {
+        // Initialize the synchronization namespace and restore the active user.
+        return Kinvey.Sync.init(options.sync);
+      }).then(function() {
+        log('Kinvey initialized, running version: js-titanium/1.3.3');
         return restoreActiveUser(options);
       });
+
       return wrapCallbacks(promise, options);
     };
 
@@ -1776,7 +1780,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.3.2'];
+      var parts = ['js-titanium/1.3.3'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -7110,6 +7114,62 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      * @namespace Database
      */
     var Database = /** @lends Database */ {
+
+      // Current version of database
+      version: 1,
+
+      // Name of database version table
+      versionTable: 'KinveyDatabaseVersion',
+
+      /**
+       * Called internally by the library to upgrade any changes
+       * made to the database schema on library updates.
+       *
+       * @return {Promise} Upgrade has completed
+       */
+      upgrade: function() {
+        // Read the existing version of the database
+        return Database.find(Database.versionTable).then(null, function() {
+          return [undefined];
+        }).then(function(versions) {
+          var doc = versions[0] || {};
+          return Database.onUpgrade(doc.version, Database.version).then(function() {
+            return doc;
+          });
+        }).then(function(doc) {
+          // Update the version doc
+          doc.version = Database.version;
+
+          // Save the version doc
+          return Database.save(Database.versionTable, doc);
+        }).then(function() {
+          return;
+        });
+      },
+
+      /**
+       * Upgrades the database schema from the current version to the new
+       * version.
+       *
+       * @param  {Number}  currentVersion Current version of the database
+       * @param  {Number}  newVersion New version to upgrade database to
+       * @return {Promise} Upgrade has compelted
+       */
+      onUpgrade: function(currentVersion, newVersion) {
+        var deferred = Kinvey.Defer.deferred();
+        var upgradeVersion = currentVersion == null ? 1 : currentVersion + 1;
+
+        // Upgrade
+        if(upgradeVersion <= newVersion) {
+          // Add upgrades here...
+
+          return Database.onUpgrade(upgradeVersion, newVersion);
+        }
+
+        deferred.resolve();
+        return deferred.promise;
+      },
+
       /**
        * Saves multiple (new) documents.
        *
@@ -7252,6 +7312,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         'get', 'group', 'save', 'update'
       ])
     };
+
 
     // Local persistence.
     // ------------------
@@ -7785,7 +7846,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         // Debug.
         if(KINVEY_DEBUG) {
           headers['X-Kinvey-Trace-Request'] = 'true';
-          headers['X-Kinvey-Force-Debug-Log-Credentials'] = 'true';
         }
 
         // Authorization.
@@ -8166,7 +8226,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         return Sync._read(collection, documents, options).then(function(response) {
           // Step 2: categorize the documents in the collection.
           var promises = identifiers.map(function(id) {
-            var document = documents[id];
+            var document = documents[id] || {};
             var metadata = {
               id: id,
               timestamp: document.timestamp,
@@ -8243,11 +8303,11 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           var requestOptions = options || {};
 
           // Set options.clientAppVersion based on the metadata for the document
-          requestOptions.clientAppVersion = metadata.clientAppVersion != null ? metadata.clientAppVersion : null;
+          requestOptions.clientAppVersion = metadata != null && metadata.clientAppVersion != null ? metadata.clientAppVersion : null;
 
           // Set options.customRequestProperties based on the metadata
           // for the document
-          requestOptions.customRequestProperties = metadata.customRequestProperties != null ?
+          requestOptions.customRequestProperties = metadata != null && metadata.customRequestProperties != null ?
             metadata.customRequestProperties : null;
 
           // Build the request.
@@ -8402,24 +8462,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             'required to properly sync the document in collection ' +
             collection + '.');
           return Kinvey.Defer.reject(error);
-        }
-
-        if(net != null) {
-          // Check if net has property _kmd
-          if(net._kmd == null) {
-            error = new Kinvey.Error('The server entity does not have _kmd defined as a property. ' +
-              'This is required to properly sync server entity _id ' +
-              net._id + ' in collection ' + collection + '.');
-            return Kinvey.Defer.reject(error);
-          }
-
-          // Check if net has property _kmd.lmt.
-          if(net._kmd.lmt == null) {
-            error = new Kinvey.Error('The server entity does not have _kmd.lmt defined as a ' +
-              'property. This is required to properly sync servery entity ' +
-              '_id ' + net._id + ' in collection ' + collection + '.');
-            return Kinvey.Defer.reject(error);
-          }
         }
 
         // Resolve if the remote copy does not exist or if both timestamps match.
@@ -11955,6 +11997,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @augments {Kinvey.Persistence.Net.request}
        */
       request: function(method, url, body, headers, options) {
+        var error;
+
         // Cast arguments.
         headers = headers || {};
         options = options || {};
@@ -12038,7 +12082,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             // Check `Content-Type` header for application/json
             if(!options.file && response != null && 204 !== this.status) {
               var responseContentType = this.getResponseHeader('Content-Type');
-              var error;
 
               if(responseContentType == null) {
                 error = new Kinvey.Error('Content-Type header missing in response. Please add ' +
@@ -12062,8 +12105,9 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           else { // Failure.
             var promise;
             var originalRequest = options._originalRequest;
+            error = this.responseText || e.type || null;
 
-            if(401 === this.status && options.attemptMICRefresh) {
+            if(401 === status && options.attemptMICRefresh) {
               promise = MIC.refresh(options);
             }
             else {
@@ -12078,7 +12122,12 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             }).then(function(response) {
               deferred.resolve(response);
             }, function() {
-              deferred.reject(this.responseText || e.type || null);
+              if(Array.isArray(error)) {
+                error = new Kinvey.Error('Received an array as a response with a status code of ' + status + '. A JSON ' +
+                  'object is expected as a response to requests that result in an error status code.');
+              }
+
+              deferred.reject(error);
             });
           }
         };
