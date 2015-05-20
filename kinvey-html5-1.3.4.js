@@ -125,7 +125,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.3';
+    Kinvey.SDK_VERSION = '1.3.4';
 
     // Properties.
     // -----------
@@ -390,7 +390,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         // Initialize the synchronization namespace and restore the active user.
         return Kinvey.Sync.init(options.sync);
       }).then(function() {
-        log('Kinvey initialized, running version: js-html5/1.3.3');
+        log('Kinvey initialized, running version: js-html5/1.3.4');
         return restoreActiveUser(options);
       });
 
@@ -1768,7 +1768,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-html5/1.3.3'];
+      var parts = ['js-html5/1.3.4'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -5476,7 +5476,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @return {Boolean} NodeJS
        */
       isNode: function() {
-        return('undefined' !== typeof module && module.exports);
+        return(typeof process !== 'undefined' && typeof require !== 'undefined');
       }
     };
 
@@ -7116,23 +7116,30 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @return {Promise} Upgrade has completed
        */
       upgrade: function() {
-        // Read the existing version of the database
-        return Database.find(Database.versionTable).then(null, function() {
-          return [undefined];
-        }).then(function(versions) {
-          var doc = versions[0] || {};
-          return Database.onUpgrade(doc.version, Database.version).then(function() {
-            return doc;
-          });
-        }).then(function(doc) {
-          // Update the version doc
-          doc.version = Database.version;
+        try {
+          // Read the existing version of the database
+          return Database.find(Database.versionTable).then(null, function() {
+            return [undefined];
+          }).then(function(versions) {
+            var doc = versions[0] || {};
+            return Database.onUpgrade(doc.version, Database.version).then(function() {
+              return doc;
+            });
+          }).then(function(doc) {
+            // Update the version doc
+            doc.version = Database.version;
 
-          // Save the version doc
-          return Database.save(Database.versionTable, doc);
-        }).then(function() {
-          return;
-        });
+            // Save the version doc
+            return Database.save(Database.versionTable, doc);
+          }).then(function() {
+            return;
+          });
+        }
+        catch(err) {
+          // Catch unsupported database methods error and
+          // just resolve
+          return Kinvey.Defer.resolve();
+        }
       },
 
       /**

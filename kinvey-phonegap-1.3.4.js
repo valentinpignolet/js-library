@@ -1,3 +1,5 @@
+/**@license MIT-promiscuous-©Ruben Verborgh*/
+!function(n,t){function c(n,t){return(typeof t)[0]==n}function u(o,e){return e=function f(i,h,l,a,p,s){function y(n){return function(t){p&&(p=0,f(c,n,t))}}if(a=f.q,i!=c)return u(function(n,t){a.push({p:this,r:n,j:t,1:i,0:h})});if(l&&c(n,l)|c(t,l))try{p=l.then}catch(j){h=0,l=j}if(c(n,p))try{p.call(l,y(1),h=y(0))}catch(j){h(j)}else for(e=function(t,e){return c(n,t=h?t:e)?u(function(n,c){r(this,n,c,l,t)}):o},s=0;s<a.length;)p=a[s++],c(n,i=p[h])?r(p.p,p.r,p.j,l,i):(h?p.r:p.j)(l)},e.q=[],o.call(o={then:function(n,t){return e(n,t)},"catch":function(n){return e(0,n)}},function(n){e(c,1,n)},function(n){e(c,0,n)}),o}function r(u,r,o,e,f){setTimeout(function(){try{e=f(e),f=e&&c(t,e)|c(n,e)&&e.then,c(n,f)?e==u?o(TypeError()):f.call(e,r,o):r(e)}catch(i){o(i)}})}function o(n){return u(function(t){t(n)})}Promise=u,u.resolve=o,u.reject=function(n){return u(function(t,c){c(n)})},u.all=function(n){return u(function(t,c,u,r){r=[],u=n.length||t(r),n.map(function(n,e){o(n).then(function(n){r[e]=n,--u||t(r)},c)})})}}("f","o");;
 (function(){var m=new function(){function g(a){return a?0:-1}var e=this.priority=function(a,b){for(var c=a.exprs,f=0,d=0,e=c.length;d<e;d++){var h=c[d];if(!~(h=h.e(h.v,b instanceof Date?b.getTime():b,b)))return-1;f+=h}return f},d=this.parse=function(a,b){a||(a={$eq:a});var c=[];if(a.constructor==Object)for(var f in a){var g=l[f]?f:"$trav",k=a[f],h=k;if(j[g]){if(~f.indexOf(".")){h=f.split(".");f=h.shift();for(var n={},m=n,p=0,s=h.length-1;p<s;p++)m=m[h[p]]={};m[h[p]]=k;h=k=n}if(k instanceof Array){h=
 [];for(n=k.length;n--;)h.push(d(k[n]))}else h=d(k,f)}c.push(r(g,f,h))}else c.push(r("$eq",f,a));var q={exprs:c,k:b,test:function(a){return!!~q.priority(a)},priority:function(a){return e(q,a)}};return q},j=this.traversable={$and:!0,$or:!0,$nor:!0,$trav:!0,$not:!0},l=this.testers={$eq:function(a,b){return g(a.test(b))},$ne:function(a,b){return g(!a.test(b))},$lt:function(a,b){return a>b?0:-1},$gt:function(a,b){return a<b?0:-1},$lte:function(a,b){return a>=b?0:-1},$gte:function(a,b){return a<=b?0:-1},
 $exists:function(a,b){return a===(null!=b)?0:-1},$in:function(a,b){if(b instanceof Array)for(var c=b.length;c--;){if(~a.indexOf(b[c]))return c}else return g(~a.indexOf(b));return-1},$not:function(a,b){if(!a.test)throw Error("$not test should include an expression, not a value. Use $ne instead.");return g(!a.test(b))},$type:function(a,b,c){return c?c instanceof a||c.constructor==a?0:-1:-1},$nin:function(a,b){return~l.$in(a,b)?-1:0},$mod:function(a,b){return b%a[0]==a[1]?0:-1},$all:function(a,b){for(var c=
@@ -123,7 +125,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.3';
+    Kinvey.SDK_VERSION = '1.3.4';
 
     // Properties.
     // -----------
@@ -388,7 +390,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
         // Initialize the synchronization namespace and restore the active user.
         return Kinvey.Sync.init(options.sync);
       }).then(function() {
-        log('Kinvey initialized, running version: js-angular/1.3.3');
+        log('Kinvey initialized, running version: js-phonegap/1.3.4');
         return restoreActiveUser(options);
       });
 
@@ -1766,7 +1768,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       }
 
       // Return the device information string.
-      var parts = ['js-angular/1.3.3'];
+      var parts = ['js-phonegap/1.3.4'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -5474,7 +5476,7 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @return {Boolean} NodeJS
        */
       isNode: function() {
-        return('undefined' !== typeof module && module.exports);
+        return(typeof process !== 'undefined' && typeof require !== 'undefined');
       }
     };
 
@@ -7114,23 +7116,30 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
        * @return {Promise} Upgrade has completed
        */
       upgrade: function() {
-        // Read the existing version of the database
-        return Database.find(Database.versionTable).then(null, function() {
-          return [undefined];
-        }).then(function(versions) {
-          var doc = versions[0] || {};
-          return Database.onUpgrade(doc.version, Database.version).then(function() {
-            return doc;
-          });
-        }).then(function(doc) {
-          // Update the version doc
-          doc.version = Database.version;
+        try {
+          // Read the existing version of the database
+          return Database.find(Database.versionTable).then(null, function() {
+            return [undefined];
+          }).then(function(versions) {
+            var doc = versions[0] || {};
+            return Database.onUpgrade(doc.version, Database.version).then(function() {
+              return doc;
+            });
+          }).then(function(doc) {
+            // Update the version doc
+            doc.version = Database.version;
 
-          // Save the version doc
-          return Database.save(Database.versionTable, doc);
-        }).then(function() {
-          return;
-        });
+            // Save the version doc
+            return Database.save(Database.versionTable, doc);
+          }).then(function() {
+            return;
+          });
+        }
+        catch(err) {
+          // Catch unsupported database methods error and
+          // just resolve
+          return Kinvey.Defer.resolve();
+        }
       },
 
       /**
@@ -8824,6 +8833,20 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
     };
 
 
+    // Use `promiscuous` as `Kinvey.Defer` adapter.
+    if('undefined' !== typeof root.Promise) {
+      Kinvey.Defer.use({
+        deferred: function() {
+          var deferred = {};
+          deferred.promise = new root.Promise(function(resolve, reject) {
+            deferred.resolve = resolve;
+            deferred.reject = reject;
+          });
+          return deferred;
+        }
+      });
+    }
+
     /* jshint evil: true */
 
     /**
@@ -10011,450 +10034,218 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
     }
 
 
-    // `Social` adapter for performing the OAuth flow.
-    var SocialAdapter = {
+    // `Kinvey.Persistence.Net` adapter for [XHR](http://www.w3.org/TR/XMLHttpRequest2/).
+    var Xhr = {
       /**
-       * @augments {Social.facebook}
-       */
-      facebook: function(options) {
-        return SocialAdapter.oAuth2('facebook', options);
-      },
-
-      /**
-       * @augments {Social.google}
-       */
-      google: function(options) {
-        return SocialAdapter.oAuth2('google', options);
-      },
-
-      /**
-       * @augments {Social.linkedIn}
-       */
-      linkedIn: function(options) {
-        return SocialAdapter.oAuth1('linkedIn', options);
-      },
-
-      /**
-       * @augments {Social.twitter}
-       */
-      twitter: function(options) {
-        return SocialAdapter.oAuth1('twitter', options);
-      },
-
-      /**
-       * Performs the oAuth1.0a authorization flow.
+       * Flag containing the device `responseType`.
        *
-       * @param {string} provider The provider.
-       * @param {Options} [options] Options.
-       * @returns {Promise} The oAuth1.0a tokens.
+       * @type {string}
        */
-      oAuth1: function(provider, options) {
-        // Debug.
-        if(KINVEY_DEBUG) {
-          log('Obtaining OAuth1.0a credentials for a provider.', arguments);
+      responseType: (function() {
+        // The latest version of the File API uses `new Blob` to create a Blob object.
+        // Older browsers, however, do not support this and fall back to using
+        // ArrayBuffer.
+        try {
+          return new root.Blob() && 'blob';
+        }
+        catch(e) {
+          return 'arraybuffer';
+        }
+      }()),
+
+      /**
+       * Flag whether the device supports the timeout property natively.
+       *
+       * @type {boolean}
+       */
+      supportsTimeout: XMLHttpRequest.prototype.hasOwnProperty('timeout'),
+
+      /**
+       * @augments {Kinvey.Persistence.Net.base64}
+       */
+      base64: function(value) {
+        return root.btoa(value);
+      },
+
+      /**
+       * @augments {Kinvey.Persistence.Net.encode}
+       */
+      encode: root.encodeURIComponent,
+
+      /**
+       * @augments {Kinvey.Persistence.Net.request}
+       */
+      request: function(method, url, body, headers, options) {
+        // Cast arguments.
+        body = body || null;
+        headers = headers || {};
+        options = options || {};
+
+        // Prepare the response.
+        var deferred = Kinvey.Defer.deferred();
+
+        // Create the request.
+        var request = new XMLHttpRequest();
+        request.open(method, url);
+
+        // Apply options.
+        if(options.file) {
+          request.responseType = Xhr.responseType;
+          request.setRequestHeader('Accept', options.file);
+        }
+        if(0 < options.timeout) {
+          request.timeout = options.timeout;
+        }
+        var timer = null;
+
+        // Append header for compatibility with Android 2.2, 2.3.3, and 3.2.
+        // http://www.kinvey.com/blog/item/179-how-to-build-a-service-that-supports-every-android-browser
+        if(0 === url.indexOf(Kinvey.APIHostName) && 'GET' === method) {
+          var location = root.location;
+          if(null != location && null != location.protocol) {
+            headers['X-Kinvey-Origin'] = location.protocol + '//' + location.host;
+          }
         }
 
-        // Step 1: obtain a request token.
-        return SocialAdapter.requestToken(provider, options).then(function(tokens) {
-          // Check for errors.
-          if(tokens.error || tokens.denied) {
-            var error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-              debug: tokens
-            });
-            return Kinvey.Defer.reject(error);
+        // Append request headers.
+        for(var name in headers) {
+          if(headers.hasOwnProperty(name)) {
+            request.setRequestHeader(name, headers[name]);
           }
-
-          // Return the tokens.
-          return {
-            oauth_token: tokens.oauth_token,
-            oauth_token_secret: tokens.oauth_token_secret,
-            oauth_verifier: tokens.oauth_verifier
-          };
-        }).then(function(tokens) {
-          // Step 2: convert the request token into an access token.
-          return Kinvey.Persistence.Net.create({
-            namespace: USERS,
-            data: tokens,
-            flags: {
-              provider: provider,
-              step: 'verifyToken'
-            },
-            auth: Auth.App
-          }, options);
-        }).then(function(tokens) {
-          // Step 3: utilize the access token.
-          options._provider = provider; // Hack `Kinvey.User.login`.
-          return tokens;
-        });
-      },
-
-      /**
-       * Performs the oAuth2.0 authorization flow.
-       *
-       * @param {string} provider The provider.
-       * @param {Options} [options] Options.
-       * @returns {Promise} The oAuth2.0 tokens.
-       */
-      oAuth2: function(provider, options) {
-        // Debug.
-        if(KINVEY_DEBUG) {
-          log('Obtaining OAuth2.0 credentials for a provider.', arguments);
         }
 
-        // Generate a unique token to protect against CSRF.
-        options.state = Math.random().toString(36).substr(2);
-
-        // Step 1: obtain an access token.
-        return SocialAdapter.requestToken(provider, options).then(function(tokens) {
-          var error;
-
-          // The state tokens should match.
-          if(tokens.state !== options.state) {
-            error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-              debug: 'The state parameters did not match (CSRF attack?).'
-            });
-            return Kinvey.Defer.reject(error);
-          }
-
-          // Check for errors.
-          if(tokens.error) {
-            error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-              debug: tokens
-            });
-            return Kinvey.Defer.reject(error);
-          }
-
-          // Return the tokens.
-          return {
-            access_token: tokens.access_token,
-            expires_in: tokens.expires_in
-          };
-        });
-      },
-
-      /**
-       * Obtains a request token.
-       *
-       * @param {string} provider The provider.
-       * @param {Options} options Options.
-       * @returns {Promise} The response and tokens.
-       */
-      requestToken: function(provider, options) {
-        // Popup blockers only allow opening a dialog at this moment. The popup
-        // location will be updated later.
-        var blank = 'about:blank';
-        var popup = root.open(blank, 'KinveyOAuth2');
-
-        // Open the login dialog. This step consists of getting the dialog url,
-        // after which the dialog is opened.
-        var redirect = options.redirect || root.location.toString();
-        return Kinvey.Persistence.Net.create({
-          namespace: USERS,
-          data: {
-            redirect: redirect,
-            state: options.state
-          },
-          flags: {
-            provider: provider,
-            step: 'requestToken'
-          },
-          auth: Auth.App
-        }, options).then(function(response) {
-          // Obtain the tokens from the login dialog.
-          var deferred = Kinvey.Defer.deferred();
-
-          // Set the popup location.
-          if(null != popup) {
-            popup.location = response.url;
-          }
-
-          // Popup management.
-          var elapsed = 0; // Time elapsed since opening the popup.
-          var interval = 100; // ms.
-          var timer = root.setInterval(function() {
-            var error;
-
-            // The popup was blocked.
-            if(null == popup) {
-              root.clearTimeout(timer); // Stop listening.
-
-              // Return the response.
-              error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-                debug: 'The popup was blocked.'
-              });
-              deferred.reject(error);
-            }
-
-            // The popup closed unexpectedly.
-            else if(popup.closed) {
-              root.clearTimeout(timer); // Stop listening.
-
-              // Return the response.
-              error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-                debug: 'The popup was closed unexpectedly.'
-              });
-              deferred.reject(error);
-            }
-
-            // The user waited too long to reply to the authorization request.
-            else if(options.timeout && elapsed > options.timeout) { // Timeout.
-              root.clearTimeout(timer); // Stop listening.
-              popup.close();
-
-              // Return the response.
-              error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-                debug: 'The authorization request timed out.'
-              });
-              deferred.reject(error);
-            }
-
-            // The popup is still active, check its location.
-            else {
-              // Firefox will throw an exception when `popup.location.host` has
-              // a different origin.
-              var host = false;
-              try {
-                host = blank !== popup.location.toString();
-              }
-              catch(e) {}
-
-              // Continue if the popup was redirected back to our domain.
-              if(host) {
-                root.clearTimeout(timer); // Stop listening.
-
-                // Extract tokens from the url.
-                var location = popup.location;
-                var tokenString = location.search.substring(1) + '&' + location.hash.substring(1);
-                var tokens = SocialAdapter.tokenize(tokenString);
-                if(null != response.oauth_token_secret) { // OAuth 1.0a.
-                  tokens.oauth_token_secret = response.oauth_token_secret;
-                }
-                deferred.resolve(tokens);
-
-                // Close the popup.
-                popup.close();
-              }
-            }
-
-            // Update elapsed time.
-            elapsed += interval;
-          }, interval);
-
-          // Return the promise.
-          return deferred.promise;
-        });
-      },
-
-      /**
-       * Tokenizes a string.
-       *
-       * @example foo=bar&baz=qux -> { foo: "bar", baz: "qux" }
-       * @param {string} string The token string.
-       * @returns {Object} The tokens.
-       */
-      tokenize: function(string) {
-        var tokens = {};
-        string.split('&').forEach(function(pair) {
-          var segments = pair.split('=', 2).map(root.decodeURIComponent);
-          if(segments[0]) {
-            tokens[segments[0]] = segments[1];
-          }
-        });
-        return tokens;
-      }
-    };
-
-    // Use the browser adapter.
-    Social.use(SocialAdapter);
-
-    // Angular.js.
-    // -----------
-
-    // Outside of the Kinvey module, use $q out of scope.
-    var angularDeferred = angular.injector(['ng']).get('$q');
-    Kinvey.Defer.use({
-      deferred: angularDeferred.defer
-    });
-
-    // Define the Angular.js Kinvey module.
-    var module = angular.module('kinvey', []);
-
-    module.factory('$kinvey', ['$http', '$q', function($http, $q) {
-
-      // Deferreds.
-      // ----------
-
-      // Use Angular’s `$q`.
-      Kinvey.Defer.use({
-        deferred: $q.defer
-      });
-
-      // `Kinvey.Persistence.Net` adapter for [$http](http://docs.angularjs.org/api/ng.$http).
-      var AngularHTTP = {
-        /**
-         * @augments {Kinvey.Persistence.Net.request}
-         */
-        base64: function(value) {
-          return root.btoa(value);
-        },
-
-        /**
-         * Flag whether the device supports Blob.
-         *
-         * @property {boolean}
-         */
-        supportsBlob: (function() {
-          // The latest version of the File API uses `new Blob` to create a Blob
-          // object. Older browsers, however, do not support this and fall back to
-          // using ArrayBuffer.
-          try {
-            return new root.Blob() && true;
-          }
-          catch(e) {
-            return false;
-          }
-        }()),
-
-        /**
-         * @augments {Kinvey.Persistence.Net.encode}
-         */
-        encode: root.encodeURIComponent,
-
-        /**
-         * @augments {Kinvey.Persistence.Net.request}
-         */
-        request: function(method, url, body, headers, options) {
-          // Cast arguments.
-          body = body || {};
-          headers = headers || {};
-          options = options || {};
-          options.attemptMICRefresh = false === options.attemptMICRefresh ? false : true;
-
-          // Append header for compatibility with Android 2.2, 2.3.3, and 3.2.
-          // http://www.kinvey.com/blog/item/179-how-to-build-a-service-that-supports-every-android-browser
-          if(0 === url.indexOf(Kinvey.APIHostName) && 'GET' === method) {
-            var location = root.location;
-            if(null != location && null != location.protocol) {
-              headers['X-Kinvey-Origin'] = location.protocol + '//' + location.host;
-            }
+        // Listen for request completion.
+        // NOTE `request.onloadend` lacks universal support.
+        request.onabort = request.onerror = request.onload = request.ontimeout = function(event) {
+          // Stop the timer.
+          if(null !== timer) {
+            root.clearTimeout(timer);
           }
 
           // Debug.
           if(KINVEY_DEBUG) {
-            log('Initiating a network request.', method, url, body, headers, options);
+            log('The network request completed.', request);
           }
 
-          // Initiate the request.
-          if(isObject(body) && !(
-              (null != root.ArrayBuffer && body instanceof root.ArrayBuffer) ||
-              (null != root.Blob && body instanceof root.Blob)
-            )) {
-            body = null != angular.toJson ? angular.toJson(body) : JSON.stringify(body);
+          // Extract the response.
+          var responseData = request.response || null;
+          if('undefined' === typeof request.response) {
+            responseData = request.responseText || null;
           }
 
-          return $http({
-            data: body,
-            headers: headers,
-            method: method,
-            timeout: options.timeout,
-            url: url
-          }).then(function(response) {
-            var _response = response;
+          // Success implicates 2xx (Successful), or 304 (Not Modified).
+          var status = request.status;
 
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('The network request completed.', response);
+          // Check `Content-Type` header for application/json
+          if(!options.file && responseData != null && 2 === parseInt(status / 100, 10) && 204 !== status) {
+            var responseContentType = request.getResponseHeader('Content-Type');
+            var error;
+
+            if(responseContentType == null) {
+              error = new Kinvey.Error('Content-Type header missing in response. Please add ' +
+                'Content-Type header to response with value ' +
+                'application/json.');
+            }
+            else if(responseContentType.indexOf('application/json') === -1) {
+              error = new Kinvey.Error('Response Content-Type header is set to ' +
+                responseContentType + '. Expected it to be set ' +
+                'to application/json.');
             }
 
-            // If `options.file`, convert the response to `Blob` object.
-            response = response.data;
-            if(options.file && null != response && null != root.ArrayBuffer) {
-              // jQuery does not provide a nice way to set the responseType to blob,
-              // so convert the response to binary manually.
-              // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
-              var buffer = new root.ArrayBuffer(response.length);
-              var bufView = new root.Uint8Array(buffer);
-              for(var i = 0, length = response.length; i < length; i += 1) {
-                bufView[i] = response.charCodeAt(i);
-              }
-
-              // If possible, convert the buffer to an actual `Blob` object.
-              if(AngularHTTP.supportsBlob) {
-                buffer = new root.Blob([bufView], {
-                  type: options.file
-                });
-              }
-              response = buffer;
+            if(error) {
+              return deferred.reject(error);
             }
+          }
 
-            // Success implicates 2xx (Successful), or 304 (Not Modified).
-            var status = _response.status;
 
-            // Check `Content-Type` header for application/json. Thrown error will
-            // cause promise to be rejected.
-            if(!options.file && response != null && 2 === parseInt(status / 100, 10) && 204 !== status) {
-              var responseContentType = _response.headers('Content-Type') || undefined;
-              var error;
-
-              if(responseContentType == null) {
-                error = new Kinvey.Error('Content-Type header missing in response. Please add ' +
-                  'Content-Type header to response with value ' +
-                  'application/json.');
-              }
-              else if(responseContentType.indexOf('application/json') === -1) {
-                error = new Kinvey.Error('Response Content-Type header is set to ' +
-                  responseContentType + '. Expected it to be set ' +
-                  'to application/json.');
-              }
-
-              if(error) {
-                throw error;
-              }
-            }
-
-            // Return the response.
-            return response || null;
-          }, function(response) {
+          if(2 === parseInt(status / 100, 10) || 304 === status) {
+            deferred.resolve(responseData);
+          }
+          else { // Failure.
             var promise;
             var originalRequest = options._originalRequest;
 
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('The network request failed.', response);
-            }
-
-            if(401 === response.status && options.attemptMICRefresh) {
+            if(401 === status && options.attemptMICRefresh) {
               promise = MIC.refresh(options);
             }
             else {
               promise = Kinvey.Defer.reject();
             }
 
-            return promise.then(function() {
+            promise.then(function() {
               // Don't refresh MIC again
               options.attemptMICRefresh = false;
               // Resend original request
               return Kinvey.Persistence.Net._request(originalRequest, options);
+            }).then(function(response) {
+              deferred.resolve(response);
             }, function() {
-              var error = response.data || null;
+              var type = null !== timer ? 'timeout' : event.type;
+              var response = 0 !== status ? responseData : type;
 
-              if(Array.isArray(error)) {
-                error = new Kinvey.Error('Received an array as a response with a status code of ' + response.status + '. A JSON ' +
-                  'object is expected as a response to requests that result in an error status code.');
+              // If `options.file`, parse the response to obtain the error.
+              if(options.file && 0 !== status) {
+                // Convert the binary response to a string.
+                if(null != root.ArrayBuffer && response instanceof root.ArrayBuffer) {
+                  var buffer = '';
+                  var bufView = new root.Uint8Array(response);
+                  for(var i = 0; i < response.byteLength; i += 1) {
+                    buffer += String.fromCharCode(bufView[i]);
+                  }
+                  deferred.reject(buffer);
+                }
+                else if(null != root.Blob && response instanceof root.Blob) {
+                  var reader = new root.FileReader();
+                  reader.onload = function(event) {
+                    deferred.reject(event.target.result);
+                  };
+                  reader.readAsText(response);
+                }
               }
+              else { // Return the error.
+                var error = response || type || null;
 
-              return Kinvey.Defer.reject(error);
+                if(Array.isArray(error)) {
+                  error = new Kinvey.Error('Received an array as a response with a status code of ' + status + '. A JSON ' +
+                    'object is expected as a response to requests that result in an error status code.');
+                }
+
+                deferred.reject(error);
+              }
             });
-          });
+          }
+        };
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          log('Initiating a network request.', method, url, body, headers, options);
         }
-      };
 
-      // Use Angular adapter.
-      Kinvey.Persistence.Net.use(AngularHTTP);
+        // Initiate the request.
+        if(isObject(body) && !(
+            (null != root.ArrayBuffer && body instanceof root.ArrayBuffer) ||
+            (null != root.Blob && body instanceof root.Blob)
+          )) {
+          body = JSON.stringify(body);
+        }
+        request.send(body);
 
+        // Set a manual timeout if not supported natively.
+        if(!Xhr.supportsTimeout && request.timeout) {
+          // Abort the request on timeout.
+          timer = root.setTimeout(function() {
+            request.abort();
+          }, request.timeout);
+        }
 
-      return Kinvey;
-    }]);
+        // Return the response.
+        return deferred.promise;
+      }
+    };
+
+    // Use XHR adapter.
+    Kinvey.Persistence.Net.use(Xhr);
+
 
     // `Storage` adapter for
     // [localStorage](http://www.w3.org/TR/webstorage/#the-localstorage-attribute).
@@ -10509,6 +10300,166 @@ d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof 
       // Use `localStorage` adapter.
       Storage.use(localStorageAdapter);
     }
+
+    // Additional namespaces of the Kinvey service.
+    var PUSH = 'push';
+
+    // Error-handling.
+    // ---------------
+
+    // PhoneGap errors.
+    /**
+     * @memberof Kinvey.Error
+     * @constant
+     * @default
+     */
+    Kinvey.Error.PUSH_ERROR = 'PushError';
+
+    /**
+     * Not logged in.
+     *
+     * @constant
+     * @type {Object}
+     * @default
+     */
+    ClientError[Kinvey.Error.PUSH_ERROR] = {
+      name: Kinvey.Error.PUSH_ERROR,
+      description: 'There is a problem with push notifications.',
+      debug: ''
+    };
+
+    // Push.
+    // -----
+
+    // REST API wrapper for setting up push notifications.
+
+    /**
+     * @memberof! <global>
+     * @namespace Kinvey.Push
+     */
+    Kinvey.Push = /** @lends Kinvey.Push */ {
+      /**
+       * Registers a device to receive push notifications.
+       *
+       * @param {string}  deviceId The device ID.
+       * @param {Options} [options] Options.
+       * @param {string}  [options.userId] The linked user. Use in conjunction with
+       *         Master Secret.
+       * @returns {Promise} The response.
+       */
+      register: function(deviceId, options) {
+        var error;
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          log('Registering a device to receive push notifications.', arguments);
+        }
+
+        // Cast arguments.
+        options = options || {};
+
+        // Validate arguments.
+        var activeUser = Kinvey.getActiveUser();
+        if(null === activeUser && null == options.userId) {
+          error = new Kinvey.Error('options argument must contain: userId.');
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
+        }
+
+        // Validate preconditions.
+        if(null == root.device) {
+          error = clientError(Kinvey.Error.PUSH_ERROR, {
+            description: 'Unable to obtain the device platform.',
+            debug: 'Did you install the Cordova Device plugin?'
+          });
+          return wrapCallbacks(Kinvey.Defer.reject(error), options);
+        }
+
+        // Prepare the response.
+        var promise = Kinvey.Persistence.Net.create({
+          namespace: PUSH,
+          id: 'register-device',
+          data: {
+            platform: root.device.platform.toLowerCase(),
+            framework: 'phonegap',
+            deviceId: deviceId,
+            userId: null != activeUser ? null : options.userId
+          },
+          auth: null != activeUser ? Auth.Session : Auth.Master
+        }, options);
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          promise.then(function(response) {
+            log('Registered the device to receive push notifications.', response);
+          }, function(error) {
+            log('Failed to register the device to receive push notifications.', error);
+          });
+        }
+
+        // Return the response.
+        return wrapCallbacks(promise, options);
+      },
+
+      /**
+       * Unregisters a device from receiving push notifications.
+       *
+       * @param {string}  deviceId The device ID.
+       * @param {Options} [options] Options.
+       * @param {string}  [options.userId] The linked user. Use in conjunction with
+       *         Master Secret.
+       * @returns {Promise} The response.
+       */
+      unregister: function(deviceId, options) {
+        // Debug.
+        if(KINVEY_DEBUG) {
+          log('Registering a device to receive push notifications.', arguments);
+        }
+
+        // Cast arguments.
+        options = options || {};
+
+        // Validate arguments.
+        var activeUser = Kinvey.getActiveUser();
+        if(null === activeUser && null == options.userId) {
+          throw new Kinvey.Error('options argument must contain: userId.');
+        }
+
+        // Validate preconditions.
+        if(null == root.device) {
+          var error = clientError(Kinvey.Error.PUSH_ERROR, {
+            description: 'Unable to obtain the device platform.',
+            debug: 'Did you install the Cordova Device plugin?'
+          });
+          return wrapCallbacks(Kinvey.Defer.reject(error));
+        }
+
+        // Prepare the response.
+        var promise = Kinvey.Persistence.Net.create({
+          namespace: PUSH,
+          id: 'unregister-device',
+          data: {
+            platform: root.device.platform.toLowerCase(),
+            framework: 'phonegap',
+            deviceId: deviceId,
+            userId: null != activeUser ? null : options.userId
+          },
+          auth: null != activeUser ? Auth.Session : Auth.Master
+        }, options);
+
+        // Debug.
+        if(KINVEY_DEBUG) {
+          promise.then(function(response) {
+            log('Unregistered the device from receiving push notifications.', response);
+          }, function(error) {
+            log('Failed to unregister the device from receiving push notifications.', error);
+          });
+        }
+
+        // Return the response.
+        return wrapCallbacks(promise, options);
+      }
+    };
+
 
     // Return the copy.
     return Kinvey;

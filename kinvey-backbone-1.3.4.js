@@ -1,12 +1,3 @@
-// Wrap dependencies in an IIFE so they are exported onto the root object only.
-(function(define, module) {
-  var window = this;
-  var setTimeout = function(fn) {
-    return window.setTimeout(fn, 0);
-  };
-  var exports = window.__KinveySocialAdapter = window;
-  var File = function() { };
-;
 /**@license MIT-promiscuous-©Ruben Verborgh*/
 !function(n,t){function c(n,t){return(typeof t)[0]==n}function u(o,e){return e=function f(i,h,l,a,p,s){function y(n){return function(t){p&&(p=0,f(c,n,t))}}if(a=f.q,i!=c)return u(function(n,t){a.push({p:this,r:n,j:t,1:i,0:h})});if(l&&c(n,l)|c(t,l))try{p=l.then}catch(j){h=0,l=j}if(c(n,p))try{p.call(l,y(1),h=y(0))}catch(j){h(j)}else for(e=function(t,e){return c(n,t=h?t:e)?u(function(n,c){r(this,n,c,l,t)}):o},s=0;s<a.length;)p=a[s++],c(n,i=p[h])?r(p.p,p.r,p.j,l,i):(h?p.r:p.j)(l)},e.q=[],o.call(o={then:function(n,t){return e(n,t)},"catch":function(n){return e(0,n)}},function(n){e(c,1,n)},function(n){e(c,0,n)}),o}function r(u,r,o,e,f){setTimeout(function(){try{e=f(e),f=e&&c(t,e)|c(n,e)&&e.then,c(n,f)?e==u?o(TypeError()):f.call(e,r,o):r(e)}catch(i){o(i)}})}function o(n){return u(function(t){t(n)})}Promise=u,u.resolve=o,u.reject=function(n){return u(function(t,c){c(n)})},u.all=function(n){return u(function(t,c,u,r){r=[],u=n.length||t(r),n.map(function(n,e){o(n).then(function(n){r[e]=n,--u||t(r)},c)})})}}("f","o");;
 (function(){var m=new function(){function g(a){return a?0:-1}var e=this.priority=function(a,b){for(var c=a.exprs,f=0,d=0,e=c.length;d<e;d++){var h=c[d];if(!~(h=h.e(h.v,b instanceof Date?b.getTime():b,b)))return-1;f+=h}return f},d=this.parse=function(a,b){a||(a={$eq:a});var c=[];if(a.constructor==Object)for(var f in a){var g=l[f]?f:"$trav",k=a[f],h=k;if(j[g]){if(~f.indexOf(".")){h=f.split(".");f=h.shift();for(var n={},m=n,p=0,s=h.length-1;p<s;p++)m=m[h[p]]={};m[h[p]]=k;h=k=n}if(k instanceof Array){h=
@@ -17,9 +8,6 @@ b){return RegExp(a).test(b)?0:-1}},k={$eq:function(a){return a instanceof RegExp
 c,f=0,g=d.length;f<g;f++)b=d[f],a=j(b),~(c=l.priority(a))&&e.push({value:b,priority:c});e.sort(function(a,b){return a.priority>b.priority?-1:1});d=Array(e.length);for(f=e.length;f--;)d[f]=e[f].value;return d};d.test=l.test;d.score=l.priority;d.query=g;return e?d(e):d};j.use=function(g){g.operators&&j.useOperators(g.operators)};j.useOperators=function(g){for(var e in g)j.useOperator(e,g[e])};j.useOperator=function(g,e){var d={},d="object"==typeof e?e:{test:e},j="$"+g;m.testers[j]=d.test;if(d.traversable||
 d.traverse)m.traversable[j]=!0};"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=j:"undefined"!=typeof window&&(window.sift=j)})();
 ;
-var exports=exports||this;exports.OAuth=function(a){function b(a){var e,b=arguments,c=b.callee,f=(b.length,this);if(!(this instanceof c))return new c(a);for(e in a)a.hasOwnProperty(e)&&(f[e]=a[e]);return f}function c(){}function d(a){var d,f,g,h,i,j,k,b=arguments,c=b.callee,l=/^([^:\/?#]+?:\/\/)*([^\/:?#]*)?(:[^\/?#]*)*([^?#]*)(\?[^#]*)?(#(.*))*/,m=this;return this instanceof c?(m.scheme="",m.host="",m.port="",m.path="",m.query=new e,m.anchor="",null!==a&&(d=a.match(l),f=d[1],g=d[2],h=d[3],i=d[4],j=d[5],k=d[6],f=void 0!==f?f.replace("://","").toLowerCase():"http",h=h?h.replace(":",""):"https"===f?"443":"80",f="http"==f&&"443"===h?"https":f,j=j?j.replace("?",""):"",k=k?k.replace("#",""):"",("https"===f&&"443"!==h||"http"===f&&"80"!==h)&&(g=g+":"+h),m.scheme=f,m.host=g,m.port=h,m.path=i||"/",m.query.setQueryParams(j),m.anchor=k||""),void 0):new c(a)}function e(a){var e,b=arguments,c=b.callee,f=(b.length,this);if(g.urlDecode,!(this instanceof c))return new c(a);if(void 0!=a)for(e in a)a.hasOwnProperty(e)&&(f[e]=a[e]);return f}function g(a){return this instanceof g?this.init(a):new g(a)}function h(a){var c,d,b=[];for(c in a)a[c]&&void 0!==a[c]&&""!==a[c]&&("realm"===c?d=c+'="'+a[c]+'"':b.push(c+'="'+g.urlEncode(a[c]+"")+'"'));return b.sort(),d&&b.unshift(d),b.join(", ")}function i(a,b,c,d){var f,e=[],h=g.urlEncode;for(f in c)void 0!==c[f]&&""!==c[f]&&e.push([g.urlEncode(f),g.urlEncode(c[f]+"")]);for(f in d)void 0!==d[f]&&""!==d[f]&&(c[f]||e.push([h(f),h(d[f]+"")]));return e=e.sort(function(a,b){return a[0]<b[0]?-1:a[0]>b[0]?1:a[1]<b[1]?-1:a[1]>b[1]?1:0}).map(function(a){return a.join("=")}),[a,h(b),h(e.join("&"))].join("&")}function j(){return parseInt(+new Date/1e3,10)}function k(a){function b(){return Math.floor(Math.random()*h.length)}a=a||64;var g,c=a/8,d="",e=c/4,f=c%4,h=["20","21","22","23","24","25","26","27","28","29","2A","2B","2C","2D","2E","2F","30","31","32","33","34","35","36","37","38","39","3A","3B","3C","3D","3E","3F","40","41","42","43","44","45","46","47","48","49","4A","4B","4C","4D","4E","4F","50","51","52","53","54","55","56","57","58","59","5A","5B","5C","5D","5E","5F","60","61","62","63","64","65","66","67","68","69","6A","6B","6C","6D","6E","6F","70","71","72","73","74","75","76","77","78","79","7A","7B","7C","7D","7E"];for(g=0;e>g;g++)d+=h[b()]+h[b()]+h[b()]+h[b()];for(g=0;f>g;g++)d+=h[b()];return d}function l(){var b;if("undefined"!=typeof a.Titanium&&"undefined"!=typeof a.Titanium.Network.createHTTPClient)b=a.Titanium.Network.createHTTPClient();else if("undefined"!=typeof require)try{b=new require("xhr").XMLHttpRequest()}catch(c){if("undefined"==typeof a.XMLHttpRequest)throw"No valid request transport found.";b=new a.XMLHttpRequest}else{if("undefined"==typeof a.XMLHttpRequest)throw"No valid request transport found.";b=new a.XMLHttpRequest}return b}function m(a){var b=new Array(++a);return b.join(0).split("")}function n(a){var c,d,b=[];for(d=0;d<a.length;d++)c=a.charCodeAt(d),128>c?b.push(c):2048>c?b.push(192+(c>>6),128+(63&c)):65536>c?b.push(224+(c>>12),128+(63&c>>6),128+(63&c)):2097152>c&&b.push(240+(c>>18),128+(63&c>>12),128+(63&c>>6),128+(63&c));return b}function o(a){var c,b=[];for(c=0;c<32*a.length;c+=8)b.push(255&a[c>>>5]>>>24-c%32);return b}function p(a){var d,b=[],c=a.length;for(d=0;c>d;d++)b.push((a[d]>>>4).toString(16)),b.push((15&a[d]).toString(16));return b.join("")}function q(a){var d,b="",c=a.length;for(d=0;c>d;d++)b+=String.fromCharCode(a[d]);return b}function r(a,b){return a<<b|a>>>32-b}function s(a){if(void 0!==a){var c,d,b=a;return b.constructor===String&&(b=n(b)),c=this instanceof s?this:new s(a),d=c.hash(b),p(d)}return this instanceof s?this:new s}function t(a,b,c,d){var h,i,j,k,e=n(b),f=n(c),g=e.length;for(g>a.blocksize&&(e=a.hash(e),g=e.length),e=e.concat(m(a.blocksize-g)),i=e.slice(0),j=e.slice(0),k=0;k<a.blocksize;k++)i[k]^=92,j[k]^=54;return h=a.hash(i.concat(a.hash(j.concat(f)))),d?p(h):q(h)}c.prototype={join:function(a){return a=a||"",this.values().join(a)},keys:function(){var a,b=[],c=this;for(a in c)c.hasOwnProperty(a)&&b.push(a);return b},values:function(){var a,b=[],c=this;for(a in c)c.hasOwnProperty(a)&&b.push(c[a]);return b},shift:function(){throw"not implimented"},unshift:function(){throw"not implimented"},push:function(){throw"not implimented"},pop:function(){throw"not implimented"},sort:function(){throw"not implimented"},ksort:function(a){var d,e,f,b=this,c=b.keys();for(void 0==a?c.sort():c.sort(a),d=0;d<c.length;d++)f=c[d],e=b[f],delete b[f],b[f]=e;return b},toObject:function(){var b,a={},c=this;for(b in c)c.hasOwnProperty(b)&&(a[b]=c[b]);return a}},b.prototype=new c,d.prototype={scheme:"",host:"",port:"",path:"",query:"",anchor:"",toString:function(){var a=this,b=a.query+"";return a.scheme+"://"+a.host+a.path+(""!=b?"?"+b:"")+(""!==a.anchor?"#"+a.anchor:"")}},e.prototype=new b,e.prototype.toString=function(){var a,b=this,c=[],d="",e="",f=g.urlEncode;b.ksort();for(a in b)b.hasOwnProperty(a)&&void 0!=a&&void 0!=b[a]&&(e=f(a)+"="+f(b[a]),c.push(e));return c.length>0&&(d=c.join("&")),d},e.prototype.setQueryParams=function(a){var d,e,f,i,b=arguments,c=b.length,h=this,j=g.urlDecode;if(1==c){if("object"==typeof a)for(d in a)a.hasOwnProperty(d)&&(h[d]=j(a[d]));else if("string"==typeof a)for(e=a.split("&"),d=0,f=e.length;f>d;d++)i=e[d].split("="),""!=i[0]&&(h[i[0]]=j(i[1]))}else for(d=0;c>d;d+=2)h[b[d]]=j(b[d+1])};var f="1.0";return g.prototype={realm:"",requestTokenUrl:"",authorizationUrl:"",accessTokenUrl:"",init:function(a){var b="",c={enablePrivilege:a.enablePrivilege||!1,proxyUrl:a.proxyUrl,callbackUrl:a.callbackUrl||"oob",consumerKey:a.consumerKey,consumerSecret:a.consumerSecret,accessTokenKey:a.accessTokenKey||b,accessTokenSecret:a.accessTokenSecret||b,verifier:b,signatureMethod:a.signatureMethod||"HMAC-SHA1"};return this.realm=a.realm||b,this.requestTokenUrl=a.requestTokenUrl||b,this.authorizationUrl=a.authorizationUrl||b,this.accessTokenUrl=a.accessTokenUrl||b,this.getAccessToken=function(){return[c.accessTokenKey,c.accessTokenSecret]},this.getAccessTokenKey=function(){return c.accessTokenKey},this.getAccessTokenSecret=function(){return c.accessTokenSecret},this.setAccessToken=function(a,b){b&&(a=[a,b]),c.accessTokenKey=a[0],c.accessTokenSecret=a[1]},this.getVerifier=function(){return c.verifier},this.setVerifier=function(a){c.verifier=a},this.setCallbackUrl=function(a){c.callbackUrl=a},this.request=function(a){var b,e,m,n,o,p,q,r,s,t,u,v,x,z,A,B,w=[],y={};b=a.method||"GET",e=d(a.url),m=a.data||{},n=a.headers||{},o=a.success||function(){},p=a.failure||function(){},A=function(){var a=!1;for(var b in m)(m[b]instanceof File||"undefined"!=typeof m[b].fileName)&&(a=!0);return a}(),x=a.appendQueryString?a.appendQueryString:!1,c.enablePrivilege&&netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead UniversalBrowserWrite"),q=l(),q.onreadystatechange=function(){if(4===q.readyState){var e,a=/^(.*?):\s*(.*?)\r?$/gm,b=n,c={},d="";if(q.getAllResponseHeaders)for(d=q.getAllResponseHeaders();e=a.exec(d);)c[e[1]]=e[2];else if(q.getResponseHeaders){d=q.getResponseHeaders();for(var f=0,g=d.length;g>f;++f)c[d[f][0]]=d[f][1]}var h=!1;"Content-Type"in c&&"text/xml"==c["Content-Type"]&&(h=!0);var i={text:q.responseText,xml:h?q.responseXML:"",requestHeaders:b,responseHeaders:c};q.status>=200&&q.status<=226||304==q.status||0===q.status?o(i):q.status>=400&&0!==q.status&&p(i)}},s={oauth_callback:c.callbackUrl,oauth_consumer_key:c.consumerKey,oauth_token:c.accessTokenKey,oauth_signature_method:c.signatureMethod,oauth_timestamp:j(),oauth_nonce:k(),oauth_verifier:c.verifier,oauth_version:f},t=c.signatureMethod,z=e.query.toObject();for(r in z)y[r]=z[r];if(!("Content-Type"in n&&"application/x-www-form-urlencoded"!=n["Content-Type"]||A))for(r in m)y[r]=m[r];if(B=e.scheme+"://"+e.host+e.path,u=i(b,B,s,y),v=g.signatureMethod[t](c.consumerSecret,c.accessTokenSecret,u),s.oauth_signature=v,this.realm&&(s.realm=this.realm),c.proxyUrl&&(e=d(c.proxyUrl+e.path)),x||"GET"==b)e.query.setQueryParams(m),w=null;else if(A){if(A){w=new FormData;for(r in m)w.append(r,m[r])}}else if("string"==typeof m)w=m,"Content-Type"in n||(n["Content-Type"]="text/plain");else{for(r in m)w.push(g.urlEncode(r)+"="+g.urlEncode(m[r]+""));w=w.sort().join("&"),"Content-Type"in n||(n["Content-Type"]="application/x-www-form-urlencoded")}q.open(b,e+"",!0),q.setRequestHeader("Authorization","OAuth "+h(s)),q.setRequestHeader("X-Requested-With","XMLHttpRequest");for(r in n)q.setRequestHeader(r,n[r]);q.send(w)},this},get:function(a,b,c){this.request({url:a,success:b,failure:c})},post:function(a,b,c,d){this.request({method:"POST",url:a,data:b,success:c,failure:d})},getJSON:function(a,b,c){this.get(a,function(a){b(JSON.parse(a.text))},c)},postJSON:function(a,b,c,d){this.request({method:"POST",url:a,data:JSON.stringify(b),success:function(a){c(JSON.parse(a.text))},failure:d,headers:{"Content-Type":"application/json"}})},parseTokenRequest:function(a,b){switch(b){case"text/xml":var c=a.xml.getElementsByTagName("token"),d=a.xml.getElementsByTagName("secret");i[g.urlDecode(c[0])]=g.urlDecode(d[0]);break;default:for(var e=0,f=a.text.split("&"),h=f.length,i={};h>e;++e){var j=f[e].split("=");i[g.urlDecode(j[0])]=g.urlDecode(j[1])}}return i},fetchRequestToken:function(a,b){var c=this;c.setAccessToken("","");var d=c.authorizationUrl;this.get(this.requestTokenUrl,function(b){var e=c.parseTokenRequest(b,b.responseHeaders["Content-Type"]||void 0);c.setAccessToken([e.oauth_token,e.oauth_token_secret]),a(d+"?"+b.text)},b)},fetchAccessToken:function(a,b){var c=this;this.get(this.accessTokenUrl,function(b){var d=c.parseTokenRequest(b,b.responseHeaders["Content-Type"]||void 0);c.setAccessToken([d.oauth_token,d.oauth_token_secret]),c.setVerifier(""),a(b)},b)}},g.signatureMethod={"HMAC-SHA1":function(b,c,d){var e,f,h=g.urlEncode;return b=h(b),c=h(c||""),e=b+"&"+c,f=t(s.prototype,e,d),a.btoa(f)}},g.urlEncode=function(a){function b(a){var b=a.toString(16).toUpperCase();return b.length<2&&(b=0+b),"%"+b}if(!a)return"";a+="";var e,g,c=/[ \t\r\n!*"'();:@&=+$,\/?%#\[\]<>{}|`^\\\u0080-\uffff]/,d=a.length,f=a.split("");for(e=0;d>e;e++)(g=f[e].match(c))&&(g=g[0].charCodeAt(0),128>g?f[e]=b(g):2048>g?f[e]=b(192+(g>>6))+b(128+(63&g)):65536>g?f[e]=b(224+(g>>12))+b(128+(63&g>>6))+b(128+(63&g)):2097152>g&&(f[e]=b(240+(g>>18))+b(128+(63&g>>12))+b(128+(63&g>>6))+b(128+(63&g))));return f.join("")},g.urlDecode=function(a){return a?a.replace(/%[a-fA-F0-9]{2}/gi,function(a){return String.fromCharCode(parseInt(a.replace("%",""),16))}):""},s.prototype=new s,s.prototype.blocksize=64,s.prototype.hash=function(a){function A(a,b,c,d){switch(a){case 0:return b&c|~b&d;case 1:case 3:return b^c^d;case 2:return b&c|b&d|c&d}return-1}var d,e,f,g,h,i,j,k,l,p,q,s,t,u,v,w,x,y,z,b=[1732584193,4023233417,2562383102,271733878,3285377520],c=[1518500249,1859775393,2400959708,3395469782];for(a.constructor===String&&(a=n(a.encodeUTF8())),f=a.length,g=Math.ceil((f+9)/this.blocksize)*this.blocksize-(f+9),e=Math.floor(f/4294967296),d=Math.floor(f%4294967296),h=[255&8*e>>24,255&8*e>>16,255&8*e>>8,255&8*e,255&8*d>>24,255&8*d>>16,255&8*d>>8,255&8*d],a=a.concat([128],m(g),h),i=Math.ceil(a.length/this.blocksize),j=0;i>j;j++){for(k=a.slice(j*this.blocksize,(j+1)*this.blocksize),l=k.length,p=[],q=0;l>q;q++)p[q>>>2]|=k[q]<<24-8*(q-4*(q>>2));for(s=b[0],t=b[1],u=b[2],v=b[3],w=b[4],x=0;80>x;x++)x>=16&&(p[x]=r(p[x-3]^p[x-8]^p[x-14]^p[x-16],1)),y=Math.floor(x/20),z=r(s,5)+A(y,t,u,v)+w+c[y]+p[x],w=v,v=u,u=r(t,30),t=s,s=z;b[0]+=s,b[1]+=t,b[2]+=u,b[3]+=v,b[4]+=w}return o(b)},g}(exports);var exports=exports||this;!function(a){var b="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";a.btoa=a.btoa||function(a){for(var e,f,c=0,d=a.length,g="";d>c;c+=3)e=[a.charCodeAt(c),a.charCodeAt(c+1),a.charCodeAt(c+2)],f=[e[0]>>2,(3&e[0])<<4|e[1]>>4,(15&e[1])<<2|e[2]>>6,63&e[2]],isNaN(e[1])&&(f[2]=64),isNaN(e[2])&&(f[3]=64),g+=b.charAt(f[0])+b.charAt(f[1])+b.charAt(f[2])+b.charAt(f[3]);return g}}(exports);;
-var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1!==n.url.indexOf("https://accounts.google.com/o/oauth2/approval")){s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a),o||s.close();var u=n.source.evalJS("document.getElementsByTagName('title')[0].innerText").split("=")[1];t.post("https://accounts.google.com/o/oauth2/token",{grant_type:"authorization_code",client_id:e.consumerKey,client_secret:e.consumerSecret,code:u,redirect_uri:e.callbackUrl},function(n){var i=JSON.parse(n.text);t.setAccessToken([i.access_token]),e.accessTokenKey=i.access_token,e.refreshTokenKey=i.refresh_token,e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:i.expires_in}),e.authorized=!0,o&&s.close()})}else s.remove(i),r.hide(),s.leftNavButton!==c&&(s.leftNavButton=c)})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Google Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.accessTokenKey=e.accessTokenKey,t.refreshTokenKey=e.refreshTokenKey,t.scope=e.scope,t.authorized=!1,t.listeners={},t.accessTokenKey&&t.refreshTokenKey&&(t.authorized=!0),t.callbackUrl=e.callbackUrl||"urn:ietf:wg:oauth:2.0:oob",e.requestTokenUrl=e.requestTokenUrl||"https://accounts.google.com/o/oauth2/auth",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?this.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:this.consumerKey,client_secret:this.consumerSecret,refresh_token:this.refreshTokenKey},function(t){var s=JSON.parse(t.text);e.oauthClient.setAccessToken([s.access_token]),e.accessTokenKey=s.access_token,e.refreshTokenKey=s.refresh_token,e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.oauthClient.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:s.expires_in})},function(t){e.oauthClient.setAccessToken([null]),e.accessTokenKey=null,e.refreshTokenKey=null,e.fireEvent("login",{success:!1,error:!0})}):(t.call(this),this.oauthClient.setAccessToken("",""),e.webView.url=this.oauthClient.requestTokenUrl+"?client_id="+this.consumerKey+"&redirect_uri="+this.callbackUrl+"&scope="+this.scope+"&response_type=code")},i.prototype.request=function(e,t,s,o,n){var i=this,r=this.oauthClient,c=e;s.Authorization="OAuth "+r.getAccessTokenKey(),r.request({method:o,url:c,data:t,headers:s,success:function(e){n.call(i,{success:!0,error:!1,result:e})},failure:function(e){n.call(i,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.refreshTokenKey=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i.prototype.refreshAccessToken=function(){var e=this;e.oauthClient.post("https://accounts.google.com/o/oauth2/token",{grant_type:"refresh_token",client_id:e.consumerKey,client_secret:e.consumerSecret,refresh_token:e.refreshTokenKey},function(t){var s=JSON.parse(t.text);e.oauthClient.setAccessToken([s.access_token]),e.accessTokenKey=s.access_token,e.refreshTokenKey=s.refresh_token,e.fireEvent("refresh",{success:!0,error:!1,accessTokenKey:e.oauthClient.getAccessTokenKey(),refreshTokenKey:e.refreshTokenKey,expiresIn:s.expires_in})},function(t){e.fireEvent("refresh",{success:!1,error:!0})})},i}(this);var exports=exports||this;exports.Linkedin=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a);else{s.leftNavButton!==c&&(s.leftNavButton=c);var u=n.source.evalJS("document.getElementsByClassName('access-code')[0].innerText");u?(o||s.close(),t.accessTokenUrl="https://api.linkedin.com/uas/oauth/accessToken?oauth_verifier="+u,t.fetchAccessToken(function(n){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,o&&s.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(s.remove(i),r.hide())}})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Linkedin Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.authorizeUrl="https://www.linkedin.com/uas/oauth/authorize",t.accessTokenKey=e.accessTokenKey,t.accessTokenSecret=e.accessTokenSecret,t.scope=e.scope,t.authorized=!1,t.listeners={},t.accessTokenKey&&(t.authorized=!0),t.callbackUrl=e.callbackUrl||"oob",e.requestTokenUrl=e.requestTokenUrl||"https://api.linkedin.com/uas/oauth/requestToken",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?setTimeout(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.accessTokenKey,accessTokenSecret:e.accessTokenSecret})},1):(t.call(this),this.oauthClient.fetchRequestToken(function(t){var s=e.authorizeUrl+t;e.webView.url=s},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})}))},i.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.linkedin.com/"+e,t.access_token=this.accessTokenKey,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i}(this);var exports=exports||this;exports.Twitter=function(e){function t(){var e=this,t=this.oauthClient,s=Ti.UI.createWindow({title:this.windowTitle}),n=Ti.UI.createWebView(),i=Ti.UI.createView({backgroundColor:"black",opacity:.7,zIndex:1}),r=Titanium.UI.createActivityIndicator({height:50,width:10,message:"Loading...",color:"white"}),c=Ti.UI.createButton({title:this.windowClose}),a=Ti.UI.createButton({title:this.windowBack});this.webView=n,s.leftNavButton=c,r.show(),i.add(r),s.add(i),s.open({modal:!0}),s.add(n),c.addEventListener("click",function(t){s.close(),e.fireEvent("cancel",{success:!1,error:"The user cancelled.",result:null})}),a.addEventListener("click",function(e){n.goBack()}),n.addEventListener("beforeload",function(e){o||s.add(i),r.show()}),n.addEventListener("load",function(n){if(-1===n.url.indexOf(e.authorizeUrl))s.remove(i),r.hide(),s.leftNavButton!==a&&(s.leftNavButton=a);else{s.leftNavButton!==c&&(s.leftNavButton=c);var u=n.source.evalJS("document.getElementById('oauth_pin').getElementsByTagName('code')[0].innerText");u?(o||s.close(),t.accessTokenUrl="https://api.twitter.com/oauth/access_token?oauth_verifier="+u,t.fetchAccessToken(function(n){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:t.getAccessTokenKey(),accessTokenSecret:t.getAccessTokenSecret()}),e.authorized=!0,o&&s.close()},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})})):(s.remove(i),r.hide())}})}var s=function(){},o="android"===Ti.Platform.osname,n={OAuth:exports.OAuth},i=function(e){var t;return t=this instanceof i?this:new s,e||(e={}),t.windowTitle=e.windowTitle||"Twitter Authorization",t.windowClose=e.windowClose||"Close",t.windowBack=e.windowBack||"Back",t.consumerKey=e.consumerKey,t.consumerSecret=e.consumerSecret,t.authorizeUrl="https://api.twitter.com/oauth/authorize",t.accessTokenKey=e.accessTokenKey,t.accessTokenSecret=e.accessTokenSecret,t.authorized=!1,t.listeners={},t.accessTokenKey&&t.accessTokenSecret&&(t.authorized=!0),e.requestTokenUrl=e.requestTokenUrl||"https://api.twitter.com/oauth/request_token",t.oauthClient=n.OAuth(e),t};return s.prototype=i.prototype,i.prototype.authorize=function(){var e=this;this.authorized?setTimeout(function(){e.fireEvent("login",{success:!0,error:!1,accessTokenKey:e.accessTokenKey,accessTokenSecret:e.accessTokenSecret})},1):(t.call(this),this.oauthClient.fetchRequestToken(function(t){var s=e.authorizeUrl+t;e.webView.url=s},function(t){e.fireEvent("login",{success:!1,error:"Failure to fetch access token, please try again.",result:t})}))},i.prototype.request=function(e,t,s,o,n){var i,r=this,c=this.oauthClient;i=e.match(/^https?:\/\/.+/i)?e:"https://api.twitter.com/"+e,c.request({method:o,url:i,data:t,headers:s,success:function(e){n.call(r,{success:!0,error:!1,result:e})},failure:function(e){n.call(r,{success:!1,error:"Request failed",result:e})}})},i.prototype.logout=function(e){this.oauthClient.setAccessToken("",""),this.accessTokenKey=null,this.accessTokenSecret=null,this.authorized=!1,e()},i.prototype.addEventListener=function(e,t){this.listeners=this.listeners||{},this.listeners[e]=this.listeners[e]||[],this.listeners[e].push(t)},i.prototype.fireEvent=function(e,t){for(var s=this.listeners[e]||[],o=0;o<s.length;o++)s[o].call(this,t)},i}(this);;
-}.call(this));;
 /*!
  * Copyright (c) 2015 Kinvey, Inc.
  *
@@ -137,7 +125,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
      * @type {string}
      * @default
      */
-    Kinvey.SDK_VERSION = '1.3.3';
+    Kinvey.SDK_VERSION = '1.3.4';
 
     // Properties.
     // -----------
@@ -402,7 +390,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
         // Initialize the synchronization namespace and restore the active user.
         return Kinvey.Sync.init(options.sync);
       }).then(function() {
-        log('Kinvey initialized, running version: js-titanium/1.3.3');
+        log('Kinvey initialized, running version: js-backbone/1.3.4');
         return restoreActiveUser(options);
       });
 
@@ -1780,7 +1768,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       }
 
       // Return the device information string.
-      var parts = ['js-titanium/1.3.3'];
+      var parts = ['js-backbone/1.3.4'];
       if(0 !== libraries.length) { // Add external library information.
         parts.push('(' + libraries.sort().join(', ') + ')');
       }
@@ -5488,7 +5476,7 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @return {Boolean} NodeJS
        */
       isNode: function() {
-        return('undefined' !== typeof module && module.exports);
+        return(typeof process !== 'undefined' && typeof require !== 'undefined');
       }
     };
 
@@ -7128,23 +7116,30 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
        * @return {Promise} Upgrade has completed
        */
       upgrade: function() {
-        // Read the existing version of the database
-        return Database.find(Database.versionTable).then(null, function() {
-          return [undefined];
-        }).then(function(versions) {
-          var doc = versions[0] || {};
-          return Database.onUpgrade(doc.version, Database.version).then(function() {
-            return doc;
-          });
-        }).then(function(doc) {
-          // Update the version doc
-          doc.version = Database.version;
+        try {
+          // Read the existing version of the database
+          return Database.find(Database.versionTable).then(null, function() {
+            return [undefined];
+          }).then(function(versions) {
+            var doc = versions[0] || {};
+            return Database.onUpgrade(doc.version, Database.version).then(function() {
+              return doc;
+            });
+          }).then(function(doc) {
+            // Update the version doc
+            doc.version = Database.version;
 
-          // Save the version doc
-          return Database.save(Database.versionTable, doc);
-        }).then(function() {
-          return;
-        });
+            // Save the version doc
+            return Database.save(Database.versionTable, doc);
+          }).then(function() {
+            return;
+          });
+        }
+        catch(err) {
+          // Catch unsupported database methods error and
+          // just resolve
+          return Kinvey.Defer.resolve();
+        }
       },
 
       /**
@@ -10295,1793 +10290,964 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
     // Use the browser adapter.
     Social.use(SocialAdapter);
 
-    // Provide integration with Backbone (used by Titanium Alloy) if available. 
-    if('undefined' !== typeof Backbone) {
+    // `Storage` adapter for
+    // [localStorage](http://www.w3.org/TR/webstorage/#the-localstorage-attribute).
+    var localStorageAdapter = {};
+    if('undefined' !== typeof localStorage) {
+      // The storage methods are executed in the background. Therefore, implement a
+      // queue to force the background processes to execute serially.
+      var storagePromise = Kinvey.Defer.resolve(null);
 
-      /* global _: true */
-
-      // Backbone.
-      // ---------
-
-      // All Backbone shim functionality will be appended to `Kinvey.Backbone`.
-
-      /**
-       * @memberof! <global>
-       * @namespace Kinvey.Backbone
-       */
-      Kinvey.Backbone = /** @lends Kinvey.Backbone */ {
-        /**
-         * Returns the active user as `Kinvey.Backbone.User` instance.
-         *
-         * @returns {?Kinvey.Backbone.User} The user model, or `null` if there is no
-         *            active user.
-         */
-        getActiveUser: function() {
-          var user = Kinvey.getActiveUser();
-          return null !== user ? new Kinvey.Backbone.User(user) : null;
-        }
-      };
-
-      // Error-handling.
-      // ---------------
-
-      // Backbone errors.
-      /**
-       * @memberof Kinvey.Error
-       * @constant
-       * @default
-       */
-      Kinvey.Error.NOT_LOGGED_IN = 'NotLoggedIn';
-
-      /**
-       * Not logged in.
-       *
-       * @constant
-       * @type {Object}
-       * @default
-       */
-      ClientError[Kinvey.Error.NOT_LOGGED_IN] = {
-        name: Kinvey.Error.NOT_LOGGED_IN,
-        description: 'This user is not logged in.',
-        debug: ''
-      };
-
-      // Utils.
-      // ------
-
-      // Define the Sync mixin.
       /**
        * @private
-       * @namespace SyncMixin
+       * @namespace
        */
-      var SyncMixin = /** @lends SyncMixin */ {
+      localStorageAdapter = {
         /**
-         * Invokes the persistence layer.
-         * See [Backbone.js](http://backbonejs.org/#Sync).
-         *
-         * @member
-         * @default
-         * @type {Kinvey.Backbone.Sync}
+         * @augments {Storage._destroy}
          */
-        sync: function() {
-          return Kinvey.Backbone.Sync.apply(this, arguments);
-        }
-      };
-
-      // Helper function to wrap the optional callbacks with a default success and
-      // error callback.
-      var backboneWrapCallbacks = function(model, options, mutate) {
-        // Cast arguments.
-        mutate = 'undefined' === typeof mutate ? true : mutate;
-
-        // Extend the success callback.
-        var success = options.success;
-        options.success = function(response) {
-          // If `mutate`, update the model.
-          if(mutate) {
-            if(model instanceof Backbone.Model) {
-              if(!model.set(model.parse(response, options), options)) {
-                return false;
-              }
-            }
-            else { // Update the collection.
-              var method = options.reset ? 'reset' : 'set';
-              if(!model[method]) { // Backbone < 1.0.0 does not have the set method.
-                // If 0.9.9 & 0.9.10, use update. Otherwise, use reset.
-                method = isFunction(model.update) ? 'update' : 'reset';
-              }
-              model[method](response, options);
-            }
-          }
-
-          // Invoke the application-level success handler.
-          if(success) {
-            success(model, response, options);
-          }
-
-          // Trigger the `sync` event.
-          if(mutate) {
-            model.trigger('sync', model, response, options);
-          }
-        };
-
-        // Extend the error callback.
-        var error = options.error;
-        options.error = function(response) {
-          // Invoke the application-level error handler.
-          if(error) {
-            error(model, response, options);
-          }
-
-          // Trigger the `error` event.
-          if(mutate) {
-            model.trigger('error', model, response, options);
-          }
-        };
-      };
-
-      // Deferreds.
-      // ----------
-
-      // Helper function to translate a `Kinvey.Defer` to a Backbone compatible
-      // promise. This helper is necessary because jQuery “promises” are
-      // [not really](http://domenic.me/2012/10/14/youre-missing-the-point-of-promises/)
-      // promises. If Backbone relies on Zepto, return the Kinvey promise as Zepto
-      // does not have the concept of deferreds.
-      var kinveyToBackbonePromise = function(kinveyPromise, options) {
-        // Backbone expects multiple arguments as part of the resolve or reject
-        // handler. Add these here.
-        var promise = kinveyPromise.then(function(value) {
-          var args = options.xhr ? [options.xhr.statusText, options.xhr] : [];
-          return [value].concat(args);
-        }, function(reason) {
-          var args = options.xhr ? [options.xhr.statusText, options.xhr] : [null, null];
-          return Kinvey.Defer.reject(args.concat([reason]));
-        });
-
-        // If Backbone does not rely on jQuery, return the Kinvey promise.
-        if('undefined' === typeof jQuery || 'undefined' === typeof jQuery.Deferred) {
-          return promise;
-        }
-
-        // Convert the Kinvey promise into a jQuery deferred and return it.
-        var deferred = jQuery.Deferred();
-        promise.then(function(args) {
-          deferred.resolve.apply(deferred, args);
-        }, function(args) {
-          deferred.reject.apply(deferred, args);
-        });
-        return deferred.promise();
-      };
-
-      // Data Store.
-      // -----------
-
-      // Expose a `Kinvey.Backbone` model and collection mixin which can be used to
-      // extend Backbone’s model and collection. Mixins follow the
-      // [mixin](http://ricostacruz.com/backbone-patterns/#mixins) pattern.
-
-      // Define the model mixin. It preseeds the models’ `id`, as well as its `sync`
-      // function.
-
-      /**
-       * @memberof! <global>
-       * @mixin Kinvey.Backbone.ModelMixin
-       * @borrows SyncMixin.sync as sync
-       */
-      Kinvey.Backbone.ModelMixin = _.extend({}, SyncMixin, /** @lends Kinvey.Backbone.ModelMixin */ {
-        /**
-         * The models’ unique key.
-         * See [Backbone.js.](http://backbonejs.org/#Model-idAttribute).
-         *
-         * @default
-         * @type {string}
-         */
-        idAttribute: '_id',
-
-        /**
-         * List of the models’ relations.
-         *
-         * @default
-         * @type {Array}
-         */
-        relations: []
-      });
-
-      // Define the collection mixin. It preseeds the `sync`, and adds the
-      // aggregation and query related methods.
-
-      /**
-       * @memberof! <global>
-       * @mixin Kinvey.Backbone.CollectionMixin
-       * @borrows SyncMixin.sync as sync
-       */
-      Kinvey.Backbone.CollectionMixin = _.extend({},
-        SyncMixin,
-        /** @lends Kinvey.Backbone.CollectionMixin */
-        {
-          /**
-           * The collections’ query, applied to the clean and fetch methods.
-           *
-           * @type {Kinvey.Query}
-           */
-          query: null,
-
-          /**
-           * Cleans the collection.
-           *
-           * @param {Object} [options] Options.
-           * @returns {Promise} The response, status, and xhr objects.
-           */
-          clean: function(options) {
-            // Cast arguments.
-            options = options ? _.clone(options) : {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            backboneWrapCallbacks(this, options);
-
-            // Invoke the persistence layer.
-            return this.sync('delete', this, options);
-          },
-
-          /**
-           * Counts the number of documents in the collection.
-           *
-           * @param {Object} options Options.
-           * @returns {Promise} The response, status, and xhr objects.
-           */
-          count: function(options) {
-            // Cast arguments.
-            options = _.clone(options) || {};
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options, false);
-
-            // Prepare the response.
-            var collection = _.result(this, 'url');
-            var query = options.query || this.query;
-            var promise;
-            if(USERS === collection) {
-              promise = Kinvey.User.count(query, options);
-            }
-            else {
-              promise = Kinvey.DataStore.count(collection, query, options);
-            }
-
-            // Return the response.
-            return kinveyToBackbonePromise(promise, options);
-          },
-
-          /**
-           * Performs a group operation.
-           *
-           * @param {Kinvey.Aggregation} aggregation The aggregation.
-           * @param {Object} options Options.
-           * @returns {Promise} The response, status, and xhr objects.
-           */
-          group: function(aggregation, options) {
-            // Cast arguments.
-            options = _.clone(options) || {};
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options, false);
-
-            // Apply query.
-            var query = options.query || this.query;
-            if(null != query) {
-              aggregation.query(query);
-            }
-
-            // Prepare the response.
-            var collection = _.result(this, 'url');
-            var promise;
-            if(USERS === collection) {
-              promise = Kinvey.User.group(aggregation, options);
-            }
-            else {
-              promise = Kinvey.DataStore.group(collection, aggregation, options);
-            }
-
-            // Return the response.
-            return kinveyToBackbonePromise(promise, options);
-          }
-        }
-      );
-
-      // Metadata.
-      // ---------
-
-      // The `Kinvey.Metadata` methods are mixed into Backbone models. To maintain
-      // the correct context, keep a `_metadata` property. Internally, the metadata
-      // (and ACL) operate on the models `attributes` property.
-      // NOTE Modifying the metadata (including the ACL) won’t emit `change` events.
-
-      // Helper function to lazy-initialize the metadata instance.
-      var backboneWrapMetadata = function(fn) {
-        return function() {
-          if(null === this._metadata) {
-            this._metadata = new Kinvey.Metadata(this.attributes);
-          }
-          return fn.apply(this._metadata, arguments);
-        };
-      };
-
-      // Extend the mixin with the metadata functionality.
-      _.extend(Kinvey.Backbone.ModelMixin, /** @lends Kinvey.Backbone.ModelMixin */ {
-        // The email verification metadata method is added in
-        // `Kinvey.Backbone.UserMixin`.
-
-        /**
-         * The models’ metadata.
-         *
-         * @private
-         * @type {Kinvey.Metadata}
-         */
-        _metadata: null,
-
-        /**
-         * Returns the models’ ACL.
-         *
-         * @method
-         * @returns {Kinvey.Acl}
-         */
-        getAcl: backboneWrapMetadata(Kinvey.Metadata.prototype.getAcl),
-
-        /**
-         * Returns the date when the entity was created.
-         *
-         * @method
-         * @returns {?Date} Created at date, or `null` if not set.
-         */
-        getCreatedAt: backboneWrapMetadata(Kinvey.Metadata.prototype.getCreatedAt),
-
-        /**
-         * Returns the date when the entity was last modified.
-         *
-         * @method
-         * @returns {?Date} Last modified date, or `null` if not set.
-         */
-        getLastModified: backboneWrapMetadata(Kinvey.Metadata.prototype.getLastModified),
-
-        /**
-         * Sets the models’ ACL.
-         *
-         * @param {Kinvey.Acl} acl The acl.
-         * @returns {Backbone.Model} The model.
-         */
-        setAcl: function() {
-          backboneWrapMetadata(Kinvey.Metadata.prototype.setAcl).apply(this, arguments);
-          return this;
-        }
-      });
-
-      // Users.
-      // ------
-
-      // Expose a `Kinvey.Backbone` user model and user collection mixin can be used
-      // to extend Backbone’s model and collection.
-
-      // Define the general user mixin. It preseeds the `url`.
-      /**
-       * @private
-       * @namespace UserMixin
-       */
-      var UserMixin = /** @lends UserMixin */ {
-        /**
-         * The models’ resource location.
-         * See [Backbone.js](http://backbonejs.org/#Model-url).
-         *
-         * @default
-         * @type {string}
-         */
-        url: USERS
-      };
-
-      // Define the user model and collection mixins.
-
-      /**
-       * @memberof! <global>
-       * @mixin Kinvey.Backbone.UserMixin
-       * @mixes Kinvey.Backbone.ModelMixin
-       * @borrows UserMixin.url as url
-       */
-      Kinvey.Backbone.UserMixin = _.extend({},
-        Kinvey.Backbone.ModelMixin, UserMixin,
-        /** @lends Kinvey.Backbone.UserMixin */
-        {
-          /**
-           * Links a social identity to the user.
-           *
-           * @param {string} provider The provider.
-           * @param {Object} [options] Options.
-           * @returns {Promise} The model, response, and options objects.
-           */
-          connect: function(provider, options) {
-            // Cast arguments.
-            options = options ? _.clone(options) : {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options);
-
-            // Return the response.
-            var promise = Kinvey.Social.connect(this.attributes, provider, options);
-            return kinveyToBackbonePromise(promise, options);
-          },
-
-          /**
-           * Removes a social identity from the user.
-           *
-           * @param {string} provider The provider.
-           * @param {Object} [options] Options.
-           * @returns {Promise} The model, response, and options objects.
-           */
-          disconnect: function(provider, options) {
-            // Cast arguments.
-            options = options ? _.clone(options) : {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options);
-
-            // Return the response.
-            var promise = Kinvey.Social.disconnect(this.attributes, provider, options);
-            return kinveyToBackbonePromise(promise, options);
-          },
-
-          /**
-           * Returns the email verification status.
-           *
-           * @method
-           * @returns {?Object} The email verification status, or `null` if not set.
-           */
-          getEmailVerification: backboneWrapMetadata(Kinvey.Metadata.prototype.getEmailVerification),
-
-          /**
-           * Returns whether the user is logged in.
-           *
-           * @returns {boolean}
-           */
-          isLoggedIn: function() {
-            var user = Kinvey.getActiveUser();
-            if(null !== user) {
-              var kmd = this.get('_kmd');
-              return null != kmd && kmd.authtoken === user._kmd.authtoken;
-            }
-            return false;
-          },
-
-          /**
-           * Logs in an existing user.
-           *
-           * @param {Object|string} usernameOrData Username, or user data.
-           * @param {string} [password] Password.
-           * @param {Object} [options] Options.
-           * @returns {Promise} The model, response, and options objects.
-           */
-          login: function(usernameOrData, password, options) {
-            // Cast arguments.
-            options = _.clone(isObject(usernameOrData) ? password : options) || {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options);
-
-            // Return the response.
-            var promise = Kinvey.User.login(usernameOrData, password, options);
-            return kinveyToBackbonePromise(promise, options);
-          },
-
-          /**
-           * Logs out the user.
-           *
-           * @param {Object} [options] Options.
-           * @returns {Promise} The model, response, and options objects.
-           */
-          logout: function(options) {
-            // Cast arguments.
-            options = options ? _.clone(options) : {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options);
-
-            // Validate preconditions.
-            var promise;
-            if(!this.isLoggedIn()) {
-              var error = clientError(Kinvey.Error.NOT_LOGGED_IN);
-              promise = Kinvey.Defer.reject(error);
-              wrapCallbacks(promise, options);
-            }
-            else {
-              promise = Kinvey.User.logout(options);
-            }
-
-            // Return the response.
-            return kinveyToBackbonePromise(promise, options);
-          },
-
-          /**
-           * Retrieves information on the user.
-           *
-           * @param {Options} [options] Options.
-           * @returns {Promise} The model, response, and options objects.
-           */
-          me: function(options) {
-            // Cast arguments.
-            options = options ? _.clone(options) : {};
-            options.parse = 'undefined' === typeof options.parse ? true : options.parse;
-            options.subject = this; // Used by the persistence layer.
-            backboneWrapCallbacks(this, options);
-
-            // Validate preconditions.
-            var promise;
-            if(!this.isLoggedIn()) {
-              var error = clientError(Kinvey.Error.NOT_LOGGED_IN);
-              promise = Kinvey.Defer.reject(error);
-              wrapCallbacks(promise, options);
-            }
-            else {
-              promise = Kinvey.User.me(options);
-            }
-
-            // Return the response.
-            return kinveyToBackbonePromise(promise, options);
-          }
-        }
-      );
-
-      /**
-       * @memberof! <global>
-       * @mixin Kinvey.Backbone.StaticUserMixin
-       */
-      Kinvey.Backbone.StaticUserMixin = /** @lends Kinvey.Backbone.StaticUserMixin */ {
-        /**
-         * Requests e-mail verification for a user.
-         *
-         * @param {string} username Username.
-         * @param {Options} [options] Options.
-         * @returns {Promise} The response, status, and xhr objects.
-         */
-        verifyEmail: function(username, options) {
-          // Cast arguments.
-          options = options || {};
-
-          // Return the response.
-          var promise = Kinvey.User.verifyEmail(username, options);
-          return kinveyToBackbonePromise(promise, options);
-        },
-
-        /**
-         * Requests a username reminder for a user.
-         *
-         * @param {string} email E-mail.
-         * @param {Options} [options] Options.
-         * @returns {Promise} The response, status, and xhr objects.
-         */
-        forgotUsername: function(email, options) {
-          // Cast arguments.
-          options = options || {};
-
-          // Return the response.
-          var promise = Kinvey.User.forgotUsername(email, options);
-          return kinveyToBackbonePromise(promise, options);
-        },
-
-        /**
-         * Requests a password reset for a user.
-         *
-         * @param {string} username Username.
-         * @param {Options} [options] Options.
-         * @returns {Promise} The response, status, and xhr objects.
-         */
-        resetPassword: function(username, options) {
-          // Cast arguments.
-          options = options || {};
-
-          // Return the response.
-          var promise = Kinvey.User.resetPassword(username, options);
-          return kinveyToBackbonePromise(promise, options);
-        },
-
-        /**
-         * Checks whether a username exists.
-         *
-         * @param {string} username Username to check.
-         * @param {Options} [options] Options.
-         * @returns {Promise} The response, status, and xhr objects.
-         */
-        exists: function(username, options) {
-          // Cast arguments.
-          options = options || {};
-
-          // Return the response.
-          var promise = Kinvey.User.exists(username, options);
-          return kinveyToBackbonePromise(promise, options);
-        },
-
-        /**
-         * Restores a previously disabled user.
-         *
-         * @param {string} id User id.
-         * @param {Options} [options] Options.
-         * @returns {Promise} The response, status, and xhr objects.
-         */
-        restore: function(id, options) {
-          // Cast arguments.
-          options = options || {};
-
-          // Return the response.
-          var promise = Kinvey.User.restore(id, options);
-          return kinveyToBackbonePromise(promise, options);
-        }
-      };
-
-      /**
-       * @memberof! <global>
-       * @mixin Kinvey.Backbone.UserCollectionMixin
-       * @mixes Kinvey.Backbone.CollectionMixin
-       * @borrows UserMixin.url as url
-       */
-      Kinvey.Backbone.UserCollectionMixin = _.extend(
-        _.omit(Kinvey.Backbone.CollectionMixin, 'clean'), // Users cannot be cleaned.
-        UserMixin
-      );
-
-      // Persistence.
-      // ------------
-
-      // The `Kinvey.Backbone.Sync` method translates a Backbone CRUD method to
-      // either a `Kinvey.DataStore` or `Kinvey.User` method.
-
-      /**
-       * Returns an object containing all (nested) relations of the specified model.
-       *
-       * @param {string} mode The mode, read or write.
-       * @param {Backbone.Model} model The model.
-       * @throws {Kinvey.Error} collection or relatedModel must be set on the
-       *           relation.
-       * @returns {Object} The relations to in- and exclude.
-       */
-      var backboneRelations = function(mode, model) {
-        // Prepare the response.
-        var exclude = [];
-        var relations = {};
-
-        // The exclude property to check.
-        var prop = 'read' === mode ? 'autoFetch' : 'autoSave';
-
-        // Helper function to add relations to the stack.
-        var stack = [];
-        var addToStack = function(relations, depth, prefix) {
-          relations.forEach(function(relation) {
-            stack.push({
-              relation: relation,
-              depth: depth || 0,
-              prefix: prefix || null
-            });
+        _destroy: function(key) {
+          // Remove the item on our turn.
+          storagePromise = storagePromise.then(function() {
+            localStorage.removeItem(key);
+            return Kinvey.Defer.resolve(null);
           });
-        };
-        addToStack(model.relations || []);
+          return storagePromise;
+        },
 
-        // Traverse the stack and add the relations to the response.
-        var item;
-        while(null != (item = stack.shift())) {
-          var depth = item.depth;
-          var prefix = item.prefix;
-          var relation = item.relation;
+        /**
+         * @augments {Storage._get}
+         */
+        _get: function(key) {
+          // Retrieve the item on our turn.
+          storagePromise = storagePromise.then(function() {
+            var value = localStorage.getItem(key);
+            return Kinvey.Defer.resolve(value ? JSON.parse(value) : null);
+          });
+          return storagePromise;
+        },
 
-          // Include relations up to 10 levels deep.
-          if(10 === depth) {
-            continue;
-          }
-
-          // Obtain the relations’ prototype (if any).
-          var relatedModel = null;
-          if(relation.relatedModel) {
-            // `relatedModel` is either a string resolving to a global scope object,
-            // or a reference to a `Backbone.AssociatedModel` class.
-            relatedModel = (root[relation.relatedModel] || relation.relatedModel).prototype;
-          }
-
-          // Obtain, validate, and cast the collection.
-          var collection = relation.collection || _.result(relatedModel, 'url');
-          if(null == collection) {
-            throw new Kinvey.Error('collection or relatedModel must be set on the relation.');
-          }
-          if(0 === collection.indexOf('/')) { // Strip the leading slash (if any).
-            collection = collection.substr(1);
-          }
-
-          // Add the relation.
-          var key = null !== prefix ? prefix + '.' + relation.key : relation.key;
-          relations[key] = collection;
-          if(false === relation[prop]) {
-            exclude.push(key);
-          }
-
-          // Add any nested relations to the stack.
-          if(false !== relation[prop] && null != relatedModel && !isEmpty(relatedModel.relations)) {
-            addToStack(relatedModel.relations, depth + 1, key);
-          }
+        /**
+         * @augments {Storage._save}
+         */
+        _save: function(key, value) {
+          // Save the item on our turn.
+          storagePromise = storagePromise.then(function() {
+            localStorage.setItem(key, JSON.stringify(value));
+            return Kinvey.Defer.resolve(null);
+          });
+          return storagePromise;
         }
-
-        // Return the response.
-        return {
-          exclude: exclude,
-          relations: relations
-        };
       };
 
-      /**
-       * Translates and invokes a Kinvey method from a Backbone CRUD method.
-       *
-       * @param {string} method The CRUD method.
-       * @param {string} collection The collection.
-       * @param {?string} id The document id (if any).
-       * @param {?Object} document The document (if any).
-       * @param {Object} options Options.
-       * @returns {Promise} The response.
-       */
-      var backboneToKinveyCRUD = function(method, collection, id, data, options) {
-        // Cast arguments. An explicit `id` should override `data._id`.
-        if(null != id && isObject(data)) {
-          data._id = id;
-        }
-
-        // Use a query if `id` and `data` is not a document.
-        var query = null == id && (!isObject(data) || isArray(data));
-
-        // Translate Backbone methods to Kinvey methods.
-        var namespace = USERS === collection ? Kinvey.User : Kinvey.DataStore;
-        var methodMap = {
-          create: namespace[USERS === collection ? 'create' : 'save'],
-          read: query ? namespace.find : namespace.get,
-          update: namespace.update,
-          'delete': query ? namespace.clean : namespace.destroy
-        };
-
-        // Build arguments. Both `Kinvey.DataStore` and `Kinvey.User` expect the
-        // document id or data, together with `options`. `Kinvey.DataStore`, however,
-        // requires an initial collection argument.
-        var args = [
-          query ? options.query : ('read' === method || 'delete' === method ? id : data),
-          options
-        ];
-        if(USERS !== collection) {
-          args.unshift(collection);
-        }
-
-        // Invoke the Kinvey method.
-        return methodMap[method].apply(namespace, args);
-      };
-
-      /**
-       * Persist a Backbone model to the Kinvey backend.
-       *
-       * @memberof! <global>
-       * @function Kinvey.Backbone.Sync
-       * @param {string} method The CRUD method.
-       * @param {Object} model The model to be saved, or the collection to be read.
-       * @param {Object} options Callbacks, and request options.
-       * @returns {Promise} The response.
-       */
-      Kinvey.Backbone.Sync = function(method, model, options) {
-        var error;
-
-        // Cast and validate arguments.
-        options.query = options.query || model.query; // Attach a (optional) query.
-        options.subject = model; // Used by the persistence layer.
-
-        // Extend the success handler to translate `silentFail` to silent when
-        // executing inside the Kinvey core.
-        var silent = options.silent;
-        var success = options.success;
-        options.silent = options.silentFail || false;
-        options.success = function(response) {
-          options.silent = silent; // Reset.
-
-          // Invoke the application-level success handler.
-          if(success) {
-            success(response);
-          }
-        };
-
-        // Obtain the url and document data.
-        var data = options.attrs || model.toJSON(options);
-        var url = options.url || _.result(model, 'url');
-        if(null == url) {
-          error = new Kinvey.Error('model or options argument must contain: url.');
-          return kinveyToBackbonePromise(Kinvey.Defer.reject(error), options);
-        }
-
-        // Strip the leading slash (if any).
-        if(0 === url.indexOf('/')) {
-          url = url.substr(1);
-        }
-
-        // Extract the collection and document id from the url.
-        var segments = url.split('/');
-        var collection = segments[0];
-        var id = segments[1] || data._id || null;
-
-        // Add support for references for both collections and models.
-        var relations = model.model ? model.model.prototype.relations : model.relations;
-        if(!isEmpty(relations)) {
-          var mode = 'read' === method ? 'read' : 'write';
-          relations = backboneRelations(mode, this.model ? this.model.prototype : this);
-          options.exclude = relations.exclude;
-          options.relations = relations.relations;
-        }
-
-        // Translate to `Kinvey` core function call and return the response.
-        var promise = backboneToKinveyCRUD(method, collection, id, data, options);
-        return kinveyToBackbonePromise(promise, options);
-      };
-
-
-      // Export.
-
-      // Extend Backbone model and collection to provide built-in models and
-      // collections for entities and users. Even though the user model and
-      // collection are close to the entity model and collection mixins, no
-      // no inheritance is applied:
-      // Kinvey.Backbone.User is not an instance of Kinvey.Backbone.Model.
-
-      // By default, extend `Backbone.Model`. However, for better integration with
-      // references, use `Backbone.AssociatedModel` instead if it is available.
-      var backboneModel;
-      if('undefined' !== typeof Backbone.AssociatedModel) {
-        backboneModel = Backbone.AssociatedModel;
-      }
-      else {
-        backboneModel = Backbone.Model;
-      }
-
-      // Define the `Kinvey.Backbone` classes.
-
-      /**
-       * The Kinvey.Backbone.Model class.
-       *
-       * @memberof! <global>
-       * @class Kinvey.Backbone.Model
-       * @extends Backbone.Model
-       * @mixes Kinvey.Backbone.ModelMixin
-       */
-      Kinvey.Backbone.Model = backboneModel.extend(Kinvey.Backbone.ModelMixin);
-
-      /**
-       * The Kinvey.Backbone.Collection class.
-       *
-       * @memberof! <global>
-       * @class Kinvey.Backbone.Collection
-       * @extends Backbone.Collection
-       * @mixes Kinvey.Backbone.CollectionMixin
-       */
-      Kinvey.Backbone.Collection = Backbone.Collection.extend(
-        // The mixin does not have access to the parent class, therefore the
-        // functionality below is only available on `Kinvey.Backbone.Collection`.
-        _.extend({}, Kinvey.Backbone.CollectionMixin, /** @lends Kinvey.Backbone.Collection# */ {
-          /**
-           * The model class that the collection contains.
-           * See [Backbone.js](http://backbonejs.org/#Collection-model).
-           *
-           * @default
-           * @type {Kinvey.Backbone.Model}
-           */
-          model: Kinvey.Backbone.Model,
-
-          /**
-           * Initializes the collection.
-           * See [Backbone.js](http://backbonejs.org/#Collection-constructor).
-           *
-           * @param {Array} [models] List of models.
-           * @param {Object} [options] Options.
-           * @param {Kinvey.Query} [options.query] The collection query.
-           * @throws {Kinvey.Error} `options.query` must be of type: `Kinvey.Query`.
-           */
-          initialize: function(models, options) {
-            // Call parent.
-            var result = Backbone.Collection.prototype.initialize.apply(this, arguments);
-
-            // Cast arguments.
-            options = options || {};
-
-            // Validate arguments.
-            if(null != options.query && !(options.query instanceof Kinvey.Query)) {
-              throw new Kinvey.Error('options.query argument must be of type: Kinvey.Query.');
-            }
-            this.query = options.query;
-
-            // Return the parent’s response.
-            return result;
-          }
-        })
-      );
-
-
-      // Define the `Kinvey.Backbone` classes.
-
-      /**
-       * The Kinvey.Backbone.User class.
-       *
-       * @memberof! <global>
-       * @class Kinvey.Backbone.User
-       * @extends Backbone.Model
-       * @mixes Kinvey.Backbone.UserMixin
-       */
-      Kinvey.Backbone.User = backboneModel.extend(
-        Kinvey.Backbone.UserMixin, // Class properties.
-        Kinvey.Backbone.StaticUserMixin // Static properties.
-      );
-
-      /**
-       * The Kinvey.Backbone.UserCollection class.
-       *
-       * @memberof! <global>
-       * @class Kinvey.Backbone.UserCollection
-       * @extends Backbone.Collection
-       * @mixes Kinvey.Backbone.UserCollectionMixin
-       */
-      Kinvey.Backbone.UserCollection = Backbone.Collection.extend(
-        // The mixin does not have access to the parent class, therefore the
-        // functionality below is only available on `Kinvey.Backbone.UserCollection`.
-        _.extend({}, Kinvey.Backbone.UserCollectionMixin, /** @lends Kinvey.Backbone.UserCollection# */ {
-          /**
-           * The model class that the collection contains.
-           * See [Backbone.js](http://backbonejs.org/#Collection-model).
-           *
-           * @default
-           * @type {Kinvey.Backbone.User}
-           */
-          model: Kinvey.Backbone.User,
-
-          /**
-           * Initializes the collection.
-           * See [Backbone.js](http://backbonejs.org/#Collection-constructor).
-           * NOTE `initialize` is identical for both the entity and user collection.
-           *
-           * @method
-           * @param {Array} [models] List of users.
-           * @param {Object} [options] Options.
-           * @param {Kinvey.Query} [options.query] The collection query.
-           * @throws {Kinvey.Error} `options.query` must be of type: `Kinvey.Query`.
-           */
-          initialize: Kinvey.Backbone.Collection.prototype.initialize
-        })
-      );
-
+      // Use `localStorage` adapter.
+      Storage.use(localStorageAdapter);
     }
 
-    // Determine whether the application is native or runs in the browser.
-    var isMobileWeb = 'mobileweb' === Titanium.Platform.getName();
+    /* global _: true */
 
-    // Helper function to invoke
-    // [TiPlatformConnect](https://github.com/k0sukey/TiPlatformConnect) to link a
-    // social identity.
-    var tiPlatformConnect = function(provider, options) {
-      // Debug.
-      if(KINVEY_DEBUG) {
-        log('Obtaining a social identity.', arguments);
+    // Backbone.
+    // ---------
+
+    // All Backbone shim functionality will be appended to `Kinvey.Backbone`.
+
+    /**
+     * @memberof! <global>
+     * @namespace Kinvey.Backbone
+     */
+    Kinvey.Backbone = /** @lends Kinvey.Backbone */ {
+      /**
+       * Returns the active user as `Kinvey.Backbone.User` instance.
+       *
+       * @returns {?Kinvey.Backbone.User} The user model, or `null` if there is no
+       *            active user.
+       */
+      getActiveUser: function() {
+        var user = Kinvey.getActiveUser();
+        return null !== user ? new Kinvey.Backbone.User(user) : null;
       }
+    };
 
-      // Validate arguments.
-      options = options || {};
-      if(null == options.consumerKey) {
-        throw new Kinvey.Error('options argument must contain: consumerKey.');
+    // Error-handling.
+    // ---------------
+
+    // Backbone errors.
+    /**
+     * @memberof Kinvey.Error
+     * @constant
+     * @default
+     */
+    Kinvey.Error.NOT_LOGGED_IN = 'NotLoggedIn';
+
+    /**
+     * Not logged in.
+     *
+     * @constant
+     * @type {Object}
+     * @default
+     */
+    ClientError[Kinvey.Error.NOT_LOGGED_IN] = {
+      name: Kinvey.Error.NOT_LOGGED_IN,
+      description: 'This user is not logged in.',
+      debug: ''
+    };
+
+    // Utils.
+    // ------
+
+    // Define the Sync mixin.
+    /**
+     * @private
+     * @namespace SyncMixin
+     */
+    var SyncMixin = /** @lends SyncMixin */ {
+      /**
+       * Invokes the persistence layer.
+       * See [Backbone.js](http://backbonejs.org/#Sync).
+       *
+       * @member
+       * @default
+       * @type {Kinvey.Backbone.Sync}
+       */
+      sync: function() {
+        return Kinvey.Backbone.Sync.apply(this, arguments);
       }
-      if(null == options.consumerSecret) {
-        throw new Kinvey.Error('options argument must contain: consumerSecret.');
-      }
+    };
 
-      // Prepare the response.
-      var deferred = Kinvey.Defer.deferred();
+    // Helper function to wrap the optional callbacks with a default success and
+    // error callback.
+    var backboneWrapCallbacks = function(model, options, mutate) {
+      // Cast arguments.
+      mutate = 'undefined' === typeof mutate ? true : mutate;
 
-      // Invoke the `TiPlatformConnect` plugin.
-      var adapter = root.__KinveySocialAdapter[provider](options);
-      adapter.addEventListener('login', function(event) {
-        // Upon success, fulfill the promise with the obtained access tokens.
-        if(event.success) {
-          return deferred.resolve({
-            consumer_key: options.consumerKey,
-            consumer_secret: options.consumerSecret,
-            access_token: event.accessTokenKey,
-            access_token_secret: event.accessTokenSecret
-          });
+      // Extend the success callback.
+      var success = options.success;
+      options.success = function(response) {
+        // If `mutate`, update the model.
+        if(mutate) {
+          if(model instanceof Backbone.Model) {
+            if(!model.set(model.parse(response, options), options)) {
+              return false;
+            }
+          }
+          else { // Update the collection.
+            var method = options.reset ? 'reset' : 'set';
+            if(!model[method]) { // Backbone < 1.0.0 does not have the set method.
+              // If 0.9.9 & 0.9.10, use update. Otherwise, use reset.
+              method = isFunction(model.update) ? 'update' : 'reset';
+            }
+            model[method](response, options);
+          }
         }
 
-        // Failed to obtain the access tokens, reject the promise.
-        var error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-          description: event.error,
-          debug: event
-        });
-        deferred.reject(error);
+        // Invoke the application-level success handler.
+        if(success) {
+          success(model, response, options);
+        }
+
+        // Trigger the `sync` event.
+        if(mutate) {
+          model.trigger('sync', model, response, options);
+        }
+      };
+
+      // Extend the error callback.
+      var error = options.error;
+      options.error = function(response) {
+        // Invoke the application-level error handler.
+        if(error) {
+          error(model, response, options);
+        }
+
+        // Trigger the `error` event.
+        if(mutate) {
+          model.trigger('error', model, response, options);
+        }
+      };
+    };
+
+    // Deferreds.
+    // ----------
+
+    // Helper function to translate a `Kinvey.Defer` to a Backbone compatible
+    // promise. This helper is necessary because jQuery “promises” are
+    // [not really](http://domenic.me/2012/10/14/youre-missing-the-point-of-promises/)
+    // promises. If Backbone relies on Zepto, return the Kinvey promise as Zepto
+    // does not have the concept of deferreds.
+    var kinveyToBackbonePromise = function(kinveyPromise, options) {
+      // Backbone expects multiple arguments as part of the resolve or reject
+      // handler. Add these here.
+      var promise = kinveyPromise.then(function(value) {
+        var args = options.xhr ? [options.xhr.statusText, options.xhr] : [];
+        return [value].concat(args);
+      }, function(reason) {
+        var args = options.xhr ? [options.xhr.statusText, options.xhr] : [null, null];
+        return Kinvey.Defer.reject(args.concat([reason]));
       });
 
-      // Trigger the authorization flow.
-      adapter.authorize();
+      // If Backbone does not rely on jQuery, return the Kinvey promise.
+      if('undefined' === typeof jQuery || 'undefined' === typeof jQuery.Deferred) {
+        return promise;
+      }
 
-      // Debug.
-      if(KINVEY_DEBUG) {
-        deferred.promise.then(function(response) {
-          log('Obtained the social identity.', response);
-        }, function(error) {
-          log('Failed to obtain a social identity.', error);
+      // Convert the Kinvey promise into a jQuery deferred and return it.
+      var deferred = jQuery.Deferred();
+      promise.then(function(args) {
+        deferred.resolve.apply(deferred, args);
+      }, function(args) {
+        deferred.reject.apply(deferred, args);
+      });
+      return deferred.promise();
+    };
+
+    // Data Store.
+    // -----------
+
+    // Expose a `Kinvey.Backbone` model and collection mixin which can be used to
+    // extend Backbone’s model and collection. Mixins follow the
+    // [mixin](http://ricostacruz.com/backbone-patterns/#mixins) pattern.
+
+    // Define the model mixin. It preseeds the models’ `id`, as well as its `sync`
+    // function.
+
+    /**
+     * @memberof! <global>
+     * @mixin Kinvey.Backbone.ModelMixin
+     * @borrows SyncMixin.sync as sync
+     */
+    Kinvey.Backbone.ModelMixin = _.extend({}, SyncMixin, /** @lends Kinvey.Backbone.ModelMixin */ {
+      /**
+       * The models’ unique key.
+       * See [Backbone.js.](http://backbonejs.org/#Model-idAttribute).
+       *
+       * @default
+       * @type {string}
+       */
+      idAttribute: '_id',
+
+      /**
+       * List of the models’ relations.
+       *
+       * @default
+       * @type {Array}
+       */
+      relations: []
+    });
+
+    // Define the collection mixin. It preseeds the `sync`, and adds the
+    // aggregation and query related methods.
+
+    /**
+     * @memberof! <global>
+     * @mixin Kinvey.Backbone.CollectionMixin
+     * @borrows SyncMixin.sync as sync
+     */
+    Kinvey.Backbone.CollectionMixin = _.extend({},
+      SyncMixin,
+      /** @lends Kinvey.Backbone.CollectionMixin */
+      {
+        /**
+         * The collections’ query, applied to the clean and fetch methods.
+         *
+         * @type {Kinvey.Query}
+         */
+        query: null,
+
+        /**
+         * Cleans the collection.
+         *
+         * @param {Object} [options] Options.
+         * @returns {Promise} The response, status, and xhr objects.
+         */
+        clean: function(options) {
+          // Cast arguments.
+          options = options ? _.clone(options) : {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          backboneWrapCallbacks(this, options);
+
+          // Invoke the persistence layer.
+          return this.sync('delete', this, options);
+        },
+
+        /**
+         * Counts the number of documents in the collection.
+         *
+         * @param {Object} options Options.
+         * @returns {Promise} The response, status, and xhr objects.
+         */
+        count: function(options) {
+          // Cast arguments.
+          options = _.clone(options) || {};
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options, false);
+
+          // Prepare the response.
+          var collection = _.result(this, 'url');
+          var query = options.query || this.query;
+          var promise;
+          if(USERS === collection) {
+            promise = Kinvey.User.count(query, options);
+          }
+          else {
+            promise = Kinvey.DataStore.count(collection, query, options);
+          }
+
+          // Return the response.
+          return kinveyToBackbonePromise(promise, options);
+        },
+
+        /**
+         * Performs a group operation.
+         *
+         * @param {Kinvey.Aggregation} aggregation The aggregation.
+         * @param {Object} options Options.
+         * @returns {Promise} The response, status, and xhr objects.
+         */
+        group: function(aggregation, options) {
+          // Cast arguments.
+          options = _.clone(options) || {};
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options, false);
+
+          // Apply query.
+          var query = options.query || this.query;
+          if(null != query) {
+            aggregation.query(query);
+          }
+
+          // Prepare the response.
+          var collection = _.result(this, 'url');
+          var promise;
+          if(USERS === collection) {
+            promise = Kinvey.User.group(aggregation, options);
+          }
+          else {
+            promise = Kinvey.DataStore.group(collection, aggregation, options);
+          }
+
+          // Return the response.
+          return kinveyToBackbonePromise(promise, options);
+        }
+      }
+    );
+
+    // Metadata.
+    // ---------
+
+    // The `Kinvey.Metadata` methods are mixed into Backbone models. To maintain
+    // the correct context, keep a `_metadata` property. Internally, the metadata
+    // (and ACL) operate on the models `attributes` property.
+    // NOTE Modifying the metadata (including the ACL) won’t emit `change` events.
+
+    // Helper function to lazy-initialize the metadata instance.
+    var backboneWrapMetadata = function(fn) {
+      return function() {
+        if(null === this._metadata) {
+          this._metadata = new Kinvey.Metadata(this.attributes);
+        }
+        return fn.apply(this._metadata, arguments);
+      };
+    };
+
+    // Extend the mixin with the metadata functionality.
+    _.extend(Kinvey.Backbone.ModelMixin, /** @lends Kinvey.Backbone.ModelMixin */ {
+      // The email verification metadata method is added in
+      // `Kinvey.Backbone.UserMixin`.
+
+      /**
+       * The models’ metadata.
+       *
+       * @private
+       * @type {Kinvey.Metadata}
+       */
+      _metadata: null,
+
+      /**
+       * Returns the models’ ACL.
+       *
+       * @method
+       * @returns {Kinvey.Acl}
+       */
+      getAcl: backboneWrapMetadata(Kinvey.Metadata.prototype.getAcl),
+
+      /**
+       * Returns the date when the entity was created.
+       *
+       * @method
+       * @returns {?Date} Created at date, or `null` if not set.
+       */
+      getCreatedAt: backboneWrapMetadata(Kinvey.Metadata.prototype.getCreatedAt),
+
+      /**
+       * Returns the date when the entity was last modified.
+       *
+       * @method
+       * @returns {?Date} Last modified date, or `null` if not set.
+       */
+      getLastModified: backboneWrapMetadata(Kinvey.Metadata.prototype.getLastModified),
+
+      /**
+       * Sets the models’ ACL.
+       *
+       * @param {Kinvey.Acl} acl The acl.
+       * @returns {Backbone.Model} The model.
+       */
+      setAcl: function() {
+        backboneWrapMetadata(Kinvey.Metadata.prototype.setAcl).apply(this, arguments);
+        return this;
+      }
+    });
+
+    // Users.
+    // ------
+
+    // Expose a `Kinvey.Backbone` user model and user collection mixin can be used
+    // to extend Backbone’s model and collection.
+
+    // Define the general user mixin. It preseeds the `url`.
+    /**
+     * @private
+     * @namespace UserMixin
+     */
+    var UserMixin = /** @lends UserMixin */ {
+      /**
+       * The models’ resource location.
+       * See [Backbone.js](http://backbonejs.org/#Model-url).
+       *
+       * @default
+       * @type {string}
+       */
+      url: USERS
+    };
+
+    // Define the user model and collection mixins.
+
+    /**
+     * @memberof! <global>
+     * @mixin Kinvey.Backbone.UserMixin
+     * @mixes Kinvey.Backbone.ModelMixin
+     * @borrows UserMixin.url as url
+     */
+    Kinvey.Backbone.UserMixin = _.extend({},
+      Kinvey.Backbone.ModelMixin, UserMixin,
+      /** @lends Kinvey.Backbone.UserMixin */
+      {
+        /**
+         * Links a social identity to the user.
+         *
+         * @param {string} provider The provider.
+         * @param {Object} [options] Options.
+         * @returns {Promise} The model, response, and options objects.
+         */
+        connect: function(provider, options) {
+          // Cast arguments.
+          options = options ? _.clone(options) : {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options);
+
+          // Return the response.
+          var promise = Kinvey.Social.connect(this.attributes, provider, options);
+          return kinveyToBackbonePromise(promise, options);
+        },
+
+        /**
+         * Removes a social identity from the user.
+         *
+         * @param {string} provider The provider.
+         * @param {Object} [options] Options.
+         * @returns {Promise} The model, response, and options objects.
+         */
+        disconnect: function(provider, options) {
+          // Cast arguments.
+          options = options ? _.clone(options) : {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options);
+
+          // Return the response.
+          var promise = Kinvey.Social.disconnect(this.attributes, provider, options);
+          return kinveyToBackbonePromise(promise, options);
+        },
+
+        /**
+         * Returns the email verification status.
+         *
+         * @method
+         * @returns {?Object} The email verification status, or `null` if not set.
+         */
+        getEmailVerification: backboneWrapMetadata(Kinvey.Metadata.prototype.getEmailVerification),
+
+        /**
+         * Returns whether the user is logged in.
+         *
+         * @returns {boolean}
+         */
+        isLoggedIn: function() {
+          var user = Kinvey.getActiveUser();
+          if(null !== user) {
+            var kmd = this.get('_kmd');
+            return null != kmd && kmd.authtoken === user._kmd.authtoken;
+          }
+          return false;
+        },
+
+        /**
+         * Logs in an existing user.
+         *
+         * @param {Object|string} usernameOrData Username, or user data.
+         * @param {string} [password] Password.
+         * @param {Object} [options] Options.
+         * @returns {Promise} The model, response, and options objects.
+         */
+        login: function(usernameOrData, password, options) {
+          // Cast arguments.
+          options = _.clone(isObject(usernameOrData) ? password : options) || {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options);
+
+          // Return the response.
+          var promise = Kinvey.User.login(usernameOrData, password, options);
+          return kinveyToBackbonePromise(promise, options);
+        },
+
+        /**
+         * Logs out the user.
+         *
+         * @param {Object} [options] Options.
+         * @returns {Promise} The model, response, and options objects.
+         */
+        logout: function(options) {
+          // Cast arguments.
+          options = options ? _.clone(options) : {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options);
+
+          // Validate preconditions.
+          var promise;
+          if(!this.isLoggedIn()) {
+            var error = clientError(Kinvey.Error.NOT_LOGGED_IN);
+            promise = Kinvey.Defer.reject(error);
+            wrapCallbacks(promise, options);
+          }
+          else {
+            promise = Kinvey.User.logout(options);
+          }
+
+          // Return the response.
+          return kinveyToBackbonePromise(promise, options);
+        },
+
+        /**
+         * Retrieves information on the user.
+         *
+         * @param {Options} [options] Options.
+         * @returns {Promise} The model, response, and options objects.
+         */
+        me: function(options) {
+          // Cast arguments.
+          options = options ? _.clone(options) : {};
+          options.parse = 'undefined' === typeof options.parse ? true : options.parse;
+          options.subject = this; // Used by the persistence layer.
+          backboneWrapCallbacks(this, options);
+
+          // Validate preconditions.
+          var promise;
+          if(!this.isLoggedIn()) {
+            var error = clientError(Kinvey.Error.NOT_LOGGED_IN);
+            promise = Kinvey.Defer.reject(error);
+            wrapCallbacks(promise, options);
+          }
+          else {
+            promise = Kinvey.User.me(options);
+          }
+
+          // Return the response.
+          return kinveyToBackbonePromise(promise, options);
+        }
+      }
+    );
+
+    /**
+     * @memberof! <global>
+     * @mixin Kinvey.Backbone.StaticUserMixin
+     */
+    Kinvey.Backbone.StaticUserMixin = /** @lends Kinvey.Backbone.StaticUserMixin */ {
+      /**
+       * Requests e-mail verification for a user.
+       *
+       * @param {string} username Username.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The response, status, and xhr objects.
+       */
+      verifyEmail: function(username, options) {
+        // Cast arguments.
+        options = options || {};
+
+        // Return the response.
+        var promise = Kinvey.User.verifyEmail(username, options);
+        return kinveyToBackbonePromise(promise, options);
+      },
+
+      /**
+       * Requests a username reminder for a user.
+       *
+       * @param {string} email E-mail.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The response, status, and xhr objects.
+       */
+      forgotUsername: function(email, options) {
+        // Cast arguments.
+        options = options || {};
+
+        // Return the response.
+        var promise = Kinvey.User.forgotUsername(email, options);
+        return kinveyToBackbonePromise(promise, options);
+      },
+
+      /**
+       * Requests a password reset for a user.
+       *
+       * @param {string} username Username.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The response, status, and xhr objects.
+       */
+      resetPassword: function(username, options) {
+        // Cast arguments.
+        options = options || {};
+
+        // Return the response.
+        var promise = Kinvey.User.resetPassword(username, options);
+        return kinveyToBackbonePromise(promise, options);
+      },
+
+      /**
+       * Checks whether a username exists.
+       *
+       * @param {string} username Username to check.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The response, status, and xhr objects.
+       */
+      exists: function(username, options) {
+        // Cast arguments.
+        options = options || {};
+
+        // Return the response.
+        var promise = Kinvey.User.exists(username, options);
+        return kinveyToBackbonePromise(promise, options);
+      },
+
+      /**
+       * Restores a previously disabled user.
+       *
+       * @param {string} id User id.
+       * @param {Options} [options] Options.
+       * @returns {Promise} The response, status, and xhr objects.
+       */
+      restore: function(id, options) {
+        // Cast arguments.
+        options = options || {};
+
+        // Return the response.
+        var promise = Kinvey.User.restore(id, options);
+        return kinveyToBackbonePromise(promise, options);
+      }
+    };
+
+    /**
+     * @memberof! <global>
+     * @mixin Kinvey.Backbone.UserCollectionMixin
+     * @mixes Kinvey.Backbone.CollectionMixin
+     * @borrows UserMixin.url as url
+     */
+    Kinvey.Backbone.UserCollectionMixin = _.extend(
+      _.omit(Kinvey.Backbone.CollectionMixin, 'clean'), // Users cannot be cleaned.
+      UserMixin
+    );
+
+    // Persistence.
+    // ------------
+
+    // The `Kinvey.Backbone.Sync` method translates a Backbone CRUD method to
+    // either a `Kinvey.DataStore` or `Kinvey.User` method.
+
+    /**
+     * Returns an object containing all (nested) relations of the specified model.
+     *
+     * @param {string} mode The mode, read or write.
+     * @param {Backbone.Model} model The model.
+     * @throws {Kinvey.Error} collection or relatedModel must be set on the
+     *           relation.
+     * @returns {Object} The relations to in- and exclude.
+     */
+    var backboneRelations = function(mode, model) {
+      // Prepare the response.
+      var exclude = [];
+      var relations = {};
+
+      // The exclude property to check.
+      var prop = 'read' === mode ? 'autoFetch' : 'autoSave';
+
+      // Helper function to add relations to the stack.
+      var stack = [];
+      var addToStack = function(relations, depth, prefix) {
+        relations.forEach(function(relation) {
+          stack.push({
+            relation: relation,
+            depth: depth || 0,
+            prefix: prefix || null
+          });
         });
+      };
+      addToStack(model.relations || []);
+
+      // Traverse the stack and add the relations to the response.
+      var item;
+      while(null != (item = stack.shift())) {
+        var depth = item.depth;
+        var prefix = item.prefix;
+        var relation = item.relation;
+
+        // Include relations up to 10 levels deep.
+        if(10 === depth) {
+          continue;
+        }
+
+        // Obtain the relations’ prototype (if any).
+        var relatedModel = null;
+        if(relation.relatedModel) {
+          // `relatedModel` is either a string resolving to a global scope object,
+          // or a reference to a `Backbone.AssociatedModel` class.
+          relatedModel = (root[relation.relatedModel] || relation.relatedModel).prototype;
+        }
+
+        // Obtain, validate, and cast the collection.
+        var collection = relation.collection || _.result(relatedModel, 'url');
+        if(null == collection) {
+          throw new Kinvey.Error('collection or relatedModel must be set on the relation.');
+        }
+        if(0 === collection.indexOf('/')) { // Strip the leading slash (if any).
+          collection = collection.substr(1);
+        }
+
+        // Add the relation.
+        var key = null !== prefix ? prefix + '.' + relation.key : relation.key;
+        relations[key] = collection;
+        if(false === relation[prop]) {
+          exclude.push(key);
+        }
+
+        // Add any nested relations to the stack.
+        if(false !== relation[prop] && null != relatedModel && !isEmpty(relatedModel.relations)) {
+          addToStack(relatedModel.relations, depth + 1, key);
+        }
       }
 
       // Return the response.
-      return deferred.promise;
+      return {
+        exclude: exclude,
+        relations: relations
+      };
     };
-
-    // `Social` adapter for Titanium.
-    var TiSocialAdapter = {
-      /**
-       * http://docs.appcelerator.com/titanium/latest/#!/api/Modules.Facebook
-       * NOTE The built-in Titaium Facebook module can act buggy. Exact use case at
-       * http://developer.appcelerator.com/question/116915
-       *
-       * @augments {Social.facebook}
-       * @param {string} options.appId         The Facebook App Id.
-       * @param {Array}  [options.permissions] Additional Facebook permissions.
-       * @throws {Kinvey.Error} `options` must contain: `appId`.
-       */
-      facebook: function(options) {
-        var error;
-
-        // Debug.
-        if(KINVEY_DEBUG) {
-          log('Initiating the Facebook OAuth2.0 flow.', arguments);
-        }
-
-        // Validate arguments.
-        options = options || {};
-        if(null == options.appId) {
-          error = new Kinvey.Error('options argument must contain: appId.');
-          return Kinvey.Defer.reject(error);
-        }
-
-        // Prepare the response.
-        var deferred = Kinvey.Defer.deferred();
-
-        // Obtain a reference to the Titanium Facebook adapter.
-        var TiFacebook = isMobileWeb ? Titanium.Facebook : require('facebook');
-        TiFacebook.appid = options.appId;
-        TiFacebook.permissions = options.permissions || TiFacebook.permissions || [];
-
-        // Register the event listener.
-        var listener = function(event) {
-          TiFacebook.removeEventListener('login', listener); // Cleanup.
-
-          // Debug.
-          if(KINVEY_DEBUG) {
-            log('Received the Facebook login response.', event);
-          }
-
-          // On success, fulfill with the obtained oAuth2.0 token.
-          if(event.success) {
-            var expires = TiFacebook.getExpirationDate().getTime();
-            return deferred.resolve({
-              access_token: TiFacebook.getAccessToken(),
-              expires_in: root.parseInt((expires - new Date().getTime()) / 1000, 10)
-            });
-          }
-
-          // On failure, reject with the error.
-          var error = clientError(Kinvey.Error.SOCIAL_ERROR, {
-            debug: event
-          });
-          deferred.reject(error);
-        };
-        TiFacebook.addEventListener('login', listener);
-
-        // Trigger the authorization flow.
-        if(TiFacebook.loggedIn) { // If already logged in, fire event manually.
-          TiFacebook.fireEvent('login', {
-            success: true
-          });
-        }
-        else {
-          TiFacebook.authorize();
-        }
-
-        // Debug.
-        if(KINVEY_DEBUG) {
-          deferred.promise.then(function(response) {
-            log('Obtained the Facebook OAuth2.0 tokens.', response);
-          }, function(error) {
-            log('Failed to obtain the Facebook OAuth2.0 tokens.', error);
-          });
-        }
-
-        // Return the response.
-        return deferred.promise;
-      },
-
-      /**
-       * @augments {Social.google}
-       */
-      google: isMobileWeb ? SocialAdapter.google : function(options) {
-        // Cast arguments.
-        options = options || {};
-        options.scope = [ // https://developers.google.com/+/api/oauth#scopes
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/userinfo.email'
-        ].join(' ');
-
-        // Forward to `tiPlatformConnect`.
-        return tiPlatformConnect('Google', options);
-      },
-
-      /**
-       * @augments {Social.linkedIn}
-       */
-      linkedIn: isMobileWeb ? SocialAdapter.linkedIn : function(options) {
-        // Forward to `tiPlatformConnect`.
-        return tiPlatformConnect('Linkedin', options);
-      },
-
-      /**
-       * @augments {Social.twitter}
-       */
-      twitter: isMobileWeb ? SocialAdapter.twitter : function(options) {
-        // Forward to `tiPlatformConnect`.
-        return tiPlatformConnect('Twitter', options);
-      }
-    };
-
-    // Apply the adapter.
-    Social.use(TiSocialAdapter);
-
-
-    // `Storage` adapter for Titanium.
-
-    // The storage methods are executed in the background. Therefore, implement a
-    // queue to force the background processes to execute serially.
-    var storagePromise = Kinvey.Defer.resolve(null);
 
     /**
-     * @private
-     * @namespace
+     * Translates and invokes a Kinvey method from a Backbone CRUD method.
+     *
+     * @param {string} method The CRUD method.
+     * @param {string} collection The collection.
+     * @param {?string} id The document id (if any).
+     * @param {?Object} document The document (if any).
+     * @param {Object} options Options.
+     * @returns {Promise} The response.
      */
-    var TiAppStorage = {
-      /**
-       * @augments {Storage._destroy}
-       */
-      _destroy: function(key) {
-        // Remove the item on our turn.
-        storagePromise = storagePromise.then(function() {
-          Titanium.App.Properties.removeProperty(key);
-          return Kinvey.Defer.resolve(null);
-        });
-        return storagePromise;
-      },
-
-      /**
-       * @augments {Storage._get}
-       */
-      _get: function(key) {
-        // Retrieve the item on our turn.
-        storagePromise = storagePromise.then(function() {
-          var value = Titanium.App.Properties.getObject(key, null);
-          return Kinvey.Defer.resolve(value);
-        });
-        return storagePromise;
-      },
-
-      /**
-       * @augments {Storage._save}
-       */
-      _save: function(key, value) {
-        // Save the item on our turn.
-        storagePromise = storagePromise.then(function() {
-          Titanium.App.Properties.setObject(key, value);
-          return Kinvey.Defer.resolve(null);
-        });
-        return storagePromise;
+    var backboneToKinveyCRUD = function(method, collection, id, data, options) {
+      // Cast arguments. An explicit `id` should override `data._id`.
+      if(null != id && isObject(data)) {
+        data._id = id;
       }
+
+      // Use a query if `id` and `data` is not a document.
+      var query = null == id && (!isObject(data) || isArray(data));
+
+      // Translate Backbone methods to Kinvey methods.
+      var namespace = USERS === collection ? Kinvey.User : Kinvey.DataStore;
+      var methodMap = {
+        create: namespace[USERS === collection ? 'create' : 'save'],
+        read: query ? namespace.find : namespace.get,
+        update: namespace.update,
+        'delete': query ? namespace.clean : namespace.destroy
+      };
+
+      // Build arguments. Both `Kinvey.DataStore` and `Kinvey.User` expect the
+      // document id or data, together with `options`. `Kinvey.DataStore`, however,
+      // requires an initial collection argument.
+      var args = [
+        query ? options.query : ('read' === method || 'delete' === method ? id : data),
+        options
+      ];
+      if(USERS !== collection) {
+        args.unshift(collection);
+      }
+
+      // Invoke the Kinvey method.
+      return methodMap[method].apply(namespace, args);
     };
 
-    // Use the adapter.
-    Storage.use(TiAppStorage);
+    /**
+     * Persist a Backbone model to the Kinvey backend.
+     *
+     * @memberof! <global>
+     * @function Kinvey.Backbone.Sync
+     * @param {string} method The CRUD method.
+     * @param {Object} model The model to be saved, or the collection to be read.
+     * @param {Object} options Callbacks, and request options.
+     * @returns {Promise} The response.
+     */
+    Kinvey.Backbone.Sync = function(method, model, options) {
+      var error;
 
-    /* jshint evil: true */
+      // Cast and validate arguments.
+      options.query = options.query || model.query; // Attach a (optional) query.
+      options.subject = model; // Used by the persistence layer.
 
-    // `Database` adapter for Titaniums’
-    // [Database](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Database).
-    // This works for native platforms only, mobileweb can *not* use this.
-    var TiDatabaseAdapter = {
-      /**
-       * Returns the database name.
-       *
-       * @throws {Kinvey.Error} `Kinvey.appKey` must not be `null`.
-       * @returns {string} The database name.
-       */
-      dbName: function() {
-        // Validate preconditions.
-        if(null == Kinvey.appKey) {
-          throw new Kinvey.Error('Kinvey.appKey must not be null.');
+      // Extend the success handler to translate `silentFail` to silent when
+      // executing inside the Kinvey core.
+      var silent = options.silent;
+      var success = options.success;
+      options.silent = options.silentFail || false;
+      options.success = function(response) {
+        options.silent = silent; // Reset.
+
+        // Invoke the application-level success handler.
+        if(success) {
+          success(response);
         }
-        return 'Kinvey.' + Kinvey.appKey;
-      },
+      };
 
-      /**
-       * Executes a query.
-       *
-       * @param {string} collection The table name.
-       * @param {string|Array} query The query, or list of queries.
-       * @param {Array} [parameters] The query parameters.
-       * @param {Object} options Options.
-       * @param {function} [options.progress] Progress function, invoked after
-       *                     each query in `query`.
-       * @returns {Promise} The query result.
-       */
-      execute: function(collection, query, parameters, options) {
-        // Validate preconditions.
-        if(!isString(collection) || !/^[a-zA-Z0-9\-]{1,128}/.test(collection)) {
-          var error = clientError(Kinvey.Error.INVALID_IDENTIFIER, {
-            description: 'The collection name has an invalid format.',
-            debug: 'The collection name must be a string containing only ' +
-              'alphanumeric characters and dashes, "' + collection + '" given.'
-          });
-          return Kinvey.Defer.reject(error);
-        }
-        var escapedCollection = '\'' + collection + '\'';
-        var isMulti = isArray(query);
-
-        // Cast arguments.
-        options = options || {};
-        query = isMulti ? query : [
-          [query, parameters]
-        ];
-
-        // Obtain a database handle. Any exceptions thrown will be converted into
-        // an error object.
-        try {
-          var db = Titanium.Database.open(TiDatabaseAdapter.dbName());
-          db.execute('BEGIN TRANSACTION'); // Start a transaction.
-
-          // Create the collection if it does not exist yet.
-          db.execute(
-            'CREATE TABLE IF NOT EXISTS ' + escapedCollection + ' ' +
-            '(key BLOB PRIMARY KEY NOT NULL, value BLOB NOT NULL)'
-          );
-
-          // Execute the queries.
-          var response = query.map(function(parts) {
-            var sql = parts[0].replace('#{collection}', escapedCollection);
-
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('Executing a query.', sql, parts[1]);
-            }
-
-            // Prepare the response.
-            var res = db.execute(sql, parts[1]);
-            var response = {
-              rowCount: db.getRowsAffected(),
-              result: null
-            };
-
-            // Add the result if the result set is available.
-            if(null != res) {
-              response.result = [];
-              while(res.isValidRow()) {
-                var document = JSON.parse(res.fieldByName('value'));
-                response.result.push(document);
-                res.next(); // Proceed.
-              }
-              res.close();
-            }
-
-            // If `options.progress`, notify observer of progress.
-            if(null != options.progress) {
-              options.progress(collection, response, query);
-            }
-
-            // Debug.
-            if(KINVEY_DEBUG) {
-              log('Executed the query.', response);
-            }
-
-            // Return the response.
-            return response;
-          });
-
-          // Commit the transaction.
-          db.execute('COMMIT TRANSACTION');
-
-          // Close the database.
-          db.close();
-
-          // Return the response.
-          return Kinvey.Defer.resolve(isMulti ? response : response.shift());
-        }
-        catch(e) { // Low-level database error.
-          // Debug.
-          if(KINVEY_DEBUG) {
-            log('Failed to execute the query.', e.message);
-          }
-
-          // Return the rejection.
-          var error = clientError(Kinvey.Error.DATABASE_ERROR, {
-            debug: e.message
-          });
-          return Kinvey.Defer.reject(error);
-        }
-      },
-
-      /**
-       * Generates an object id.
-       *
-       * @param {integer} [length=24] The length of the object id.
-       * @returns {string} The id.
-       */
-      objectID: function(length) {
-        length = length || 24;
-        var chars = 'abcdef0123456789';
-        var result = '';
-        for(var i = 0, j = chars.length; i < length; i += 1) {
-          var pos = Math.floor(Math.random() * j);
-          result += chars.substring(pos, pos + 1);
-        }
-        return result;
-      },
-
-      /**
-       * @augments {Database.batch}
-       */
-      batch: function(collection, documents, options) {
-        // If there are no documents, return.
-        if(0 === documents.length) {
-          return Kinvey.Defer.resolve(documents);
-        }
-
-        // Build the queries.
-        var queries = [];
-        documents = documents.map(function(document) {
-          // Cast arguments.
-          document._id = document._id || TiDatabaseAdapter.objectID();
-
-          // Add the query for the document.
-          queries.push([
-            'INSERT OR REPLACE INTO #{collection} (key, value) VALUES (?, ?)', [document._id, JSON.stringify(document)]
-          ]);
-
-          // Return the document.
-          return document;
-        });
-
-        // Prepare the response.
-        var promise = TiDatabaseAdapter.execute(collection, queries, null, options);
-
-        // Return the response.
-        return promise.then(function() {
-          return documents;
-        });
-      },
-
-      /**
-       * @augments {Database.clean}
-       */
-      clean: function(collection, query, options) {
-        var error;
-
-        // Deleting should not take the query sort, limit, and skip into account.
-        if(null != query) { // Reset.
-          query.sort(null).limit(null).skip(0);
-        }
-
-        // Obtain the documents to be deleted via `TiDatabaseAdapter.find`.
-        return TiDatabaseAdapter.find(collection, query, options).then(function(documents) {
-          // If there are no documents matching the query, return.
-          if(0 === documents.length) {
-            return {
-              count: 0,
-              documents: []
-            };
-          }
-
-          // Build the query.
-          var infix = [];
-          var parameters = documents.map(function(document) {
-            // Check document for property _id. Thrown error will reject promise.
-            if(document._id == null) {
-              error = new Kinvey.Error('Document does not have _id property defined. ' +
-                'Unable to clean database.');
-              throw error;
-            }
-
-            infix.push('?'); // Add placeholder.
-            return document._id;
-          });
-          var sql = 'DELETE FROM #{collection} WHERE key IN(' + infix.join(',') + ')';
-
-          // Prepare the response.
-          var promise = TiDatabaseAdapter.execute(collection, sql, parameters, options);
-
-          // Return the response.
-          return promise.then(function(response) {
-            return {
-              count: response.rowCount,
-              documents: documents
-            };
-          });
-        });
-      },
-
-      /**
-       * @augments {Database.count}
-       */
-      count: function(collection, query, options) {
-        // Counting should not take the query sort, limit, and skip into account.
-        if(null != query) { // Reset.
-          query.sort(null).limit(null).skip(0);
-        }
-
-        // Forward to `TiDatabaseAdapter.find`, and return the response count.
-        return TiDatabaseAdapter.find(collection, query, options).then(function(response) {
-          return {
-            count: response.length
-          };
-        });
-      },
-
-      /**
-       * @augments {Database.destroy}
-       */
-      destroy: function(collection, id, options) {
-        // Prepare the response.
-        var promise = TiDatabaseAdapter.execute(collection, [
-          ['SELECT value FROM #{collection} WHERE key = ?', [id]],
-          ['DELETE       FROM #{collection} WHERE key = ?', [id]]
-        ], null, options);
-
-        // Return the response.
-        return promise.then(function(response) {
-          // Extract the response.
-          var count = response[1].rowCount;
-          var documents = response[0].result;
-
-          // If the document could not be found, throw an `ENTITY_NOT_FOUND` error.
-          if(0 === count) {
-            var error = clientError(Kinvey.Error.ENTITY_NOT_FOUND, {
-              description: 'This entity not found in the collection',
-              debug: {
-                collection: collection,
-                id: id
-              }
-            });
-            return Kinvey.Defer.reject(error);
-          }
-
-          // Return the count and the deleted document.
-          return {
-            count: count,
-            documents: documents
-          };
-        });
-      },
-
-      /**
-       * @augments {Database.destruct}
-       */
-      destruct: function( /*options*/ ) {
-        // Validate preconditions.
-        var error;
-        if(null == Kinvey.appKey) {
-          error = clientError(Kinvey.Error.MISSING_APP_CREDENTIALS);
-          return Kinvey.Defer.reject(error);
-        }
-
-        // Obtain a database handle. Any exceptions thrown will be converted into
-        // an error object.
-        try {
-          var db = Titanium.Database.open(TiDatabaseAdapter.dbName());
-
-          // Delete the entire database. The exact mechanism used differs between
-          // Android and iOS.
-          if(db.remove) { // Android.
-            db.remove();
-            return Kinvey.Defer.resolve(null);
-          }
-          if(db.file && db.file.deleteFile()) { // iOS.
-            return Kinvey.Defer.resolve(null);
-          }
-
-          // The mechanisms to delete the database is not implemented for this
-          // platform.
-          error = clientError(Kinvey.Error.DATABASE_ERROR, {
-            debug: 'The mechanism to delete the database is not implemented for this platform.'
-          });
-          return Kinvey.Defer.reject(error);
-        }
-        catch(e) { // Low-level database error.
-          error = clientError(Kinvey.Error.DATABASE_ERROR, {
-            debug: e.message
-          });
-          return Kinvey.Defer.reject(error);
-        }
-      },
-
-      /**
-       * @augments {Database.find}
-       */
-      find: function(collection, query, options) {
-        // Prepare the response.
-        var sql = 'SELECT value FROM #{collection}';
-        var promise = TiDatabaseAdapter.execute(collection, sql, [], options);
-
-        // Return the response.
-        return promise.then(function(response) {
-          response = response.result; // The documents.
-
-          // Apply the query.
-          if(null == query) {
-            return response;
-          }
-
-          // Filters.
-          response = root.sift(query.toJSON().filter, response);
-
-          // Post process.
-          return query._postProcess(response);
-        });
-      },
-
-      /**
-       * @augments {Database.findAndModify}
-       */
-      findAndModify: function(collection, id, fn, options) {
-        // Cast arguments.
-        options = options || {};
-
-        // Use the `progress` option to change the document between queries.
-        var document = null;
-        options.progress = function(collection, response, query) {
-          document = fn(response.result[0] || null); // Apply change function.
-
-          // Set the correct upsert query parameter.
-          query[1][1][1] = JSON.stringify(document);
-          delete options.progress; // Run only once.
-        };
-
-        // Prepare the response. The second upsert query parameter will be
-        // overwritten by the `progress` function above. If this fails for some
-        // reason, a NULL constraint violation will be thrown.
-        var promise = TiDatabaseAdapter.execute(collection, [
-          ['SELECT value FROM #{collection} WHERE key = ?', [id]],
-          ['INSERT OR REPLACE INTO #{collection} (key, value) VALUES (?, ?)', [id, null]]
-        ], null, options);
-
-        // Return the response.
-        return promise.then(function() {
-          return document;
-        });
-      },
-
-      /**
-       * @augments {Database.get}
-       */
-      get: function(collection, id, options) {
-        // Prepare the response.
-        var sql = 'SELECT value FROM #{collection} WHERE key = ?';
-        var promise = TiDatabaseAdapter.execute(collection, sql, [id], options);
-
-        // Return the response.
-        return promise.then(function(response) {
-          // Extract the documents.
-          var documents = response.result || [];
-
-          // If the document could not be found, throw an `ENTITY_NOT_FOUND` error.
-          if(0 === documents.length) {
-            var error = clientError(Kinvey.Error.ENTITY_NOT_FOUND, {
-              description: 'This entity not found in the collection',
-              debug: {
-                collection: collection,
-                id: id
-              }
-            });
-            return Kinvey.Defer.reject(error);
-          }
-          return documents[0];
-        });
-      },
-
-      /**
-       * @augments {Database.group}
-       */
-      group: function(collection, aggregation, options) {
-        // Cast arguments. This casts the reduce string to reduce function.
-        var reduce = aggregation.reduce.replace(/function[\s\S]*?\([\s\S]*?\)/, '');
-        aggregation.reduce = new Function(['doc', 'out'], reduce);
-
-        // Obtain documents subject to aggregation.
-        var query = new Kinvey.Query({
-          filter: aggregation.condition
-        });
-        return TiDatabaseAdapter.find(collection, query, options).then(function(documents) {
-          // Prepare the grouping.
-          var groups = {};
-
-          // Segment documents into groups.
-          documents.forEach(function(document) {
-            // Determine the group the document belongs to.
-            // NOTE Dot-separated (nested) fields are not supported.
-            var group = {};
-            for(var name in aggregation.key) {
-              if(aggregation.key.hasOwnProperty(name)) {
-                group[name] = document[name];
-              }
-            }
-
-            // Initialize the group (if not done yet).
-            var key = JSON.stringify(group);
-            if(null == groups[key]) {
-              groups[key] = group;
-              for(var attr in aggregation.initial) { // Add initial attributes.
-                if(aggregation.initial.hasOwnProperty(attr)) {
-                  groups[key][attr] = aggregation.initial[attr];
-                }
-              }
-            }
-
-            // Run the reduce function on the group and document.
-            aggregation.reduce(document, groups[key]);
-          });
-
-          // Cast the groups to the response.
-          var response = [];
-          for(var segment in groups) {
-            if(groups.hasOwnProperty(segment)) {
-              response.push(groups[segment]);
-            }
-          }
-          return response;
-        });
-      },
-
-      /**
-       * @augments {Database.save}
-       */
-      save: function(collection, document, options) {
-        // Cast arguments.
-        document._id = document._id || TiDatabaseAdapter.objectID();
-
-        // Build the query.
-        var query = 'INSERT OR REPLACE INTO #{collection} (key, value) VALUES(?, ?)';
-        var parameters = [document._id, JSON.stringify(document)];
-
-        // Prepare the response.
-        var promise = TiDatabaseAdapter.execute(collection, query, parameters, options);
-
-        // Return the response.
-        return promise.then(function() {
-          return document;
-        });
-      },
-
-      /**
-       * @augments {Database.update}
-       */
-      update: function(collection, document, options) {
-        // Forward to `TiDatabaseAdapter.save`.
-        return TiDatabaseAdapter.save(collection, document, options);
+      // Obtain the url and document data.
+      var data = options.attrs || model.toJSON(options);
+      var url = options.url || _.result(model, 'url');
+      if(null == url) {
+        error = new Kinvey.Error('model or options argument must contain: url.');
+        return kinveyToBackbonePromise(Kinvey.Defer.reject(error), options);
       }
+
+      // Strip the leading slash (if any).
+      if(0 === url.indexOf('/')) {
+        url = url.substr(1);
+      }
+
+      // Extract the collection and document id from the url.
+      var segments = url.split('/');
+      var collection = segments[0];
+      var id = segments[1] || data._id || null;
+
+      // Add support for references for both collections and models.
+      var relations = model.model ? model.model.prototype.relations : model.relations;
+      if(!isEmpty(relations)) {
+        var mode = 'read' === method ? 'read' : 'write';
+        relations = backboneRelations(mode, this.model ? this.model.prototype : this);
+        options.exclude = relations.exclude;
+        options.relations = relations.relations;
+      }
+
+      // Translate to `Kinvey` core function call and return the response.
+      var promise = backboneToKinveyCRUD(method, collection, id, data, options);
+      return kinveyToBackbonePromise(promise, options);
     };
 
-    // Apply the adapter.
-    if('undefined' !== typeof Titanium.Database && 'undefined' !== typeof root.sift) {
-      Database.use(TiDatabaseAdapter);
 
-      // Add `Kinvey.Query` operators not supported by `sift`.
-      ['near', 'regex', 'within'].forEach(function(operator) {
-        root.sift.useOperator(operator, function() {
-          throw new Kinvey.Error(operator + ' query operator is not supported locally.');
-        });
-      });
-    }
-
-
-    // `Kinvey.Persistence.Net` adapter for Titaniums’
-    // [HTTPClient](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Network.HTTPClient).
-    var TiHttp = {
+    // `Kinvey.Persistence.Net` adapter for
+    // [Backbone.ajax](http://backbonejs.org/#Sync-ajax).
+    var BackboneAjax = {
       /**
-       * @augments {Kinvey.Persistence.Net.base64}
+       * @augments {Kinvey.Persistence.Net.request}
        */
       base64: function(value) {
-        return Titanium.Utils.base64encode(value);
+        return root.btoa(value);
       },
+
+      /**
+       * Flag whether the device supports Blob.
+       *
+       * @property {boolean}
+       */
+      supportsBlob: (function() {
+        // The latest version of the File API uses `new Blob` to create a Blob
+        // object. Older browsers, however, do not support this and fall back to
+        // using ArrayBuffer.
+        try {
+          return new root.Blob() && true;
+        }
+        catch(e) {
+          return false;
+        }
+      }()),
 
       /**
        * @augments {Kinvey.Persistence.Net.encode}
        */
-      encode: function(value) {
-        return Titanium.Network.encodeURIComponent(value);
-      },
+      encode: root.encodeURIComponent,
 
       /**
        * @augments {Kinvey.Persistence.Net.request}
        */
       request: function(method, url, body, headers, options) {
-        var error;
-
         // Cast arguments.
+        body = body || null;
         headers = headers || {};
         options = options || {};
         options.attemptMICRefresh = false === options.attemptMICRefresh ? false : true;
 
         // Prepare the response.
         var deferred = Kinvey.Defer.deferred();
-        var xhr;
 
-        // Stringify if not Titanium.Blob.
-        if(isObject(body) && !isFunction(body.getLength)) {
-          body = JSON.stringify(body);
-        }
-
-        // Create the request.
-        if(isMobileWeb) {
-          // Use browser XHR on mobile web. Easier binary/header handling.
-          xhr = new XMLHttpRequest();
-
-          // Getting a file. Binary response.
-          xhr.responseType = options.file ? 'blob' : '';
-
-          if(body instanceof Titanium.Blob) {
-            body = body._data;
-          }
-
-          xhr.ontimeout = function() {
-            deferred.reject('timeout');
-          };
-        }
-        else {
-          xhr = Titanium.Network.createHTTPClient();
-
-          // Set the TLS version (iOS only).
-          if(isFunction(xhr.setTlsVersion) && Titanium.Network.TLS_VERSION_1_2) {
-            xhr.setTlsVersion(Titanium.Network.TLS_VERSION_1_2);
-          }
-
-          // Prevent Titanium from defaulting Content-Type on file download.
-          // GCS signature is validated with Content-Type header.
-          if(method === 'GET' && options.file) {
-            headers['Content-Type'] = '';
+        // Append header for compatibility with Android 2.2, 2.3.3, and 3.2.
+        // http://www.kinvey.com/blog/item/179-how-to-build-a-service-that-supports-every-android-browser
+        if(0 === url.indexOf(Kinvey.APIHostName) && 'GET' === method) {
+          var location = root.location;
+          if(null != location && null != location.protocol) {
+            headers['X-Kinvey-Origin'] = location.protocol + '//' + location.host;
           }
         }
-
-        xhr.timeout = options.timeout || 0;
 
         // Listen for request completion.
-        xhr.onerror = xhr.onload = function(e) {
+        var onComplete = function(request, textStatus) {
           // Debug.
           if(KINVEY_DEBUG) {
-            log('The network request completed.', this);
-          }
-
-          // Titanium does not provide a clear error code on timeout. Patch here.
-          e = e || {};
-          if(isString(e.error) && -1 !== e.error.toLowerCase().indexOf('timed out')) {
-            e.type = 'timeout';
+            log('The network request completed.', xhr);
           }
 
           // Success implicates 2xx (Successful), or 304 (Not Modified).
-          var status = 'timeout' === e.type ? 0 : this.status;
+          var status = request.status;
+          if(2 === parseInt(status / 100, 10) || 304 === status) {
+            // If `options.file`, convert the response to `Blob` object.
+            var response = request.responseText;
+            if(options.file && null != response && null != root.ArrayBuffer) {
+              // jQuery does not provide a nice way to set the responseType to blob,
+              // so convert the response to binary manually.
+              // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data
+              var buffer = new root.ArrayBuffer(response.length);
+              var bufView = new root.Uint8Array(buffer);
+              for(var i = 0, length = response.length; i < length; i += 1) {
+                bufView[i] = response.charCodeAt(i);
+              }
 
-          if(2 === parseInt(status / 100, 10) || 304 === this.status) {
-            var response;
-
-            // Mobile web response.
-            if(isMobileWeb) {
-              var isBinary = this.responseType === 'blob';
-
-              response = new Titanium.Blob({
-                data: isBinary ? this.response : this.responseText,
-                length: isBinary ? this.response.size : this.responseText.length,
-                mimeType: this.getResponseHeader('Content-Type')
-              });
-            }
-            else {
-              response = options.file ? this.responseData : this.responseText;
+              // If possible, convert the buffer to an actual `Blob` object.
+              if(BackboneAjax.supportsBlob) {
+                buffer = new root.Blob([bufView], {
+                  type: options.file
+                });
+              }
+              response = buffer;
             }
 
             // Check `Content-Type` header for application/json
-            if(!options.file && response != null && 204 !== this.status) {
-              var responseContentType = this.getResponseHeader('Content-Type');
+            if(!options.file && response != null && 204 !== request.status) {
+              var responseContentType = request.getResponseHeader('Content-Type') || undefined;
+              var error;
 
               if(responseContentType == null) {
                 error = new Kinvey.Error('Content-Type header missing in response. Please add ' +
@@ -12105,7 +11271,6 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           else { // Failure.
             var promise;
             var originalRequest = options._originalRequest;
-            error = this.responseText || e.type || null;
 
             if(401 === status && options.attemptMICRefresh) {
               promise = MIC.refresh(options);
@@ -12122,6 +11287,8 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
             }).then(function(response) {
               deferred.resolve(response);
             }, function() {
+              var error = request.responseText || textStatus || null;
+
               if(Array.isArray(error)) {
                 error = new Kinvey.Error('Received an array as a response with a status code of ' + status + '. A JSON ' +
                   'object is expected as a response to requests that result in an error status code.');
@@ -12132,22 +11299,34 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
           }
         };
 
-        xhr.open(method, url);
-
-        // Append request headers.
-        for(var name in headers) {
-          if(headers.hasOwnProperty(name)) {
-            xhr.setRequestHeader(name, headers[name]);
-          }
-        }
-
         // Debug.
         if(KINVEY_DEBUG) {
           log('Initiating a network request.', method, url, body, headers, options);
         }
 
         // Initiate the request.
-        xhr.send(body);
+        if(isObject(body) && !(
+            (null != root.ArrayBuffer && body instanceof root.ArrayBuffer) ||
+            (null != root.Blob && body instanceof root.Blob)
+          )) {
+          body = JSON.stringify(body);
+        }
+        var xhr = options.xhr = Backbone.ajax({
+          complete: onComplete,
+          data: body,
+          dataType: 'json',
+          headers: headers,
+          mimeType: options.file ? 'text/plain; charset=x-user-defined' : null,
+          processData: false,
+          timeout: options.timeout,
+          type: method,
+          url: url,
+          beforeSend: function() {
+            if(options.beforeSend) { // Invoke the application-level handler.
+              return options.beforeSend.apply(this, arguments);
+            }
+          }
+        });
 
         // Trigger the `request` event on the subject. The subject should be a
         // Backbone model or collection.
@@ -12167,9 +11346,142 @@ var exports=exports||this;exports.Google=function(e){function t(){var e=this,t=t
       }
     };
 
-    // Use Titanium adapter.
-    Kinvey.Persistence.Net.use(TiHttp);
+    // Use Backbone adapter.
+    if('undefined' !== typeof Backbone) {
+      Kinvey.Persistence.Net.use(BackboneAjax);
+    }
 
+
+    // Export.
+
+    // Extend Backbone model and collection to provide built-in models and
+    // collections for entities and users. Even though the user model and
+    // collection are close to the entity model and collection mixins, no
+    // no inheritance is applied:
+    // Kinvey.Backbone.User is not an instance of Kinvey.Backbone.Model.
+
+    // By default, extend `Backbone.Model`. However, for better integration with
+    // references, use `Backbone.AssociatedModel` instead if it is available.
+    var backboneModel;
+    if('undefined' !== typeof Backbone.AssociatedModel) {
+      backboneModel = Backbone.AssociatedModel;
+    }
+    else {
+      backboneModel = Backbone.Model;
+    }
+
+    // Define the `Kinvey.Backbone` classes.
+
+    /**
+     * The Kinvey.Backbone.Model class.
+     *
+     * @memberof! <global>
+     * @class Kinvey.Backbone.Model
+     * @extends Backbone.Model
+     * @mixes Kinvey.Backbone.ModelMixin
+     */
+    Kinvey.Backbone.Model = backboneModel.extend(Kinvey.Backbone.ModelMixin);
+
+    /**
+     * The Kinvey.Backbone.Collection class.
+     *
+     * @memberof! <global>
+     * @class Kinvey.Backbone.Collection
+     * @extends Backbone.Collection
+     * @mixes Kinvey.Backbone.CollectionMixin
+     */
+    Kinvey.Backbone.Collection = Backbone.Collection.extend(
+      // The mixin does not have access to the parent class, therefore the
+      // functionality below is only available on `Kinvey.Backbone.Collection`.
+      _.extend({}, Kinvey.Backbone.CollectionMixin, /** @lends Kinvey.Backbone.Collection# */ {
+        /**
+         * The model class that the collection contains.
+         * See [Backbone.js](http://backbonejs.org/#Collection-model).
+         *
+         * @default
+         * @type {Kinvey.Backbone.Model}
+         */
+        model: Kinvey.Backbone.Model,
+
+        /**
+         * Initializes the collection.
+         * See [Backbone.js](http://backbonejs.org/#Collection-constructor).
+         *
+         * @param {Array} [models] List of models.
+         * @param {Object} [options] Options.
+         * @param {Kinvey.Query} [options.query] The collection query.
+         * @throws {Kinvey.Error} `options.query` must be of type: `Kinvey.Query`.
+         */
+        initialize: function(models, options) {
+          // Call parent.
+          var result = Backbone.Collection.prototype.initialize.apply(this, arguments);
+
+          // Cast arguments.
+          options = options || {};
+
+          // Validate arguments.
+          if(null != options.query && !(options.query instanceof Kinvey.Query)) {
+            throw new Kinvey.Error('options.query argument must be of type: Kinvey.Query.');
+          }
+          this.query = options.query;
+
+          // Return the parent’s response.
+          return result;
+        }
+      })
+    );
+
+
+    // Define the `Kinvey.Backbone` classes.
+
+    /**
+     * The Kinvey.Backbone.User class.
+     *
+     * @memberof! <global>
+     * @class Kinvey.Backbone.User
+     * @extends Backbone.Model
+     * @mixes Kinvey.Backbone.UserMixin
+     */
+    Kinvey.Backbone.User = backboneModel.extend(
+      Kinvey.Backbone.UserMixin, // Class properties.
+      Kinvey.Backbone.StaticUserMixin // Static properties.
+    );
+
+    /**
+     * The Kinvey.Backbone.UserCollection class.
+     *
+     * @memberof! <global>
+     * @class Kinvey.Backbone.UserCollection
+     * @extends Backbone.Collection
+     * @mixes Kinvey.Backbone.UserCollectionMixin
+     */
+    Kinvey.Backbone.UserCollection = Backbone.Collection.extend(
+      // The mixin does not have access to the parent class, therefore the
+      // functionality below is only available on `Kinvey.Backbone.UserCollection`.
+      _.extend({}, Kinvey.Backbone.UserCollectionMixin, /** @lends Kinvey.Backbone.UserCollection# */ {
+        /**
+         * The model class that the collection contains.
+         * See [Backbone.js](http://backbonejs.org/#Collection-model).
+         *
+         * @default
+         * @type {Kinvey.Backbone.User}
+         */
+        model: Kinvey.Backbone.User,
+
+        /**
+         * Initializes the collection.
+         * See [Backbone.js](http://backbonejs.org/#Collection-constructor).
+         * NOTE `initialize` is identical for both the entity and user collection.
+         *
+         * @method
+         * @param {Array} [models] List of users.
+         * @param {Object} [options] Options.
+         * @param {Kinvey.Query} [options.query] The collection query.
+         * @throws {Kinvey.Error} `options.query` must be of type: `Kinvey.Query`.
+         */
+        initialize: Kinvey.Backbone.Collection.prototype.initialize
+      })
+    );
 
     // Return the copy.
     return Kinvey;
